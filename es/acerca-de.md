@@ -5,7 +5,7 @@ translation_url: /en/about.html
 
 Como Arquitecto de Software, mi carrera se define por la necesidad de entender los sistemas desde sus primeros principios. Me especializo en Java, GIS y sistemas complejos, y mi trabajo ha consistido en deconstruir 'cajas negras' para crear soluciones robustas, desde el diseño de un compilador en mi adolescencia hasta integraciones de IA en la actualidad.
 
--- Trayectoria técnica --
+## Trayectoria técnica 
 
 Partiendo de sistemas Unix (HPUX, SCO), he liderado proyectos pioneros adaptados a las limitaciones de cada época:
 
@@ -15,7 +15,7 @@ Partiendo de sistemas Unix (HPUX, SCO), he liderado proyectos pioneros adaptados
 
 * Desarrollé ERPs completos sobre Python, con arquitecturas de cliente ligero y metodologías ágiles para la certificación ISO 9000.
 
--- Liderazgo en Arquitectura y Comunidad gvSIG --
+## Liderazgo en Arquitectura y Comunidad gvSIG
 
 Desde 2005, soy el responsable de arquitectura de gvSIG desktop. He ejercido la gobernanza técnica en su ecosistema distribuido y hoy mi foco es evolucionar la herramienta para su nicho: la edición de cartografía a gran escala. Mi desarrollo clave más reciente es VCSGis, un sistema de control de versiones para datos GIS construido desde cero.
 
