@@ -1,0 +1,12 @@
+---
+layout: default
+---
+<article>
+  <header>
+    <h1>{{ page.title }}</h1>
+    <p><small>Publicado el: {{ page.date | date: "%d de %B de %Y" }}</small></p>
+  </header>
+  <div>
+    {{ content }}
+  </div>
+</article>
