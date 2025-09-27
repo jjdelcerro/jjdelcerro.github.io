@@ -1,11 +1,13 @@
 
-# Asistente de IA para Aplicaciones de Escritorio (I+D Personal)
+# Projectos
+
+## Asistente de IA para Aplicaciones de Escritorio (I+D Personal)
 
 Diseñé y desarrollé un prototipo funcional para integrar un asistente de IA en una aplicación de escritorio Java/Swing (gvSIG desktop). El proyecto incluyó el análisis de viabilidad de las APIs de LLMs y la creación de una arquitectura de cliente-servidor local (Model Context Protocol - MCP) para resolver los problemas de coste y distribución.
 
 Todo el proceso, desde la arquitectura hasta la implementación, está documentado en una serie de artículos técnicos en mi blog.
 
-# VCSGis: Sistema de Control de Versiones para Datos GIS
+## VCSGis: Sistema de Control de Versiones para Datos GIS
 
 Diseñé y desarrollamos desde cero VCSGis, un sistema de control de versiones y concurrencia para datos geoespaciales, como solución a la incapacidad de herramientas estándar (Git, SVN) para manejar la idiosincrasia de los datos GIS: volúmenes masivos y ficheros binarios de gigabytes.
 
