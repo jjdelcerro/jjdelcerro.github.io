@@ -1,22 +1,16 @@
----
-layout: default
----
-
-# Artículos y reflexiones
-
-Aquí encontrarás mis artículos sobre arquitectura de software, desarrollo en gvSIG, y mis investigaciones recientes en el campo de la Inteligencia Artificial.
-
----
-
-## Publicaciones
-
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <h3>
-        <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
-      </h3>
-      <p>{{ post.excerpt }}</p>
-    </li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Joaquín del Cerro | Redirigiendo...</title>
+  <meta charset="utf-8">
+  <link rel="canonical" href="https://jjdelcerro.github.io/es/"/>
+  <meta http-equiv="refresh" content="0; url=/es/">
+</head>
+<body>
+  <h1>Redirigiendo a la versión en español...</h1>
+  <p>
+    Si no eres redirigido automáticamente, 
+    <a href="/es/">haz clic aquí</a>.
+  </p>
+</body>
+</html>
