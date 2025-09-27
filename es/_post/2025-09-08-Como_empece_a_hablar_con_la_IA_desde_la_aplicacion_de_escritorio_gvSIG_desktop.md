@@ -132,15 +132,15 @@ Con estas reglas, el LLM ya no solo conversaba, sino que generaba instrucciones.
 
 La primera vez que probé el sistema completo me resulto impactante. El LLM dejó de ser un simple chatbot para convertirse en un motor de análisis que respondía a mis preguntas con acciones concretas. Una conversación natural se traducía en operaciones reales dentro de gvSIG:
 
-![Generación de un diagrama Entidad-Relación a partir de una petición en lenguaje natural](./articulo1_diagram1.png)
+![Generación de un diagrama Entidad-Relación a partir de una petición en lenguaje natural](/assets/images/Como_empece_a_hablar_con_la_IA_desde_la_aplicacion_de_escritorio_gvSIG_desktop/articulo1_diagram1.png)
 
 En esta captura se ve cómo el usuario pregunta _"Puedes generarme un modelo entidad relación con las tablas a las que tienes acceso?"_ y el sistema responde con un botón que al hacer clic muestra el diagrama solicitado.
 
-![Visualización de los resultados de una consulta SQL en una tabla dentro de gvSIG](./articulo1_tabla1.png)
+![Visualización de los resultados de una consulta SQL en una tabla dentro de gvSIG](/assets/images/Como_empece_a_hablar_con_la_IA_desde_la_aplicacion_de_escritorio_gvSIG_desktop/articulo1_tabla1.png)
 
 Aquí vemos cómo la orden de _"Muestrame las placas que tienen un soporte de acero"_ el sistema genera una consulta SQL y responde con un botón que al hacer clic muestra el resultado en una tabla.
 
-![Creación de un gráfico de barras a través de una conversación con el asistente de IA](./articulo1_grafica1.png)
+![Creación de un gráfico de barras a través de una conversación con el asistente de IA](/assets/images/Como_empece_a_hablar_con_la_IA_desde_la_aplicacion_de_escritorio_gvSIG_desktop/articulo1_grafica1.png)
 
 Finalmente, una solicitud más compleja como un gráfico de barras se traduce en la visualización de este en la aplicación.
 
