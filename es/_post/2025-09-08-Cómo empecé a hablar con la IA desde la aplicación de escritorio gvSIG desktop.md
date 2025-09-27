@@ -60,7 +60,7 @@ class GeminiClient:
 
 La magia estaba en construir el Json correcto que espera la API de Gemini. Pero una vez resuelto esto, en pocas horas ya tenía una ventana de chat funcionando dentro de gvSIG.
 
-![Primer prototipo funcionando](./articulo1_img1.png)
+![Primer prototipo funcionando](/assets/images/Cómo empecé a hablar con la IA desde la aplicación de escritorio gvSIG desktop/articulo1_img1.png)
 
 _El primer prototipo era sencillo, pero funcionaba. Podía escribir preguntas y obtener respuestas_.
 
