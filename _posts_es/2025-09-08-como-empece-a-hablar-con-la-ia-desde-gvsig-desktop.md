@@ -5,8 +5,6 @@ date: 2025-09-08
 ---
 
 
-# Cómo empecé a hablar con la IA desde la aplicación de escritorio gvSIG desktop en Java
-
 ¿Alguna vez has querido preguntarle a tu aplicación qué datos tiene o qué puede hacer con ellos, usando tus propias palabras? Esa fue la pregunta que me hice a principios de este año cuando empecé a ver que los modelos de lenguaje (LLMs, Large Language Models o Modelos de Lenguaje Grande) podían hacer cosas increíbles... pero siempre desde un navegador web, lejos de la aplicación de escritorio.
 
 Como muchos sabéis, llevo años trabajando en gvSIG Desktop, una aplicación Java de escritorio con mucha historia y mucho código. La idea de integrar capacidades de IA directamente en la aplicación me pareció fascinante, pero tenía un problema: todo lo que veía requería frameworks complejos de Python o soluciones en la nube que no encajaban con nuestra realidad, requerian versiones modernas de java o python con las que no podia contar.
