@@ -1,5 +1,22 @@
 # _config.yml
 
-theme: jekyll-theme-minimal
-title: Joaquín del Cerro | Arquitecto de Software
-description: Un espacio para mis artículos, proyectos e investigación sobre arquitectura de software, GIS e Inteligencia Artificial.
+collections:
+  posts_es:
+    output: true
+    permalink: /es/blog/:title/
+  posts_en:
+    output: true
+    permalink: /en/blog/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: "posts_es"
+    values:
+      lang: "es"
+  - scope:
+      path: ""
+      type: "posts_en"
+    values:
+      lang: "en"
+      
