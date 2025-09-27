@@ -24,3 +24,5 @@ Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos 
     </li>
   {% endfor %}
 </ul>
+
+Hasta otra.
