@@ -25,4 +25,4 @@ Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos 
   {% endfor %}
 </ul>
 
-Hasta otra.
+Hasta otra..
