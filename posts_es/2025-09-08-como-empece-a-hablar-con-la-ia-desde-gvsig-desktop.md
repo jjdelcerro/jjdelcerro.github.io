@@ -1,3 +1,8 @@
+---
+layout: post
+title: "Cómo empecé a hablar con la IA desde la aplicación de escritorio gvSIG desktop"
+date: 2025-09-08
+---
 
 
 # Cómo empecé a hablar con la IA desde la aplicación de escritorio gvSIG desktop en Java
