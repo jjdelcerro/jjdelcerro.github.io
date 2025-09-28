@@ -10,6 +10,7 @@ Esta página es una inmersión profunda en algunos de los sistemas más signific
 ---
 
 <h2 id="asistente-ia">Asistente de IA para Aplicaciones de Escritorio (I+D Personal)</h2>
+Periodo: 2025 - actualidad
 
 Diseñé y desarrollé un prototipo funcional para integrar un asistente de IA en una aplicación de escritorio Java/Swing (gvSIG desktop). El proyecto incluyó el análisis de viabilidad de las APIs de LLMs y la creación de una arquitectura de cliente-servidor local (Model Context Protocol - MCP) para resolver los problemas de coste y distribución.
 
@@ -18,6 +19,7 @@ Todo el proceso, desde la arquitectura hasta la implementación, está documenta
 ---
 
 <h2 id="vcsgis">VCSGis: Sistema de Control de Versiones para Datos GIS</h2>
+Periodo: Desarrollo principal 2020 - 2023
 
 Fui el responsable del diseño y desarrollo desde cero de VCSGis, un sistema de control de versiones y concurrencia para datos geoespaciales. Nació como solución a la incapacidad de herramientas estándar (Git, SVN) para manejar la idiosincrasia de los datos GIS: volúmenes masivos y ficheros binarios de gigabytes.
 
@@ -30,6 +32,7 @@ Inspirado en SVN, el sistema permite la edición concurrente de cartografía a g
 ---
 
 <h2 id="sigcar">SIGCAR: Sistema de Información Geográfica de Accidentalidad</h2>
+Periodo: 2019 - 2022
 
 Fui el arquitecto y desarrollador principal de SIGCAR, una personalización sobre gvSIG Desktop para modernizar la gestión de datos de accidentes de tráfico de la Generalitat Valenciana (GVA). Mi rol abarcó el diseño completo del sistema, desde la ingesta de datos hasta su explotación final.
 
@@ -41,6 +44,7 @@ Fui el arquitecto y desarrollador principal de SIGCAR, una personalización sobr
 ---
 
 <h2 id="sistema-de-publicacion-juridica">Sistema de Publicación Jurídica en CD-ROM</h2>
+Periodo: 1996 - 1998
 
 En Dysmatica, lideré el diseño y desarrollo end-to-end de un sistema para la digitalización y distribución masiva de enciclopedias jurídicas para la Editorial La Ley. El principal desafío fue construir una solución de alto rendimiento para los limitados PCs de la época.
 
@@ -51,8 +55,9 @@ En Dysmatica, lideré el diseño y desarrollo end-to-end de un sistema para la d
 ---
 
 <h2 id="recorridos-virtuales">Recorridos Virtuales Interactivos (I+D)</h2>
+Periodo: 1995
 
-En la misma etapa en Dysmatica (circa 1995), lideré una iniciativa de I+D para crear un sistema de recorridos virtuales interactivos por el interior de edificios. El principal desafío técnico fue conseguir que operase de forma fluida desde un CD-ROM en los PCs de la época (386/486), con recursos extremadamente limitados (4-6MB de RAM) y sin ningún tipo de aceleración gráfica 3D.
+En la misma etapa en Dysmatica, lideré una iniciativa de I+D para crear un sistema de recorridos virtuales interactivos por el interior de edificios. El principal desafío técnico fue conseguir que operase de forma fluida desde un CD-ROM en los PCs de la época (386/486), con recursos extremadamente limitados (4-6MB de RAM) y sin ningún tipo de aceleración gráfica 3D.
 
 *   **Motor basado en vistas pre-renderizadas:** Para superar las limitaciones del hardware, diseñé un sistema que no calculaba 3D en tiempo real, sino que se basaba en la reproducción de secuencias de vídeo y panorámicas de 360 grados pregrabadas para simular un movimiento fluido.
 *   **Modelo de navegación por nodos:** El recorrido se modeló como un grafo donde cada punto de vista era un "nodo" y las transiciones (ej. cruzar una puerta) eran "arcos", permitiendo una navegación lógica por el espacio.
@@ -61,6 +66,7 @@ En la misma etapa en Dysmatica (circa 1995), lideré una iniciativa de I+D para 
 ---
 
 <h2 id="sistema-de-localizacion-de-flotas">Sistema de Localización de Flotas (pre-GPRS y GPRS)</h2>
+Periodo: 1999 - 2004
 
 En CENOCLAP, fui el arquitecto y desarrollador de un sistema de localización de flotas en una época en la que la comunicación con los vehículos se realizaba a través de SMS. El proyecto exigió construir gran parte de la infraestructura desde cero.
 
@@ -71,6 +77,7 @@ En CENOCLAP, fui el arquitecto y desarrollador de un sistema de localización de
 ---
 
 <h2 id="erp-a-medida">ERP a Medida con Arquitectura de Cliente Ligero</h2>
+Periodo: 2002 - 2005
 
 También en CENOCLAP, lideré el desarrollo de una aplicación de gestión de almacén y contabilidad desde cero. El proyecto destacó por su arquitectura y por el proceso de certificación de calidad.
 
