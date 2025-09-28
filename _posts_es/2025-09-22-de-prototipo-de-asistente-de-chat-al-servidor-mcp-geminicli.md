@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: "De prototipo de asistente de chat al servidor MCP y gemini-cli"
@@ -7,7 +6,7 @@ canonical_url: "https://blog.gvsig.org/2025/09/22/de-prototipo-de-asistente-de-c
 ---
 
 
-En el artículo anterior, lo dejé justo en el momento de la revelación: la conexión inesperada entre una herramienta de línea de comandos, `gemini-cli`, y un protocolo llamado MCP era la respuesta al problema de distribución que casi acaba con el proyecto. Hoy, no vamos a revivir esa búsqueda, sino a remangarnos para construir la solución. Os mostraré en detalle qué son estas piezas y cómo, apoyándome en todo el trabajo previo, encajaron para dar vida a una solución robusta y, por fin, distribuible.
+En el artículo anterior, lo dejé justo en el momento de la revelación: la conexión inesperada entre una herramienta de línea de comandos, `gemini-cli`, y un protocolo llamado MCP era l respuesta al problema de distribución que casi acaba con el proyecto. Hoy, no vamos a revivir esa búsqueda, sino a remangarnos para construir la solución. Os mostraré en detalle qué son estas piezas y cómo, apoyándome en todo el trabajo previo, encajaron para dar vida a una solución robusta y, por fin, distribuible.
 
 #### **Desmitificando las Piezas del Puzle**
 
