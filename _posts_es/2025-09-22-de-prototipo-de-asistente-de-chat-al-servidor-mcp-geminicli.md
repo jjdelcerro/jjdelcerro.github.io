@@ -179,7 +179,7 @@ La experiencia de usuario final ahora consiste en:
 2.  Configurarlo con un pequeño archivo para que apunte a nuestro servidor local.
 3.  Abrir gvSIG, lanzar el chat y empezar a conversar, aprovechando las 1000 peticiones gratuitas diarias.
 
-![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. El usuario ha solicitado que se muestren los soportes de acero. El LLM interpreta la peticion y acaba mostransolo en una ventana de la aplicacion](assets/images/2025-09-22-de-prototipo-de-asistente-de-chat-al-servidor-mcp-geminicli/articulo4_mostrar-diagrama4.png)
+![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. El usuario ha solicitado que se muestren los soportes de acero. El LLM interpreta la peticion y acaba mostransolo en una ventana de la aplicacion](/assets/images/2025-09-22-de-prototipo-de-asistente-de-chat-al-servidor-mcp-geminicli/articulo4_mostrar-diagrama4.png)
 
 _La solución final en acción. Una petición compleja en lenguaje natural se traduce en un diagrama ERD generado y visualizado directamente en la aplicación. Potente, contextual y, por fin, accesible_.
 
