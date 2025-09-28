@@ -50,6 +50,16 @@ En Dysmatica, lideré el diseño y desarrollo end-to-end de un sistema para la d
 
 ---
 
+<h2 id="recorridos-virtuales">Recorridos Virtuales Interactivos (I+D)</h2>
+
+En la misma etapa en Dysmatica (circa 1995), lideré una iniciativa de I+D para crear un sistema de recorridos virtuales interactivos por el interior de edificios. El principal desafío técnico fue conseguir que operase de forma fluida desde un CD-ROM en los PCs de la época (386/486), con recursos extremadamente limitados (4-6MB de RAM) y sin ningún tipo de aceleración gráfica 3D.
+
+*   **Motor basado en vistas pre-renderizadas:** Para superar las limitaciones del hardware, diseñé un sistema que no calculaba 3D en tiempo real, sino que se basaba en la reproducción de secuencias de vídeo y panorámicas de 360 grados pregrabadas para simular un movimiento fluido.
+*   **Modelo de navegación por nodos:** El recorrido se modeló como un grafo donde cada punto de vista era un "nodo" y las transiciones (ej. cruzar una puerta) eran "arcos", permitiendo una navegación lógica por el espacio.
+*   **Optimización y streaming desde CD-ROM:** Desarrollé una lógica de *buffering* a medida para precargar en la escasa RAM únicamente los datos necesarios para las interacciones inmediatas, gestionando la alta latencia de la lectura desde el CD.
+
+---
+
 <h2 id="sistema-de-localizacion-de-flotas">Sistema de Localización de Flotas (pre-GPRS y GPRS)</h2>
 
 En CENOCLAP, fui el arquitecto y desarrollador de un sistema de localización de flotas en una época en la que la comunicación con los vehículos se realizaba a través de SMS. El proyecto exigió construir gran parte de la infraestructura desde cero.
