@@ -2,8 +2,10 @@
 layout: post
 title: "Cómo empecé a hablar con la IA desde la aplicación de escritorio gvSIG desktop"
 date: 2025-09-08
+canonical_url: "https://blog.gvsig.org/2025/09/08/como-empece-a-hablar-con-la-ia-desde-la-aplicacion-de-escritorio-gvsig-desktop/"
 ---
 
+> **Nota:** Este artículo fue publicado originalmente en el [**Blog de gvSIG**]({{ page.canonical_url }}).
 
 ¿Alguna vez has querido preguntarle a tu aplicación qué datos tiene o qué puede hacer con ellos, usando tus propias palabras? Esa fue la pregunta que me hice a principios de este año cuando empecé a ver que los modelos de lenguaje (LLMs, Large Language Models o Modelos de Lenguaje Grande) podían hacer cosas increíbles... pero siempre desde un navegador web, lejos de la aplicación de escritorio.
 
