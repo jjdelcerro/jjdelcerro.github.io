@@ -13,7 +13,8 @@ Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos 
 <p style="text-align: center; margin: 2.5em 0;">
   <a href="{{ '/es/acerca-de.html' | relative_url }}"><strong>Acerca de mí</strong></a> &nbsp;&nbsp;|&nbsp;&nbsp;
   <a href="{{ '/es/experiencia.html' | relative_url }}"><strong>Experiencia</strong></a> &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="{{ '/es/proyectos.html' | relative_url }}"><strong>Proyectos</strong></a>
+  <a href="{{ '/es/proyectos.html' | relative_url }}"><strong>Proyectos</strong></a> &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="{{ '/es/ponencias.html' | relative_url }}"><strong>Ponencias</strong></a>
 </p>
 <!-- FIN DEL NUEVO BLOQUE DE NAVEGACIÓN -->
 
