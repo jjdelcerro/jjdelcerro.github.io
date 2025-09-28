@@ -6,8 +6,6 @@ canonical_url: "https://blog.gvsig.org/2025/09/15/de-chat-a-asistente-creando-un
 ---
 
 
-# De chat a asistente, creando un conjunto de herramientas contextuales para gvSIG desktop
-
 En el artículo anterior, os conté cómo un prototipo de unos pocos dias nos permitió chatear con una IA desde gvSIG. La prueba de concepto funcionaba, pero como os adelanté, me enfrentaba a un muro: los costes de la API. Antes de poder solucionar el problema del coste, necesitaba que la herramienta fuera tan útil, tan indispensable, que mereciera la pena luchar por ella.
 
 Tenía que dejar de ser un simple chat para convertirse en un verdadero asistente que entendiera el contexto de gvSIG desktop. La pregunta clave era _¿cómo hacer que el asistente entendiera no solo el "qué" le preguntaba, sino también el "dónde" estaba mirando en el mapa y "sobre qué" estaba trabajando?_
