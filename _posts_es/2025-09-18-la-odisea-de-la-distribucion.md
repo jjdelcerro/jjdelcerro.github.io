@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "La odisea de la distribución: el muro de los costes y los callejones sin salida"
-date: 2025-09-08
+date: 2025-09-18
 canonical_url: "https://blog.gvsig.org/2025/09/18/la-odisea-de-la-distribucion-el-muro-de-los-costes-y-los-callejones-sin-salida/"
 ---
 
