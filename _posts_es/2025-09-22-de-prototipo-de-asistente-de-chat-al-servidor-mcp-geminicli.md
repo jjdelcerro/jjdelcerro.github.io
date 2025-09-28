@@ -52,7 +52,7 @@ La configuración es tan simple como esto:
 
 Una vez guardado el fichero, podemos verificar que `gemini-cli` ha establecido la conexión correctamente. Al arrancar la herramienta, podemos usar el comando interno `/mcp` para listar los servidores MCP a los que está conectado y las herramientas a las que tiene acceso. El resultado confirma que todo está en orden.
 
-![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. En la aplicacion gvSIG desktop se ve como gemini se ha conectado. En la consola se ha ejecutado el comando "/mcp" y muestra a que herramientas de la aplicacion tiene acceso](./articulo4_init2.png)
+![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. En la aplicacion gvSIG desktop se ve como gemini se ha conectado. En la consola se ha ejecutado el comando "/mcp" y muestra a que herramientas de la aplicacion tiene acceso](assets/images/2025-09-22-de-prototipo-de-asistente-de-chat-al-servidor-mcp-geminicli/articulo4_init2.png)
 
 _Tras configurar el `settings.json`, el comando `/mcp` nos confirma que `gemini-cli` ha detectado y se ha conectado con éxito a nuestro servidor `gvSIG_desktop`_.
 
@@ -159,7 +159,7 @@ El flujo es un ejemplo claro del patrón "Adaptador". Así es como se ve el "peg
 Como se puede ver, no tuve que reescribir la lógica para conectar a la base de datos, procesar placeholders o mostrar la tabla. El nuevo servidor MCP era una capa delgada que se apoyaba sobre los cimientos sólidos que ya había construido. La inversión en una base de código bien estructurada me permitió adoptar el estándar MCP en cuestión de días, no de semanas.
 
 
-![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. El usuario ha solicitado que se muestren los soportes de acero. El LLM interpreta la peticion y acaba mostransolo en una ventana de la aplicacion](./articulo4_mostrar-soportes4.png)
+![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. El usuario ha solicitado que se muestren los soportes de acero. El LLM interpreta la peticion y acaba mostransolo en una ventana de la aplicacion](assets/images/2025-09-22-de-prototipo-de-asistente-de-chat-al-servidor-mcp-geminicli/articulo4_mostrar-soportes4.png)
 
 _El trabajo previo dando sus frutos. La imagen captura el flujo completo: una pregunta en lenguaje natural en gemini-cli (arriba), el razonamiento de la IA que culmina en la llamada a la herramienta show_table (abajo), y la aparición del resultado final directamente en una ventana de gvSIG_. 
 
@@ -169,7 +169,7 @@ He manipulado la imagen de la consola, eliminando texto para que se pueda ver el
 
 Con el servidor MCP implementado, el flujo para un usuario final se volvió elegante y simple.
 
-![Diagrama de bloques mostrando el flujo entre el usuario, gemini CLI y gvSIG desktop](./articulo4_diagrama1.png)
+![Diagrama de bloques mostrando el flujo entre el usuario, gemini CLI y gvSIG desktop](assets/images/2025-09-22-de-prototipo-de-asistente-de-chat-al-servidor-mcp-geminicli/articulo4_diagrama1.png)
 
 _Diagrama de bloques mostrando el flujo entre el usuario, gemini CLI y gvSIG desktop_
 
@@ -179,7 +179,7 @@ La experiencia de usuario final ahora consiste en:
 2.  Configurarlo con un pequeño archivo para que apunte a nuestro servidor local.
 3.  Abrir gvSIG, lanzar el chat y empezar a conversar, aprovechando las 1000 peticiones gratuitas diarias.
 
-![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. El usuario ha solicitado que se muestren los soportes de acero. El LLM interpreta la peticion y acaba mostransolo en una ventana de la aplicacion](./articulo4_mostrar-diagrama4.png)
+![Muestra dos ventanas, una con gemini-cli y otra con la aplicacion gvSIG desktop. El usuario ha solicitado que se muestren los soportes de acero. El LLM interpreta la peticion y acaba mostransolo en una ventana de la aplicacion](assets/images/2025-09-22-de-prototipo-de-asistente-de-chat-al-servidor-mcp-geminicli/articulo4_mostrar-diagrama4.png)
 
 _La solución final en acción. Una petición compleja en lenguaje natural se traduce en un diagrama ERD generado y visualizado directamente en la aplicación. Potente, contextual y, por fin, accesible_.
 
