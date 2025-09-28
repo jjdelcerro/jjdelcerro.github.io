@@ -16,6 +16,9 @@
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     {% include head-custom.html %}
+{% if page.canonical_url %}
+  <link rel="canonical" href="{{ page.canonical_url }}">
+{% endif %}    
   </head>
   <body>
       <div id="header">
