@@ -52,13 +52,15 @@ Lideré un equipo multifuncional en proyectos complejos de transformación digit
 
 *   **Responsabilidades:** Mi rol era híbrido, abarcando desde la definición de la arquitectura técnica y la coordinación del ciclo de vida del producto hasta la programación de los componentes más críticos del sistema.
 
-*   **Proyecto Destacado:**
+*   **Proyectos Destacados:**
     *   [Sistema de Publicación Jurídica en CD-ROM](./proyectos.html#sistema-de-publicacion-juridica)
+    *   Digitalización del Archivo de la Conselleria de Presidència (GVA)
 
 *   **Competencias Clave Adquiridas:**
     *   Liderazgo técnico de equipos multifuncionales.
     *   Ingeniería de datos (diseño de pipelines ETL) para digitalización masiva.
-    *   Desarrollo de soluciones optimizadas para entornos con recursos limitados (BBDD y motores de búsqueda propietarios).
+    *   Desarrollo de soluciones optimizadas para entornos con recursos limitados (BBDD, motores de búsqueda).
+    *   Integración y control de hardware a bajo nivel (escáneres industriales, sistemas RAID).
 
 ---
 
