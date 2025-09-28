@@ -186,7 +186,7 @@ Con estas herramientas, los flujos de trabajo se volvieron increíblemente fluid
 
 **Consulta con contexto espacial:**
 
-![Un usuario preguntando por las reservas visibles en el mapa y obteniendo una tabla con los resultados filtrados espacialmente](./articulo2_contexto-espacial1.png)
+![Un usuario preguntando por las reservas visibles en el mapa y obteniendo una tabla con los resultados filtrados espacialmente](/assets/images/de-chat-a-asistente/articulo2_contexto-espacial1.png)
 
 _El asistente demuestra su comprensión del contexto espacial. La pregunta "¿Cuántas reservas se ven en la vista actual?" se traduce en una consulta que utiliza el BBOX del mapa para filtrar los resultados._
 
@@ -253,7 +253,7 @@ El método `process_sql` que vimos en el punto anterior **solo itera sobre la li
 
 El resultado fue un asistente genuinamente útil. La capacidad de entender el contexto espacial y reaccionar a las acciones del usuario lo elevó de "juguete interesante" a una herramienta de productividad real.
 
-![Una conversación de varios turnos donde un usuario refina una consulta sobre señales horizontales, pidiendo agrupaciones, sumas y ordenaciones, hasta obtener la tabla de datos deseada.](./articulo2_conclusion1.png)
+![Una conversación de varios turnos donde un usuario refina una consulta sobre señales horizontales, pidiendo agrupaciones, sumas y ordenaciones, hasta obtener la tabla de datos deseada.](/assets/images/de-chat-a-asistente/articulo2_conclusion1.png)
 
 _De "juguete interesante" a herramienta de productividad. Esta captura muestra un flujo de trabajo conversacional completo, donde el asistente mantiene el contexto a lo largo de varias peticiones para refinar progresivamente el análisis de datos._
 
