@@ -38,14 +38,25 @@
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
           <p>{{ site.tagline | default: site.description | default: site.github.project_tagline }}</p>
           <hr>
-          <span class="credits left">Project maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
+          <span class="credits left">&copy; {{ 'now' | date: "%Y" }} <a href="{{ site.github.owner_url }}">Joaquín del Cerro.</a></span>
+          <!--
           <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+          -->
         </div>
         <h2>{{ page.title }}</h2>
         {{ content }}
 
       </section>
 
+  <footer>
+    <hr>
+    <p>
+      <span class="credits left">&copy; {{ 'now' | date: "%Y" }} <a href="{{ site.github.owner_url }}">Joaquín del Cerro.</a></span>
+      <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+    </p>
+  </footer>
+
+      
     </div>
   </body>
 </html>
