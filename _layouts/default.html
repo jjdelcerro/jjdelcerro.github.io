@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-t-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 {% seo %}
@@ -17,27 +17,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     {% include head-custom.html %}
     
-<style>
-  #main-nav { background-color: #151515; text-align: center; padding: 0.8em 0; border-bottom: 1px solid #333; }
-  #main-nav nav a { color: #fff; text-decoration: none; font-weight: bold; margin: 0 1.5em; font-size: 0.9em; }
-  #main-nav nav a:hover { text-decoration: underline; }
-</style>
+    <style>
+      #main-nav { background-color: #151515; text-align: center; padding: 0.8em 0; border-bottom: 1px solid #333; margin-bottom: 2em; }
+      #main-nav nav a { color: #fff; text-decoration: none; font-weight: bold; margin: 0 1.5em; font-size: 0.9em; }
+      #main-nav nav a:hover { text-decoration: underline; }
+    </style>
     
   </head>
   <body>
-
-    
-<!-- INICIO DE LA BARRA DE NAVEGACIÓN PRINCIPAL -->
-<div id="main-nav">
-  <nav>
-    <a href="{{ '/es/index.html' | relative_url }}">Artículos</a>
-    <a href="{{ '/es/acerca-de.html' | relative_url }}">Acerca de mí</a>
-    <a href="{{ '/es/experiencia.html' | relative_url }}">Experiencia</a>
-    <a href="{{ '/es/proyectos.html' | relative_url }}">Proyectos</a>
-    <a href="{{ '/es/ponencias.html' | relative_url }}">Ponencias</a>
-  </nav>
-</div>
-<!-- FIN DE LA BARRA DE NAVEGACIÓN PRINCIPAL -->
     
       <div id="header">
         <nav>
@@ -58,23 +45,31 @@
         <div id="title">
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
           <p>{{ site.tagline | default: site.description | default: site.github.project_tagline }}</p>
-          <hr>
-          <span class="credits left">&copy; {{ 'now' | date: "%Y" }} <a href="{{ site.github.owner_url }}">Joaquín del Cerro.</a></span>
-          <!--
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
-          -->
         </div>
+
+        <!-- === INICIO DE LA NUEVA UBICACIÓN DE LA BARRA DE NAVEGACIÓN === -->
+        <div id="main-nav">
+          <nav>
+            <a href="{{ '/es/index.html' | relative_url }}">Artículos</a>
+            <a href="{{ '/es/acerca-de.html' | relative_url }}">Acerca de mí</a>
+            <a href="{{ '/es/experiencia.html' | relative_url }}">Experiencia</a>
+            <a href="{{ '/es/proyectos.html' | relative_url }}">Proyectos</a>
+            <a href="{{ '/es/ponencias.html' | relative_url }}">Ponencias</a>
+          </nav>
+        </div>
+        <!-- === FIN DE LA NUEVA UBICACIÓN DE LA BARRA DE NAVEGACIÓN === -->
 
         {{ content }}
 
       </section>
-  <footer>
-    <hr>
-    <div>
-      <span class="credits left">&copy; {{ 'now' | date: "%Y" }} <a href="{{ site.github.owner_url }}">Joaquín del Cerro.</a></span>
-      <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
-    </div>
-  </footer>
+  
+      <footer>
+        <hr>
+        <p style="text-align: center;">
+          <span class="credits left" style="float: none; display: inline-block;">&copy; {{ 'now' | date: "%Y" }} <a href="{{ site.github.owner_url }}">Joaquín del Cerro.</a></span>
+          <span class="credits right" style="float: none; display: inline-block; margin-left: 20px;">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/mattgraham">mattgraham</a></span>
+        </p>
+      </footer>
       
     </div>
   </body>
