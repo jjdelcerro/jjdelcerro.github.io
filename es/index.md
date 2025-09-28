@@ -9,6 +9,14 @@ Bienvenido a mi espacio personal y profesional. Soy Joaquín del Cerro, y este s
 
 Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos y prototipos sobre arquitectura de software, Sistemas de Información Geográfica (GIS) y, más recientemente, mi exploración en el campo de la Inteligencia Artificial.
 
+<!-- INICIO DEL NUEVO BLOQUE DE NAVEGACIÓN -->
+<p style="text-align: center; margin: 2.5em 0;">
+  <a href="{{ '/es/acerca-de.html' | relative_url }}"><strong>Acerca de mí</strong></a> &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="{{ '/es/experiencia.html' | relative_url }}"><strong>Experiencia</strong></a> &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="{{ '/es/proyectos.html' | relative_url }}"><strong>Proyectos</strong></a>
+</p>
+<!-- FIN DEL NUEVO BLOQUE DE NAVEGACIÓN -->
+
 ---
 
 ## Publicaciones Recientes
@@ -24,5 +32,3 @@ Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos 
     </li>
   {% endfor %}
 </ul>
-
-Hasta otra.
