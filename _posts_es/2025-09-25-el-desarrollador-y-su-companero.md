@@ -6,7 +6,6 @@ canonical_url: "https://blog.gvsig.org/2025/09/25/el-desarrollador-y-su-companer
 ---
 
 Hola a todos,
-
 Si habéis estado siguiendo esta serie de artículos, ya conocéis el **qué** y el **porqué**. El viaje desde un chat simple en gvSIG desktop hasta un asistente contextual inteligente gracias al protocolo MCP. Pero hoy quiero hablaros del **cómo**. Y no me refiero a las librerías o el código, sino a algo más fundamental, **la forma en que trabajé para hacerlo realidad**.
 
 La respuesta es simple, aunque no simplona: no lo hice solo. Pero mi colaboración con la IA no empezó con un plan de proyecto, sino con una historia de descubrimiento que lo cambió todo.
