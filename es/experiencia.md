@@ -54,6 +54,7 @@ Lideré un equipo multifuncional en proyectos complejos de transformación digit
 
 *   **Proyectos Destacados:**
     *   [Sistema de Publicación Jurídica en CD-ROM](./proyectos.html#sistema-de-publicacion-juridica)
+    *   [Recorridos Virtuales Interactivos (I+D)](./proyectos.html#recorridos-virtuales)
     *   Digitalización del Archivo de la Conselleria de Presidència (GVA)
 
 *   **Competencias Clave Adquiridas:**
