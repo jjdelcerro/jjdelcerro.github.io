@@ -14,7 +14,7 @@ Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos 
 ## Publicaciones Recientes
 
 <ul>
-  {% for post in site.posts_es %}
+  {% for post in site.posts_es | reverse %}
     <li style="margin-bottom: 1.5em;">
       <small>{{ post.date | date: "%d de %B de %Y" }}</small>
       <h3 style="margin-top: 0.2em;">
