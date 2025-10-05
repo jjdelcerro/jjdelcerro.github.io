@@ -5,10 +5,8 @@ date: 2025-10-06
 canonical_url: "[https://blog.gvsig.org/2025/09/29/la-importancia-de-describir-correctamente-las-herramientas-a-un-llm/](https://blog.gvsig.org/2025/10/06/que-es-un-agente/)"
 ---  
 
-Hola,
-
+Hola, 
 llevo un tiempo dándole vueltas a cómo escribir sobre esto, verás...
-
 Hace un tiempo incursioné en esto de los chats de IA (puedes leer sobre eso en estos artículos). La cuestión es que hice mis pinitos y acabé haciendo un ¿chatbot? dentro de gvSIG desktop tirando del API de Gemini. Bueno, para mí era un simple chatbot. Lo arrancabas como una herramienta más dentro de la aplicación y tenía el aspecto característico de una aplicación de chat de IA. La cosa es que, aunque inicialmente fue simplemente hacia eso, un chat, decidí que lo chulo era darle acceso a algunas funcionalidades de la aplicación. Le di acceso a explotar los datos tabulares de la aplicación, que pudiese saber qué área se veía en la Vista, poder generar gráficos a partir de los datos que tenían las capas y tablas cargadas, y tal vez alguna cosilla más. Para mí era un "simple chatbot" dentro de la aplicación.
 
 Mientras hacía cosas de esas, iba leyendo sobre LLMs y trataba de estar al tanto de lo que iba saliendo. Se nombraba que eso de los "Agentes" era el futuro, y empezaron a inundarme sugerencias de vídeos y publicaciones sobre ellos. Aparecieron docenas de vídeos sobre cosas como "Claude Code" o "Copilot" que te los "vendían" como el asistente perfecto para programar... pero un día, no creo que fuese de repente, esos vídeos y publicaciones empezaron a llamarlos "agentes". Y aparecían vídeos de "Y XXX destrona a YYY como la plataforma de agentes definitiva" y cosas así. Por entonces ya había salido "Gemini CLI" y yo lo había adoptado como mi herramienta de IA de apoyo en programación. Y empecé a pensar que eran muy escandalosos con eso de los Agentes. ¿Por qué llamaban agente a mi "Gemini CLI"? (ya era "mi" Gemini, porque lo usaba día a día en mi trabajo). Total, ¿qué hacía más él en la consola que mi chatbot en gvSIG desktop? La respuesta simple era "nada". Así que me puse a ver qué hacían "Claude Code" o "Copilot", que competían por ser los "agentes definitivos" para el programador.
