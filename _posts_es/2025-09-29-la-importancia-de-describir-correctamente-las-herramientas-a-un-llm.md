@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "La importancia de describir correctamente las "herramientas" a un LLM."
+title: "La importancia de describir correctamente las 'herramientas' a un LLM."
 date: 2025-09-29
 canonical_url: "https://blog.gvsig.org/2025/09/29/la-importancia-de-describir-correctamente-las-herramientas-a-un-llm/"
 ---  
