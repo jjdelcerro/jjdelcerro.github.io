@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
-    <meta charset="utf-t-8">
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 {% seo %}
@@ -18,10 +18,59 @@
     {% include head-custom.html %}
     
     <style>
-      #main-nav { background-color: #151515; text-align: center; padding: 0.8em 0; border-bottom: 1px solid #333; margin-bottom: 2em; }
-      #main-nav nav a { color: #fff; text-decoration: none; font-weight: bold; margin: 0 1.5em; font-size: 0.9em; }
-      #main-nav nav a:hover { text-decoration: underline; }
-       #title { margin-bottom: 1em !important; }
+      /* --- ESTILOS GENERALES Y DE ESCRITORIO --- */
+      #main-nav { 
+        background-color: #151515; 
+        text-align: center; 
+        padding: 0.8em 0; 
+        border-bottom: 1px solid #333; 
+        margin-bottom: 2em; 
+      }
+      #main-nav nav a { 
+        color: #fff; 
+        text-decoration: none; 
+        font-weight: bold; 
+        margin: 0 1.5em; 
+        font-size: 0.9em; 
+        display: inline-block; /* Asegura el espaciado correcto */
+      }
+      #main-nav nav a:hover { 
+        text-decoration: underline; 
+      }
+      #title { 
+        margin-bottom: 1em !important; 
+      }
+      
+      /* --- BOTÓN DEL MENÚ MÓVIL (OCULTO EN ESCRITORIO) --- */
+      #menu-toggle {
+        display: none; /* Oculto por defecto */
+        background-color: #151515;
+        color: #fff;
+        text-align: center;
+        padding: 10px;
+        cursor: pointer;
+        border-bottom: 1px solid #333;
+        font-weight: bold;
+      }
+      
+      /* --- ESTILOS PARA MÓVILES (PANTALLAS DE HASTA 768px) --- */
+      @media (max-width: 768px) {
+        #main-nav nav {
+          display: none; /* Oculta el menú por defecto en móvil */
+        }
+        #main-nav nav.show-menu {
+          display: block; /* Muestra el menú cuando tiene la clase .show-menu */
+        }
+        #main-nav nav a {
+          display: block; /* Apila los enlaces verticalmente */
+          padding: 10px 0;
+          margin: 0;
+          border-top: 1px solid #333;
+        }
+        #menu-toggle {
+          display: block; /* Muestra el botón del menú en móvil */
+        }
+      }
     </style>
     
   </head>
@@ -50,6 +99,9 @@
 
         <!-- === INICIO DE LA NUEVA UBICACIÓN DE LA BARRA DE NAVEGACIÓN === -->
         <div id="main-nav">
+          <!-- BOTÓN PARA EL MENÚ MÓVIL -->
+          <div id="menu-toggle">Menú</div>
+          <!-- NAVEGACIÓN PRINCIPAL -->
           <nav>
             <a href="{{ '/es/index.html' | relative_url }}">Artículos</a>
             <a href="{{ '/es/acerca-de.html' | relative_url }}">Acerca de mí</a>
@@ -73,5 +125,15 @@
       </footer>
       
     </div>
+    
+    <!-- SCRIPT PARA EL MENÚ MÓVIL -->
+    <script>
+      $(document).ready(function() {
+        $('#menu-toggle').click(function() {
+          $('#main-nav nav').toggleClass('show-menu');
+        });
+      });
+    </script>
+    
   </body>
 </html>
