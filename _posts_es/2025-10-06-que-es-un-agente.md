@@ -2,7 +2,7 @@
 layout: post
 title: "¿Qué es un agente?"
 date: 2025-10-06
-canonical_url: "[https://blog.gvsig.org/2025/09/29/la-importancia-de-describir-correctamente-las-herramientas-a-un-llm/](https://blog.gvsig.org/2025/10/06/que-es-un-agente/)"
+canonical_url: "https://blog.gvsig.org/2025/10/06/que-es-un-agente"
 ---  
 
 Hola, 
