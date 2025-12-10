@@ -34,6 +34,13 @@ Exposición de las capacidades de búsqueda avanzada en gvSIG desktop, mostrando
 
 ---
 
+### Ponencia: Control de versiones y edición de cartografía multiusuario con software libre
+*XII de las Jornadas Ibéricas de Infraestructuras de Datos Espaciales del 15 al 19 de noviembre 2021*
+
+Exposición sobre la necesidad de un Sistema de Control de Versiones con soporte para datos espaciales, su implementación e integración con la aplicación gvSIG desktop.
+
+---
+
 ### Taller de desarrollo avanzado en gvSIG con scripting
 *13as Jornadas Internacionales de gvSIG · 18 dic. 2017*
 
