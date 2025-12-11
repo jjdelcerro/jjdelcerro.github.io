@@ -26,7 +26,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     <!--*   Desmontando RAG, del protocolo rígido a la abstracción flexible.-->
     <!--*   REFRAG y la dependencia crítica a los pesos del modelo.-->
     
-*   **Reflexiones sobre el oficio** / **Notas de campo**
+*   **Notas de campo**
 
     <!--*   Del libro de Hartnell al MCP, 40 años de IA en la estantería de un desarrollador.-->
     *   Más allá del prompt perfecto. Formando desarrolladores, no operadores de IA
