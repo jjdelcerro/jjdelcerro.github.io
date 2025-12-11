@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Agentes de IA y la inyección de observaciones proactivas en clientes de chat"
+title: "Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico"
 date: 2025-12-11
 canonical_url: "https://blog.gvsig.org/2025/12/11/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/"
 ---  
