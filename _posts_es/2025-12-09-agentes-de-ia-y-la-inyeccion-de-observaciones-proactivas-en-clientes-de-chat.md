@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Agentes de IA y la inyección de observaciones proactivas en clientes de chat"
-date: 2025-12-11
+date: 2025-12-09
 canonical_url: "https://blog.gvsig.org/2025/12/09/agentes-de-ia-y-la-inyeccion-de-observaciones-proactivas-en-clientes-de-chat/"
 ---  
 Hola,
