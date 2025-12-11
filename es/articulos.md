@@ -3,9 +3,6 @@ layout: default
 title: "articulos"
 ---
 
-# Joaquín del Cerro | Arquitecto de Software
----
-
 ## Últimas publicaciones
 
 <ul>
