@@ -51,6 +51,6 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [De prototipo de asistente de chat al servidor MCP y gemini-cli](https://jjdelcerro.github.io/es/blog/de-prototipo-de-asistente-de-chat-al-servidor-mcp-geminicli/)
     *   [El Desarrollador y su compañero. Cómo la IA me ayudó a construir el asistente de gvSIG desktop desde el primer momento](https://jjdelcerro.github.io/es/blog/el-desarrollador-y-su-companero/)
     *   [La importancia de describir correctamente las 'herramientas' a un LLM](https://jjdelcerro.github.io/es/blog/la-importancia-de-describir-correctamente-las-herramientas-a-un-llm/)
-    *   Fuentes del prototipo en jython
+    *   [Fuentes del prototipo en jython](https://github.com/jjdelcerro/chatagent_prototype]
     <!-- *   Fuentes del prototipo del servidor MCP en gvSIG desktop.-->
 
