@@ -24,7 +24,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
 
     *   [RAG y búsqueda semántica](https://jjdelcerro.github.io/es/blog/RAG-busqueda-semantica/)
     <!--*   Desmontando RAG, del protocolo rígido a la abstracción flexible.-->
-    <!--*   REFRAG y la dependencia crítica a los pesos del modelo.-->
+    *   [REFRAG y la dependencia crítica a los pesos del modelo](https://jjdelcerro.github.io/es/blog/refrag-y-la-dependencia-critica-a-los-pesos-del-modelo/)
     
 *   **Notas de campo**
 
