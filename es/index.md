@@ -28,7 +28,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     
 *   **Notas de campo**
 
-    <!--*   Del libro de Hartnell al MCP, 40 años de IA en la estantería de un desarrollador.-->
+    *   [Del libro de Hartnell al MCP, 40 años de IA en la estantería de un desarrollador](https://jjdelcerro.github.io/es/blog/del-libro-de-hartnell-al-mcp-40-anos-de-ia-en-la-estanteria-de-un-desarrollador/).
     *   [Más allá del prompt perfecto. Formando desarrolladores, no operadores de IA](https://jjdelcerro.github.io/es/blog/recetas-de-prompts/)
     *   [Deuda Técnica Mental: El conflicto entre el Explorador y el Archivista](https://jjdelcerro.github.io/es/blog/el-conflicto-entre-el-explorador-y-el-archivista/)
     *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
