@@ -2,7 +2,7 @@
 layout: post
 title: "¿Qué es un agente?"
 date: 2025-10-06
-canonical_url: "https://blog.gvsig.org/2025/10/06/que-es-un-agente"
+canonical_url: "https://jjdelcerro.github.io/es/blog/que-es-un-agente/"
 ---  
 
 Hola, 
