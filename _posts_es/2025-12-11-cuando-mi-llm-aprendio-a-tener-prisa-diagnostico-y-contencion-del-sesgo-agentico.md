@@ -2,7 +2,7 @@
 layout: post
 title: "Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico"
 date: 2025-12-11
-canonical_url: "https://blog.gvsig.org/2025/12/11/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/"
+canonical_url: "https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/"
 ---  
 Llevo meses trabajando con `gemini-cli` como un compañero de arquitectura. Un interlocutor técnico que lee, analiza, cuestiona y, sobre todo, espera. Hasta que, sin que yo modificara mi contexto, su patrón de interacción cambió radicalmente y comenzó a comportarse como un becario con tres cafés de más.
 
