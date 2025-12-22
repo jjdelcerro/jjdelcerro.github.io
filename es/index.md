@@ -32,6 +32,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Más allá del prompt perfecto. Formando desarrolladores, no operadores de IA](https://jjdelcerro.github.io/es/blog/recetas-de-prompts/)
     *   [Deuda Técnica Mental: El conflicto entre el Explorador y el Archivista](https://jjdelcerro.github.io/es/blog/el-conflicto-entre-el-explorador-y-el-archivista/)
     *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
+    *   [El día que fue inevitable sentirse como Susan Calvin](https://jjdelcerro.github.io/es/blog/el-dia-que-fue-inevitable-sentirse-como-susan-calvin/)
     <!--*   El arquitecto y la máquina.-->
 
 *   **Modelos Cognitivos y Semántica**.
