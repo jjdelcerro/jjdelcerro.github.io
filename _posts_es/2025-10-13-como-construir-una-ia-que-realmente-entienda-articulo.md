@@ -2,7 +2,7 @@
 layout: post
 title: "¿Cómo construir una IA que realmente entienda?"
 date: 2025-10-13
-canonical_url: "https://blog.gvsig.org/2025/10/13/como-construir-una-ia-que-realmente-entienda/"
+canonical_url: "https://jjdelcerro.github.io/es/blog/como-construir-una-ia-que-realmente-entienda-articulo/"
 ---
 Hola a todos.
 En los últimos años, hemos asistido a un avance espectacular en el campo de la Inteligencia Artificial, impulsado principalmente por los Modelos de Lenguaje Grandes (LLMs). Su capacidad para generar texto coherente, traducir idiomas y mantener conversaciones fluidas es, sin duda, impresionante. Es una proeza de la ingeniería y la estadística a gran escala.
