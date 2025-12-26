@@ -2,7 +2,7 @@
 layout: post
 title: "¿Podemos usar la gramática para modelar el conocimiento?"
 date: 2025-10-20
-canonical_url: "https://blog.gvsig.org/2025/10/20/podemos-usar-la-gramatica-para-modelar-el-conocimiento/"
+canonical_url: "https://jjdelcerro.github.io/es/blog/podemos-usar-la-gramatica-para-modelar-el-conocimiento/"
 ---  
 
 Como desarrollador de software, gran parte de mi trabajo consiste en construir sistemas que interpreten y ejecuten instrucciones. Esto me ha llevado, de forma natural, a preguntarme por la naturaleza del lenguaje que usamos para dar esas instrucciones. La pregunta parecía simple, casi una obviedad: ¿es el lenguaje un simple reflejo de nuestro pensamiento, o es la herramienta con la que lo construimos? Comenzó como una curiosidad personal y se convirtió rápidamente en una reflexion que desmanteló algunas de mis suposiciones más básicas sobre cómo estructuramos la realidad.
