@@ -2,7 +2,7 @@
 layout: post
 title: "Más allá del prompt perfecto. Formando desarrolladores, no operadores de IA"
 date: 28-10-2025
-canonical_url: "https://blog.gvsig.org/2025/10/28/mas-alla-del-prompt-perfecto-formando-desarrolladores-no-operadores-de-ia/"
+canonical_url: "https://jjdelcerro.github.io/es/blog/recetas-de-prompts/"
 --- 
 Hola a todos.
 Últimamente, las redes sociales y las plataformas de prompts se han llenado de una especie de mercado mágico. Un sitio como Promptfy promete cientos de "recetas listas para usar" que, con solo copiar y pegar, resuelven problemas complejos de IA. Y no hablemos de LinkedIn o X, donde un post con un "prompt infalible" para generar código Python acumula likes como si fuera "el santo grial". Entiendo el atractivo.En un mundo donde se valora cada vez mas el producir mas en menos tiempo ¿quién no querría un atajo directo a la productividad?
