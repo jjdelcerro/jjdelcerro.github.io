@@ -18,15 +18,82 @@
     {% include head-custom.html %}
     
     <style>
-      /* --- ESTILOS GENERALES Y DE ESCRITORIO --- */
+      /* --- RESET Y FONDO GLOBAL (LA SOLUCIÓN ROBUSTA) --- */
+      body {
+        /* 1. EL GRIS BASE: Debe coincidir con el gris oscuro de tu imagen. 
+              Si notas un 'corte' abajo, cambia #1a1a1a por el color exacto con el cuentagotas */
+        background-color: #1a1a1a; 
+        
+        /* 2. LA IMAGEN DE MARCA: */
+        background-image: url('{{ "/assets/images/banner_hero.png" | relative_url }}');
+        
+        /* 3. POSICIÓN: Arriba y Centrada horizontalmente */
+        background-position: center top; 
+        background-repeat: no-repeat;
+        
+        /* 4. TAMAÑO: ¿Cómo se comporta? */
+        /* 'auto 600px' -> Mantiene el alto original de la imagen, recorta los lados si no caben.
+           '100% auto'  -> Se estira a todo el ancho. Si el monitor es gigante, la imagen crece mucho de alto. */
+        background-size: auto 600px; /* Sugerencia: Mantiene proporción original fija. Ajusta 600px según la real. */
+        
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* Aseguramos que los contenedores no tapen la imagen con su propio fondo blanco/gris */
+      .wrapper {
+        background: transparent !important;
+        margin-top: 0 !important;
+        padding-top: 10px !important; /* Un poco de aire arriba */
+      }
+      section {
+        background: transparent !important;
+        width: 100% !important; 
+        max-width: 960px; 
+        margin: 0 auto; 
+      }
+      
+      /* --- HEADER Y TITULOS (Simplificados de nuevo) --- */
+      #title { 
+        /* Le damos espacio arriba para que el texto no tape el Monitor de la imagen */
+        margin-top: 100px; /* AJUSTA ESTE VALOR: Empuja el texto abajo para ver la imagen detrás */
+        margin-bottom: 50px;
+        
+        text-align: center;
+        /* Quitamos fondos y tamaños forzados */
+        background: transparent;
+        min-height: auto;
+      }
+
+      /* Texto con sombra para que se lea bien sobre la imagen de fondo */
+      #title h1 {
+        color: #ffffff;
+        font-weight: 800;
+        margin-top: 0;
+        letter-spacing: -1px;
+        text-shadow: 0px 4px 15px rgba(0,0,0,1); /* Sombra dura necesaria */
+      }
+      #title p {
+        color: #ddd;
+        font-size: 1.1em;
+        font-weight: 300;
+        text-shadow: 0px 2px 4px rgba(0,0,0,1);
+        background-color: rgba(0,0,0,0.5); /* Pastilla semitransparente para legibilidad */
+        padding: 5px 15px;
+        border-radius: 15px;
+        display: inline-block;
+      }
+      
+      /* --- NAVEGACIÓN --- */
       #main-nav { 
-        background-color: #151515; 
+        background-color: #151515; /* El menú es opaco para tapar la imagen al hacer scroll si quieres, o transparente */
         text-align: center; 
         padding: 0.8em 0; 
         border-bottom: 1px solid #333; 
         border-top: 1px solid #333; 
         margin-bottom: 2em; 
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        /* Un poco de opacidad para efecto elegante */
+        opacity: 0.95; 
       }
       #main-nav nav a { 
         color: #fff; 
@@ -40,57 +107,7 @@
         text-decoration: underline; 
       }
 
-      /* --- CONFIGURACIÓN DEL HERO BANNER (VERSIÓN FIX ALTURA) --- */
-      #title { 
-        margin-bottom: 0 !important; 
-        
-        /* Imagen de fondo */
-        background-image: url('{{ "/assets/images/banner_hero.png" | relative_url }}');
-        
-        /* 1. ANCLAJE Y GEOMETRÍA DE FONDO */
-        background-size: cover;       
-        background-position: center bottom; /* Siempre anclado al suelo */
-        background-repeat: no-repeat;
-        background-color: #1a1a1a;    
-
-        /* 2. FUERZA BRUTA EN DIMENSIONES (La corrección clave) */
-        /* Eliminamos el padding masivo y usamos altura mínima explicita */
-        padding: 0 1em; 
-        min-height: 480px;  /* <--- ESTO FUERZA A QUE LA IMAGEN SE VEA (casi) ENTERA */
-        
-        /* 3. CENTRADO DEL TEXTO (LAYOUT MANAGER) */
-        /* Usamos Flexbox para centrar el texto verticalmente en este espacio tan grande */
-        display: flex;
-        flex-direction: column;
-        justify-content: center; /* Centrado Vertical */
-        align-items: center;     /* Centrado Horizontal */
-        
-        /* Tipografía */
-        text-align: center;
-        color: #ffffff;
-        text-shadow: 0px 2px 10px rgba(0,0,0,0.9);
-      }
-
-      #title h1 {
-        font-weight: 800;
-        margin-top: 0;
-        letter-spacing: -1px;
-        text-shadow: 0px 4px 15px rgba(0,0,0,1);
-      }
-      #title p {
-        font-size: 1.1em;
-        font-weight: 300;
-        opacity: 0.95;
-        margin-bottom: 0;
-        background-color: rgba(0,0,0,0.4); /* Fondo un poco más oscuro */
-        display: inline-block;
-        padding: 0.4em 1em; /* Un poco más de aire en la pastilla de texto */
-        border-radius: 4px;
-        max-width: 80%; /* Para que no se estire demasiado en líneas largas */
-        line-height: 1.4;
-      }
-      
-      /* --- RESPONSIVE: MÓVIL --- */
+      /* --- MOVIL --- */
       #menu-toggle {
         display: none; 
         background-color: #151515;
@@ -103,42 +120,35 @@
       }
       
       @media (max-width: 768px) {
+        body {
+             /* En móvil la imagen de fondo puede ser molesta o no verse bien el monitor.
+                Podemos ajustarla o dejarla igual */
+             background-size: auto 300px; /* Reducimos la imagen en móvil */
+        }
+        #title {
+            margin-top: 40px; /* Menos espacio en móvil */
+        }
+        
         #main-nav nav { display: none; }
         #main-nav nav.show-menu { display: block; }
         #main-nav nav a { display: block; padding: 10px 0; margin: 0; border-top: 1px solid #333; }
         #menu-toggle { display: block; }
-
-        /* Ajuste de altura del Banner para móviles para que no ocupe todo */
-        #title {
-            min-height: 300px !important; /* En móvil reducimos la altura */
-        }
       }
     </style>
     
   </head>
   <body>
-      <!--
-      <div id="header">
-        <nav>
-          <ul>
-            <li class="fork"><a href="{{ site.github.repository_url }}">View On GitHub</a></li>
-            {% if site.show_downloads %}
-              <li class="downloads"><a href="{{ site.github.zip_url }}">ZIP</a></li>
-              <li class="downloads"><a href="{{ site.github.tar_url }}">TAR</a></li>
-              <li class="title">DOWNLOADS</li>
-            {% endif %}
-          </ul>
-        </nav>
-      </div><!-- end header -->
 
     <div class="wrapper">
 
       <section>
+        <!-- TÍTULO -->
         <div id="title">
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
           <p>{{ site.tagline | default: site.description | default: site.github.project_tagline }}</p>
         </div>
 
+        <!-- BARRA DE NAVEGACIÓN -->
         <div id="main-nav">
           <div id="menu-toggle">Menú</div>
           <nav>
