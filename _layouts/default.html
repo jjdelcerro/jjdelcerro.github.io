@@ -18,28 +18,29 @@
     {% include head-custom.html %}
     
     <style>
-      /* --- CONFIGURACIÓN GLOBAL DE FONDO --- */
+      /* --- CONFIGURACIÓN DE FONDO RESPONSIVE (ARQUITECTURA) --- */
       body {
-        /* COLOR CORREGIDO: El #252525 para fundir con la imagen */
+        /* Color base fundido con la imagen (Gris oscuro) */
         background-color: #252525; 
         
-        /* IMAGEN DE FONDO */
+        /* Tu imagen de alta resolución (1792px recomendados) */
         background-image: url('{{ "/assets/images/banner_hero.png" | relative_url }}');
         
-        /* GEOMETRÍA: Centrada arriba */
+        /* Alineación: Centrada horizontalmente, pegada arriba */
         background-position: center top; 
         background-repeat: no-repeat;
         
-        /* ESTRATEGIA DE ESCALADO: 
-           'auto 600px' mantiene el ratio original con 600px de altura.
-           Si la quieres más grande, sube este valor (ej: auto 700px) */
-        background-size: auto 600px; 
+        /* LA ESTRATEGIA: 100% Ancho / Auto Alto 
+           - En PC (1920px ancho): La imagen se escala un poco.
+           - En Laptop (1366px): Se reduce un poco (más nítida).
+           - En Móvil: Se reduce mucho para caber en el ancho. */
+        background-size: 100% auto; 
         
         margin: 0;
         padding: 0;
       }
       
-      /* Reset de contenedores internos para que no tapen el fondo */
+      /* --- LIMPIEZA DE CONTENEDORES (Para que no tapen el fondo) --- */
       .wrapper {
         background: transparent !important;
         margin-top: 0 !important;
@@ -52,10 +53,12 @@
         margin: 0 auto; 
       }
       
-      /* --- CABECERA (TITULO Y SUBTITULO) --- */
+      /* --- ZONA DEL TÍTULO (Texto sobre la imagen) --- */
       #title { 
-        /* Margen superior para empujar el texto y que se vea el monitor */
-        margin-top: 100px; 
+        /* Espacio superior:
+           Empujamos el texto hacia abajo para revelar el 'techo' de la biblioteca
+           y situar el título en la zona oscura central. */
+        margin-top: 80px; 
         margin-bottom: 50px;
         
         text-align: center;
@@ -63,7 +66,7 @@
         min-height: auto;
       }
 
-      /* Títulos: Blanco puro y sombra fuerte */
+      /* Título H1: Blanco puro con sombra dura para contraste máximo */
       #title h1 {
         color: #ffffff;
         font-weight: 800;
@@ -71,13 +74,14 @@
         letter-spacing: -1px;
         text-shadow: 0px 4px 15px rgba(0,0,0,1);
       }
-      /* Subtítulo: Un poco más visible */
+      
+      /* Subtítulo: Gris perla sobre pastilla semitransparente */
       #title p {
-        color: #e0e0e0; /* Un gris casi blanco */
+        color: #e0e0e0;
         font-size: 1.1em;
         font-weight: 300;
         text-shadow: 0px 2px 4px rgba(0,0,0,1);
-        /* Pastilla semitransparente para garantizar lectura sobre hologramas */
+        /* Fondo negro al 60% para que se lea sobre los hologramas */
         background-color: rgba(0,0,0,0.6); 
         padding: 5px 15px;
         border-radius: 4px;
@@ -86,11 +90,10 @@
       
       /* --- BARRA DE NAVEGACIÓN --- */
       #main-nav { 
-        /* Ajustamos el fondo del menú al nuevo color, pero con un toque sólido */
         background-color: #1f1f1f; 
         text-align: center; 
         padding: 0.8em 0; 
-        border-bottom: 1px solid #444; /* Borde un pelín más claro */
+        border-bottom: 1px solid #444; 
         border-top: 1px solid #444; 
         margin-bottom: 2em; 
         opacity: 0.95; 
@@ -105,7 +108,7 @@
       }
       #main-nav nav a:hover { 
         text-decoration: underline; 
-        color: #ddd;
+        color: #ddd; 
       }
 
       /* --- ESTILOS MÓVIL --- */
@@ -121,12 +124,10 @@
       }
       
       @media (max-width: 768px) {
-        body {
-             /* En móvil reducimos un poco el tamaño de la imagen para que no obligue a hacer mucho scroll */
-             background-size: auto 350px; 
-        }
         #title {
-            margin-top: 50px; 
+            /* En móvil la imagen será bajita, así que subimos el texto
+               para aprovechar el espacio */
+            margin-top: 40px; 
         }
         
         #main-nav nav { display: none; }
@@ -142,13 +143,13 @@
     <div class="wrapper">
 
       <section>
-        <!-- CABECERA -->
+        <!-- TÍTULO PRINCIPAL -->
         <div id="title">
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
           <p>{{ site.tagline | default: site.description | default: site.github.project_tagline }}</p>
         </div>
 
-        <!-- MENU -->
+        <!-- BARRA DE NAVEGACIÓN -->
         <div id="main-nav">
           <div id="menu-toggle">Menú</div>
           <nav>
@@ -161,6 +162,7 @@
           </nav>
         </div>
 
+        <!-- CONTENIDO -->
         {{ content }}
 
       </section>
@@ -175,6 +177,7 @@
       
     </div>
     
+    <!-- SCRIPTS -->
     <script>
       $(document).ready(function() {
         $('#menu-toggle').click(function() {
