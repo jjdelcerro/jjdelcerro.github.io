@@ -18,29 +18,26 @@
     {% include head-custom.html %}
     
     <style>
-      /* --- CONFIGURACIÓN DE FONDO RESPONSIVE (ARQUITECTURA) --- */
+      /* --- FONDO GLOBAL RESPONSIVE --- */
       body {
-        /* Color base fundido con la imagen (Gris oscuro) */
+        /* Gris oscuro que funde con tu imagen */
         background-color: #252525; 
         
-        /* Tu imagen de alta resolución (1792px recomendados) */
+        /* Imagen de alta resolución */
         background-image: url('{{ "/assets/images/banner_hero.png" | relative_url }}');
         
-        /* Alineación: Centrada horizontalmente, pegada arriba */
+        /* Centrada arriba */
         background-position: center top; 
         background-repeat: no-repeat;
         
-        /* LA ESTRATEGIA: 100% Ancho / Auto Alto 
-           - En PC (1920px ancho): La imagen se escala un poco.
-           - En Laptop (1366px): Se reduce un poco (más nítida).
-           - En Móvil: Se reduce mucho para caber en el ancho. */
+        /* Ocupa todo el ancho disponible */
         background-size: 100% auto; 
         
         margin: 0;
         padding: 0;
       }
       
-      /* --- LIMPIEZA DE CONTENEDORES (Para que no tapen el fondo) --- */
+      /* Reset de wrappers */
       .wrapper {
         background: transparent !important;
         margin-top: 0 !important;
@@ -53,39 +50,41 @@
         margin: 0 auto; 
       }
       
-      /* --- ZONA DEL TÍTULO (Texto sobre la imagen) --- */
+      /* --- TÍTULO (Ajuste del hueco) --- */
       #title { 
-        /* Espacio superior:
-           Empujamos el texto hacia abajo para revelar el 'techo' de la biblioteca
-           y situar el título en la zona oscura central. */
         margin-top: 80px; 
-        margin-bottom: 50px;
+        
+        /* CORRECCIÓN: Reducimos el margen inferior drásticamente.
+           Antes era 50px, ahora 15px para acercarlo al menú. */
+        margin-bottom: 15px;
+        padding-bottom: 0;
         
         text-align: center;
         background: transparent;
         min-height: auto;
       }
 
-      /* Título H1: Blanco puro con sombra dura para contraste máximo */
       #title h1 {
         color: #ffffff;
         font-weight: 800;
         margin-top: 0;
         letter-spacing: -1px;
         text-shadow: 0px 4px 15px rgba(0,0,0,1);
+        margin-bottom: 10px; /* Separación sutil entre titulo grande y subtitulo */
       }
       
-      /* Subtítulo: Gris perla sobre pastilla semitransparente */
       #title p {
         color: #e0e0e0;
         font-size: 1.1em;
         font-weight: 300;
         text-shadow: 0px 2px 4px rgba(0,0,0,1);
-        /* Fondo negro al 60% para que se lea sobre los hologramas */
         background-color: rgba(0,0,0,0.6); 
         padding: 5px 15px;
         border-radius: 4px;
         display: inline-block;
+        
+        /* Aseguramos que el párrafo no tenga margen extra invisible abajo */
+        margin-bottom: 0 !important;
       }
       
       /* --- BARRA DE NAVEGACIÓN --- */
@@ -125,9 +124,10 @@
       
       @media (max-width: 768px) {
         #title {
-            /* En móvil la imagen será bajita, así que subimos el texto
-               para aprovechar el espacio */
             margin-top: 40px; 
+            /* En móvil igual necesitamos un poco más de aire que en escritorio, 
+               pero 20px está bien */
+            margin-bottom: 20px; 
         }
         
         #main-nav nav { display: none; }
@@ -143,7 +143,6 @@
     <div class="wrapper">
 
       <section>
-        <!-- TÍTULO PRINCIPAL -->
         <div id="title">
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
           <p>{{ site.tagline | default: site.description | default: site.github.project_tagline }}</p>
@@ -162,7 +161,6 @@
           </nav>
         </div>
 
-        <!-- CONTENIDO -->
         {{ content }}
 
       </section>
@@ -177,7 +175,6 @@
       
     </div>
     
-    <!-- SCRIPTS -->
     <script>
       $(document).ready(function() {
         $('#menu-toggle').click(function() {
