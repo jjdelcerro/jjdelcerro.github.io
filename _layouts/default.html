@@ -18,33 +18,32 @@
     {% include head-custom.html %}
     
     <style>
-      /* --- RESET Y FONDO GLOBAL (LA SOLUCIÓN ROBUSTA) --- */
+      /* --- CONFIGURACIÓN GLOBAL DE FONDO --- */
       body {
-        /* 1. EL GRIS BASE: Debe coincidir con el gris oscuro de tu imagen. 
-              Si notas un 'corte' abajo, cambia #1a1a1a por el color exacto con el cuentagotas */
-        background-color: #1a1a1a; 
+        /* COLOR CORREGIDO: El #252525 para fundir con la imagen */
+        background-color: #252525; 
         
-        /* 2. LA IMAGEN DE MARCA: */
+        /* IMAGEN DE FONDO */
         background-image: url('{{ "/assets/images/banner_hero.png" | relative_url }}');
         
-        /* 3. POSICIÓN: Arriba y Centrada horizontalmente */
+        /* GEOMETRÍA: Centrada arriba */
         background-position: center top; 
         background-repeat: no-repeat;
         
-        /* 4. TAMAÑO: ¿Cómo se comporta? */
-        /* 'auto 600px' -> Mantiene el alto original de la imagen, recorta los lados si no caben.
-           '100% auto'  -> Se estira a todo el ancho. Si el monitor es gigante, la imagen crece mucho de alto. */
-        background-size: auto 600px; /* Sugerencia: Mantiene proporción original fija. Ajusta 600px según la real. */
+        /* ESTRATEGIA DE ESCALADO: 
+           'auto 600px' mantiene el ratio original con 600px de altura.
+           Si la quieres más grande, sube este valor (ej: auto 700px) */
+        background-size: auto 600px; 
         
         margin: 0;
         padding: 0;
       }
       
-      /* Aseguramos que los contenedores no tapen la imagen con su propio fondo blanco/gris */
+      /* Reset de contenedores internos para que no tapen el fondo */
       .wrapper {
         background: transparent !important;
         margin-top: 0 !important;
-        padding-top: 10px !important; /* Un poco de aire arriba */
+        padding-top: 10px !important;
       }
       section {
         background: transparent !important;
@@ -53,46 +52,47 @@
         margin: 0 auto; 
       }
       
-      /* --- HEADER Y TITULOS (Simplificados de nuevo) --- */
+      /* --- CABECERA (TITULO Y SUBTITULO) --- */
       #title { 
-        /* Le damos espacio arriba para que el texto no tape el Monitor de la imagen */
-        margin-top: 100px; /* AJUSTA ESTE VALOR: Empuja el texto abajo para ver la imagen detrás */
+        /* Margen superior para empujar el texto y que se vea el monitor */
+        margin-top: 100px; 
         margin-bottom: 50px;
         
         text-align: center;
-        /* Quitamos fondos y tamaños forzados */
         background: transparent;
         min-height: auto;
       }
 
-      /* Texto con sombra para que se lea bien sobre la imagen de fondo */
+      /* Títulos: Blanco puro y sombra fuerte */
       #title h1 {
         color: #ffffff;
         font-weight: 800;
         margin-top: 0;
         letter-spacing: -1px;
-        text-shadow: 0px 4px 15px rgba(0,0,0,1); /* Sombra dura necesaria */
+        text-shadow: 0px 4px 15px rgba(0,0,0,1);
       }
+      /* Subtítulo: Un poco más visible */
       #title p {
-        color: #ddd;
+        color: #e0e0e0; /* Un gris casi blanco */
         font-size: 1.1em;
         font-weight: 300;
         text-shadow: 0px 2px 4px rgba(0,0,0,1);
-        background-color: rgba(0,0,0,0.5); /* Pastilla semitransparente para legibilidad */
+        /* Pastilla semitransparente para garantizar lectura sobre hologramas */
+        background-color: rgba(0,0,0,0.6); 
         padding: 5px 15px;
-        border-radius: 15px;
+        border-radius: 4px;
         display: inline-block;
       }
       
-      /* --- NAVEGACIÓN --- */
+      /* --- BARRA DE NAVEGACIÓN --- */
       #main-nav { 
-        background-color: #151515; /* El menú es opaco para tapar la imagen al hacer scroll si quieres, o transparente */
+        /* Ajustamos el fondo del menú al nuevo color, pero con un toque sólido */
+        background-color: #1f1f1f; 
         text-align: center; 
         padding: 0.8em 0; 
-        border-bottom: 1px solid #333; 
-        border-top: 1px solid #333; 
+        border-bottom: 1px solid #444; /* Borde un pelín más claro */
+        border-top: 1px solid #444; 
         margin-bottom: 2em; 
-        /* Un poco de opacidad para efecto elegante */
         opacity: 0.95; 
       }
       #main-nav nav a { 
@@ -105,28 +105,28 @@
       }
       #main-nav nav a:hover { 
         text-decoration: underline; 
+        color: #ddd;
       }
 
-      /* --- MOVIL --- */
+      /* --- ESTILOS MÓVIL --- */
       #menu-toggle {
         display: none; 
-        background-color: #151515;
+        background-color: #1f1f1f;
         color: #fff;
         text-align: center;
         padding: 10px;
         cursor: pointer;
-        border-bottom: 1px solid #333;
+        border-bottom: 1px solid #444;
         font-weight: bold;
       }
       
       @media (max-width: 768px) {
         body {
-             /* En móvil la imagen de fondo puede ser molesta o no verse bien el monitor.
-                Podemos ajustarla o dejarla igual */
-             background-size: auto 300px; /* Reducimos la imagen en móvil */
+             /* En móvil reducimos un poco el tamaño de la imagen para que no obligue a hacer mucho scroll */
+             background-size: auto 350px; 
         }
         #title {
-            margin-top: 40px; /* Menos espacio en móvil */
+            margin-top: 50px; 
         }
         
         #main-nav nav { display: none; }
@@ -142,13 +142,13 @@
     <div class="wrapper">
 
       <section>
-        <!-- TÍTULO -->
+        <!-- CABECERA -->
         <div id="title">
           <h1>{{ site.title | default: site.github.repository_name }}</h1>
           <p>{{ site.tagline | default: site.description | default: site.github.project_tagline }}</p>
         </div>
 
-        <!-- BARRA DE NAVEGACIÓN -->
+        <!-- MENU -->
         <div id="main-nav">
           <div id="menu-toggle">Menú</div>
           <nav>
