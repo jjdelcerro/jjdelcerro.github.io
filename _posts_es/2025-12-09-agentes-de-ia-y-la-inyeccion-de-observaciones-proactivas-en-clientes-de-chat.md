@@ -2,7 +2,7 @@
 layout: post
 title: "Agentes de IA y la inyección de observaciones proactivas en clientes de chat"
 date: 2025-12-09
-canonical_url: "https://blog.gvsig.org/2025/12/09/agentes-de-ia-y-la-inyeccion-de-observaciones-proactivas-en-clientes-de-chat/"
+canonical_url: "https://jjdelcerro.github.io/es/blog/agentes-de-ia-y-la-inyeccion-de-observaciones-proactivas-en-clientes-de-chat/"
 ---  
 Hola,
 llevo un tiempo dándole vueltas a una pregunta: ¿cómo diseñamos agentes que no solo respondan a preguntas, sino que sean capaces de reaccionar a cambios en su entorno?
