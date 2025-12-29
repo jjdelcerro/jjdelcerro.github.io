@@ -24,7 +24,6 @@
         text-align: center; 
         padding: 0.8em 0; 
         border-bottom: 1px solid #333; 
-        /* Línea superior sutil para separar de la imagen */
         border-top: 1px solid #333; 
         margin-bottom: 2em; 
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
@@ -41,37 +40,37 @@
         text-decoration: underline; 
       }
 
-      /* --- CONFIGURACIÓN DEL HERO BANNER (IMAGEN DE MARCA) --- */
+      /* --- CONFIGURACIÓN DEL HERO BANNER (VERSIÓN FIX ALTURA) --- */
       #title { 
-        /* Sin margen inferior para conectar visualmente con el menú */
         margin-bottom: 0 !important; 
         
-        /* Imagen de fondo con ruta relativa de Jekyll */
+        /* Imagen de fondo */
         background-image: url('{{ "/assets/images/banner_hero.png" | relative_url }}');
         
-        /* === AJUSTE DE GEOMETRÍA (FIX) === */
-        background-size: cover;
-        
-        /* CLAVE: Anclar al 'bottom' para que nunca corte el escritorio/terminal. 
-           Si hay recorte por falta de espacio, se cortará el techo (libros). */
-        background-position: center bottom;
-        
+        /* 1. ANCLAJE Y GEOMETRÍA DE FONDO */
+        background-size: cover;       
+        background-position: center bottom; /* Siempre anclado al suelo */
         background-repeat: no-repeat;
-        
-        /* Color de fondo fallback idéntico al gris de tu imagen */
         background-color: #1a1a1a;    
 
-        /* Aumentamos padding vertical para dar altura dramática al banner */
-        padding: 8em 1em; 
+        /* 2. FUERZA BRUTA EN DIMENSIONES (La corrección clave) */
+        /* Eliminamos el padding masivo y usamos altura mínima explicita */
+        padding: 0 1em; 
+        min-height: 480px;  /* <--- ESTO FUERZA A QUE LA IMAGEN SE VEA (casi) ENTERA */
         
+        /* 3. CENTRADO DEL TEXTO (LAYOUT MANAGER) */
+        /* Usamos Flexbox para centrar el texto verticalmente en este espacio tan grande */
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Centrado Vertical */
+        align-items: center;     /* Centrado Horizontal */
+        
+        /* Tipografía */
         text-align: center;
         color: #ffffff;
-        
-        /* Sombra fuerte para legibilidad */
         text-shadow: 0px 2px 10px rgba(0,0,0,0.9);
       }
 
-      /* Estilos para el texto dentro del Banner */
       #title h1 {
         font-weight: 800;
         margin-top: 0;
@@ -83,14 +82,15 @@
         font-weight: 300;
         opacity: 0.95;
         margin-bottom: 0;
-        /* Pastilla semitransparente para asegurar lectura */
-        background-color: rgba(0,0,0,0.3);
+        background-color: rgba(0,0,0,0.4); /* Fondo un poco más oscuro */
         display: inline-block;
-        padding: 0.2em 0.8em;
+        padding: 0.4em 1em; /* Un poco más de aire en la pastilla de texto */
         border-radius: 4px;
+        max-width: 80%; /* Para que no se estire demasiado en líneas largas */
+        line-height: 1.4;
       }
       
-      /* --- BOTÓN DEL MENÚ MÓVIL --- */
+      /* --- RESPONSIVE: MÓVIL --- */
       #menu-toggle {
         display: none; 
         background-color: #151515;
@@ -102,22 +102,15 @@
         font-weight: bold;
       }
       
-      /* --- ESTILOS PARA MÓVILES --- */
       @media (max-width: 768px) {
-        #main-nav nav {
-          display: none; 
-        }
-        #main-nav nav.show-menu {
-          display: block; 
-        }
-        #main-nav nav a {
-          display: block; 
-          padding: 10px 0;
-          margin: 0;
-          border-top: 1px solid #333;
-        }
-        #menu-toggle {
-          display: block; 
+        #main-nav nav { display: none; }
+        #main-nav nav.show-menu { display: block; }
+        #main-nav nav a { display: block; padding: 10px 0; margin: 0; border-top: 1px solid #333; }
+        #menu-toggle { display: block; }
+
+        /* Ajuste de altura del Banner para móviles para que no ocupe todo */
+        #title {
+            min-height: 300px !important; /* En móvil reducimos la altura */
         }
       }
     </style>
@@ -146,7 +139,6 @@
           <p>{{ site.tagline | default: site.description | default: site.github.project_tagline }}</p>
         </div>
 
-        <!-- BARRA DE NAVEGACIÓN -->
         <div id="main-nav">
           <div id="menu-toggle">Menú</div>
           <nav>
@@ -173,7 +165,6 @@
       
     </div>
     
-    <!-- SCRIPT DE INTERACCIÓN -->
     <script>
       $(document).ready(function() {
         $('#menu-toggle').click(function() {
