@@ -2,7 +2,7 @@
 layout: post
 title: "RAG y búsqueda semántica"
 date: 2025-09-24
-canonical_url: "https://www.linkedin.com/posts/joaquin-jose-del-cerro-murciano-3573b31a4_hola-a-todos-%C3%BAltimamente-veo-una-y-otra-activity-7376347677405470720-SutS?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC_BtTMBVyeFFZIfuOS1qN3ugMQgBdQ623s"
+canonical_url: "https://jjdelcerro.github.io/es/blog/RAG-busqueda-semantica/"
 ---
 
 Hola a todos,
