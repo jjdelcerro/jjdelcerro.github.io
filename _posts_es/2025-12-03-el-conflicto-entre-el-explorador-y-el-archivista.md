@@ -2,6 +2,7 @@
 layout: post
 title: "Deuda Técnica Mental: El conflicto entre el Explorador y el Archivista"
 date: 2025-12-03
+canonical_url: "https://jjdelcerro.github.io/es/blog/el-conflicto-entre-el-explorador-y-el-archivista/"
 ---
 
 ¿Alguna vez os habéis preguntado por qué nos cuesta tanto documentar o "empaquetar" un proyecto antiguo, incluso cuando sabemos que es necesario?
