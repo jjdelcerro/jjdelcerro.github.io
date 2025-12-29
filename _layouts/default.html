@@ -37,8 +37,48 @@
       #main-nav nav a:hover { 
         text-decoration: underline; 
       }
+
+      /* --- CONFIGURACIÓN DEL HERO BANNER (La imagen de marca) --- */
       #title { 
-        margin-bottom: 1em !important; 
+        /* Eliminamos margen inferior para que conecte visualmente con el menú si se desea, 
+           o se mantiene separación con el contenedor siguiente */
+        margin-bottom: 0 !important; 
+        
+        /* Definición de la imagen de fondo usando Liquid para rutas relativas */
+        background-image: url('{{ "/assets/images/banner_hero.png" | relative_url }}');
+        
+        /* Posicionamiento y Escala */
+        background-size: cover;       /* Cubre todo el ancho disponible */
+        background-position: center;  /* Centra el foco (terminal y vacío central) */
+        background-repeat: no-repeat;
+        background-color: #1a1a1a;    /* Color de seguridad (fallback) */
+
+        /* Geometría: El padding define la altura visible del banner */
+        padding: 5em 1em; /* Ajusta '5em' si quieres ver más o menos estantería verticalmente */
+        text-align: center;
+        
+        /* Tipografía y Legibilidad */
+        color: #ffffff;
+        /* Sombra sólida para garantizar que el texto se lea sobre cualquier pixel claro */
+        text-shadow: 0px 2px 10px rgba(0,0,0,0.9);
+      }
+
+      /* Ajustes finos para que el texto resalte elegantemente sobre el banner */
+      #title h1 {
+        font-weight: 800;
+        margin-top: 0;
+        letter-spacing: -1px;
+        text-shadow: 0px 4px 15px rgba(0,0,0,1); /* Refuerzo de sombra para el título */
+      }
+      #title p {
+        font-size: 1.1em;
+        font-weight: 300;
+        opacity: 0.95; /* Ligeramente más opaco para contrastar con fondo complejo */
+        margin-bottom: 0;
+        background-color: rgba(0,0,0,0.3); /* Sutil pastilla oscura detrás del subtítulo para máxima legibilidad */
+        display: inline-block; /* Para que la pastilla solo ocupe lo que el texto */
+        padding: 0.2em 0.8em;
+        border-radius: 4px;
       }
       
       /* --- BOTÓN DEL MENÚ MÓVIL (OCULTO EN ESCRITORIO) --- */
