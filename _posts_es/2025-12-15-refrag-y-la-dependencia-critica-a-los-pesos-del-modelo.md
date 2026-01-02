@@ -2,7 +2,7 @@
 layout: post
 title: "REFRAG y la dependencia crítica a los pesos del modelo"
 date: 2025-12-15
-canonical_url: "https://blog.gvsig.org/2025/12/15/refrag-y-la-dependencia-critica-a-los-pesos-del-modelo/"
+canonical_url: "https://jjdelcerro.github.io/es/blog/refrag-y-la-dependencia-critica-a-los-pesos-del-modelo/"
 ---  
 Hola,
 En arquitectura de sistemas hay una "ley no escrita" pero inmutable: nadie da nada gratis. Si optimizas agresivamente para una variable, estás pagando el precio en otra. Y en el mundo de la IA generativa, acabamos de toparnos con el ejemplo más brutal de este principio.
