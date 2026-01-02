@@ -2,7 +2,7 @@
 layout: post
 title: "Del libro de Hartnell al MCP, 40 años de IA en la estantería de un desarrollador"
 date: 2025-12-17
-canonical_url: "https://blog.gvsig.org/2025/12/17/del-libro-de-hartnell-al-mcp-40-anos-de-ia-en-la-estanteria-de-un-desarrollador/"
+canonical_url: "https://jjdelcerro.github.io/es/blog/del-libro-de-hartnell-al-mcp-40-anos-de-ia-en-la-estanteria-de-un-desarrollador/"
 ---  
 ## El polvo del estante
 
