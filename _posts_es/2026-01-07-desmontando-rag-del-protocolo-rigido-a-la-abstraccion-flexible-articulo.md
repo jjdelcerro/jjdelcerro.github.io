@@ -2,7 +2,7 @@
 layout: post
 title: "Desmontando RAG, del protocolo rígido a la abstracción flexible"
 date: 2026-01-07
-canonical_url: ""
+canonical_url: "https://jjdelcerro.github.io/es/blog/desmontando-rag-del-protocolo-rigido-a-la-abstraccion-flexible-articulo/"
 ---  
 >
 > Nota: Este artículo se escribió originalmente en septiembre de 2025, poco antes de la consolidación de arquitecturas como GraphRAG. Quedó guardado en un "cajón digital", pero al revisarlo hoy, me sorprendió ver cuánto de su diagnóstico arquitectónico sigue vigente. He decidido publicarlo manteniendo intacto el texto original para preservar el contexto del análisis, añadiendo solo una breve nota al final sobre cómo ha evolucionado el ecosistema RAG en estos últimos meses.
