@@ -7,7 +7,6 @@ canonical_url: "https://jjdelcerro.github.io/es/blog/desmontando-rag-del-protoco
 >
 > Nota: Este artículo lo escribí originalmente en septiembre de 2025, poco antes de la consolidación de arquitecturas como GraphRAG. Quedó guardado en un "cajón digital", pero al revisarlo hoy, me sorprendió ver cuánto de su diagnóstico arquitectónico sigue vigente. He decidido publicarlo manteniendo intacto el texto original para preservar el contexto del análisis, añadiendo solo una breve nota al final sobre cómo ha evolucionado el ecosistema RAG en estos últimos meses.
 >
-
 Hola a todos,
 Llevo un tiempo dándole vueltas a la arquitectura de los sistemas RAG (Retrieval-Augmented Generation) y, como arquitecto, hay algo que me chirría profundamente. Sentimos que estamos en la frontera de la IA, pero las herramientas que usamos nos fuerzan a pasar por una puerta muy estrecha. Si volvemos al paper original que lo empezó todo (Lewis et al., 2020), la definición era elegantemente simple: un modelo generativo que se aumenta con información externa.
 
