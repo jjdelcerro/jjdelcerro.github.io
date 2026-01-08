@@ -35,7 +35,7 @@ El algoritmo de *Backpropagation* funciona propagando el error hacia atrás. Bá
 
 Aquí está la clave mecánica. Como la caja B está en medio, atada a ambas, actúa como un eslabón. Al mover B para acercarla a C, la caja A (que ya estaba atada a B) se viene detrás "de regalo".
 
-El resultado final inevitable es que las cajas se ordenan formando un tren ($A-B-C$). El sistema busca el estado de mínima tensión. Mantenerlas alineadas es "más barato" computacionalmente para el optimizador que estirar las gomas en direcciones opuestas para mantenerlas separadas. Lo que el *paper* llama "geometría" es simplemente la forma que adoptan los datos cuando dejas que la tensión del gradiente los organice con el mínimo esfuerzo.
+El resultado final inevitable es que las cajas se ordenan formando un tren (`A-B-C`). El sistema busca el estado de mínima tensión. Mantenerlas alineadas es "más barato" computacionalmente para el optimizador que estirar las gomas en direcciones opuestas para mantenerlas separadas. Lo que el *paper* llama "geometría" es simplemente la forma que adoptan los datos cuando dejas que la tensión del gradiente los organice con el mínimo esfuerzo.
 
 Al igual que las gomas elásticas prefieren rectas a curvas retorcidas, el gradiente prefiere funciones de onda de baja frecuencia (suaves) a las de alta frecuencia (ruido). Es lo que en el paper denominan 'sesgo espectral'."
 
@@ -51,9 +51,9 @@ El matemático mira el mapa topográfico de esa montaña (**la fórmula del erro
 Pero entonces llega el informático, mira el **código** y dice: "Tranquilo, la bola no va a caer en los agujeros porque no rueda libre. Va sobre raíles".
 
 Para verlo más claro, reduzcamos el problema a su esencia más simple. Imaginad que queremos resolver matemáticamente
-Os pongo un ejemplo de código que ilustra cómo el algoritmo elimina esos agujeros teóricos. Imaginad el problema matemático de encontrar dos números que sumen 10 ($x + y = 10$).
+Os pongo un ejemplo de código que ilustra cómo el algoritmo elimina esos agujeros teóricos. Imaginad el problema matemático de encontrar dos números que sumen 10 (`x + y = 10`).
 
-El matemático os dirá que el espacio de soluciones es infinito y caótico: $(5,5)$, $(1,9)$, $(100, -90)$... Cualquiera de esos "agujeros" es válido.
+El matemático os dirá que el espacio de soluciones es infinito y caótico: `(5,5)`, `(1,9)`, `(100, -90)`... Cualquiera de esos "agujeros" es válido.
 
 Pero si yo escribo este código para resolverlo partiendo de cero (que es como se inicializan las redes):
 
@@ -64,8 +64,8 @@ while (x + y < 10):
     y += 0.1
 ```
 
-El resultado **siempre** será $(5,5)$.
-¿Podría haber sido $(1,9)$ matemáticamente? Sí. ¿Informáticamente? Imposible. El algoritmo de incremento simétrico actúa como los raíles de nuestra bola. **Mata los millones de agujeros teóricos** y obliga al sistema a converger en la solución más simétrica y ordenada.
+El resultado **siempre** será `(5,5)`.
+¿Podría haber sido `(1,9)` matemáticamente? Sí. ¿Informáticamente? Imposible. El algoritmo de incremento simétrico actúa como los raíles de nuestra bola. **Mata los millones de agujeros teóricos** y obliga al sistema a converger en la solución más simétrica y ordenada.
 
 Eso es lo que llaman "Regularización Implícita". No es que el modelo decida mágicamente ser geométrico. Es que el código de entrenamiento, al aplicar gradientes simétricos sobre pesos inicializados a cero, hace físicamente imposible que nuestra bola descarrile hacia las soluciones caóticas que tanto preocupan a los teóricos. El paper demuestra que estos raíles son tan robustos que la geometría emerge incluso en los modelos más simples y desnudos, confirmando que el orden no depende de la complejidad de la red, sino de la simple inercia del algoritmo.
 
