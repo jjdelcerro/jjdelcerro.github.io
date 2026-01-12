@@ -34,6 +34,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
     *   [El día que fue inevitable sentirse como Susan Calvin](https://jjdelcerro.github.io/es/blog/el-dia-que-fue-inevitable-sentirse-como-susan-calvin/)
     *   [Cómo el código mata al misterio matemático en los Transformers](https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/)
+    *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
     <!--*   El arquitecto y la máquina.-->
 
 *   **Modelos Cognitivos y Semántica**.
