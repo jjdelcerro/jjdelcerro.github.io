@@ -35,6 +35,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [El día que fue inevitable sentirse como Susan Calvin](https://jjdelcerro.github.io/es/blog/el-dia-que-fue-inevitable-sentirse-como-susan-calvin/)
     *   [Cómo el código mata al misterio matemático en los Transformers](https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/)
     *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
+    *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
     <!--*   El arquitecto y la máquina.-->
 
 *   **Modelos Cognitivos y Semántica**.
