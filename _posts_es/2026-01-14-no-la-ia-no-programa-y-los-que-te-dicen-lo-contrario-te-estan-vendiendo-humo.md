@@ -6,7 +6,7 @@ canonical_url: "https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-
 ---  
 Hace unas semanas, tras ver el enésimo video de un "experto" afirmando que "Gemini 3 Pro revoluciona la automatización" y que "los agentes de IA ya construyen aplicaciones completas", sentí una mezcla de incredulidad y rabia. Rabia por ver cómo la falta de experiencia en proyectos reales se disfraza de autoridad para envenenar el criterio de quienes están empezando.
 
-Así que decidí hacer lo que ninguno de ellos hace: **una prueba real**. No con un repositorio de juguete de 10 archivos o con una API de simple. Decidi probarlo con un problema de integración real. Conectar un servidor MCP a `jdt-ls` usando LSP4J. Empece por una prueba de contexto minima, generar una clase java que no tendria mas de 500 líneas. Sin integrar en nada, una clase autocontenida. No llegue a pasar de esta prueba.
+Así que decidí hacer lo que ninguno de ellos hace: **una prueba real**. No con un repositorio de juguete de 10 archivos o con una API simple. Decidi probarlo con un problema de integración real. Conectar un servidor MCP a `jdt-ls` usando LSP4J. Empece por una prueba de contexto minima, generar una clase java que no tendria mas de 500 líneas. Sin integrar en nada, una clase autocontenida. No llegue a pasar de esta prueba.
 
 El resultado: **8 modelos de IA, 0 éxitos.** Ni uno solo generó código funcional, y varios de ellos entraron en bucle corrigiendo errores de compilacion y tuve que indicarles yo las correcciones para que se pudiesen compilar algunas cosas.
 
