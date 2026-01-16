@@ -33,7 +33,7 @@ La programación real no es ensamblaje de piezas prefabricadas. Es saber por qu�
 Cuando a un LLM le das un problema real (integrar un protocolo como LSP, manejar estado asíncrono y lidiar con configuraciones específicas de `jdt-ls`) se desmoronan. No tienen un *modelo mental* del sistema. Solo tienen estadísticas de tokens.
 
 Mi prueba. Los 8 modelos (Claude 4.5, Gemini 3 Flash, ChatGPT, GLM 4.7, Kimi K2, Qwen3-Coder, DeepSeek 3.2 y Grok 4.1) 
-llegaron a generar código que compilaba tras varios turnos de corrección. Algunos necesitaron hasta siete turnos solo para llegar a código que compilase. Otros se metieron en bucles de modificacion y correccion de los que tube que ayudarles a salir. Al final todos consiguieron un codigo que compilaba.
+llegaron a generar código que compilaba tras varios turnos de corrección. Algunos necesitaron hasta siete turnos solo para llegar a código que compilase. Otros se metieron en bucles de modificacion y correccion de los que tuve que ayudarles a salir. Al final todos consiguieron un codigo que compilaba.
 Pero no funcionaba. Se olvidaron de inicializar el servidor en el orden correcto, o no manejaron las notificaciones, o malinterpretaron la respuesta.
 
 *Eso no es "programar". Es "generar texto que se parece a código Java".*
@@ -46,10 +46,10 @@ Un junior ve esto y se pregunta para qué va a aprender algoritmos o arquitectur
 
 Estan promoviendo que los desarrolladores juniors se crean que todo es facil. Que pueden delegar en la IA tareas complejas. Sobre repositorios reales. Estan engañandonos en nuestra propia cara y no todos tenemos el criterio para darnos cuenta de como nos mienten.
 
-Puedes usar la IA en programacion pero no te va a ensañar...
+Puedes usar la IA en programación pero no te va a ensañar...
 - A tener *olfato* para detectar el código que *huele mal*.
 - A *anticipar* consecuencias a meses o años vista.
-- A *discutir* que sacrificas con tu equipo.
+- A *discutir* qué sacrificas con tu equipo.
 - A *mantener* compatibilidad con otros sistemas.
 
 *Te mienten. Y lo hacen con una sonrisa y unos bonitos gráficos.*
