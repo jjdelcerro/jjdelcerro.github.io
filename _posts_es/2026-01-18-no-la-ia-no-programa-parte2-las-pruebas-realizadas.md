@@ -4,7 +4,7 @@ title: "No, la ia no programa... (parte 2) las pruebas realizadas"
 date: 2026-01-18
 canonical_url: "https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/"
 ---  
-En el artículo anterior denuncié la sobreventa de las capacidades de programación de la IA. Dije que los modelos generan texto que parece código, pero no programan. Este documento es el registro de las pruebas que hice.
+En En [el artículo anterior](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/) denuncié la sobreventa de las capacidades de programación de la IA. Dije que los modelos generan texto que parece código, pero no programan. Este documento es el registro de las pruebas que hice.
 
 Andaba desde hacía tiempo con un proyecto personal. Un servidor MCP para que Gemini CLI pudiera navegar código Java como en un IDE. Mis intentos, primero con las librerías de Maven y luego con `jdt-ls`, usando el propio Gemini CLI como ayudante, no habían llegado a ninguna parte. Lo tenía aparcado.
 
