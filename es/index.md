@@ -13,39 +13,50 @@ Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos 
 
 Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es/articulos.html).
 
-*   **Agentes y Autonomía**
+*   **Reflexiones sobre agentes y autonomía**
 
     *   [¿Qué es un agente?](https://jjdelcerro.github.io/es/blog/que-es-un-agente/)
     *   [Agentes de IA y la inyección de observaciones proactivas en clientes de chat](https://jjdelcerro.github.io/es/blog/agentes-de-ia-y-la-inyeccion-de-observaciones-proactivas-en-clientes-de-chat/)
     <!--*   Cómo gestionar la observación proactiva.-->
     <!--*   Agentes proactivos y transacciones.-->
     
-*   **RAG y Recuperación**
+*   **Reflexiones sobre RAG y recuperación**
 
     *   [RAG y búsqueda semántica](https://jjdelcerro.github.io/es/blog/RAG-busqueda-semantica/)
     *   [Desmontando RAG, del protocolo rígido a la abstracción flexible](https://jjdelcerro.github.io/es/blog/desmontando-rag-del-protocolo-rigido-a-la-abstraccion-flexible/).
     *   [REFRAG y la dependencia crítica a los pesos del modelo](https://jjdelcerro.github.io/es/blog/refrag-y-la-dependencia-critica-a-los-pesos-del-modelo/)
-    
+
+*   **Reflexiones sobre la naturaleza de la máquina**
+
+    Serie de reflexiones donde intento mirar más allá de la ilusión de inteligencia para entender la mecánica real de la herramienta. Buscan explicar el comportamiento del modelo por lo que es, la consecuencia lógica de su construcción, y no un acto de voluntad de él.
+
+    *   [Cómo el código mata al misterio matemático en los Transformers](https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/)
+    *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
+    *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
+      
 *   **Notas de campo**
 
     *   [Del libro de Hartnell al MCP, 40 años de IA en la estantería de un desarrollador](https://jjdelcerro.github.io/es/blog/del-libro-de-hartnell-al-mcp-40-anos-de-ia-en-la-estanteria-de-un-desarrollador/).
     *   [Más allá del prompt perfecto. Formando desarrolladores, no operadores de IA](https://jjdelcerro.github.io/es/blog/recetas-de-prompts/)
     *   [Deuda Técnica Mental: El conflicto entre el Explorador y el Archivista](https://jjdelcerro.github.io/es/blog/el-conflicto-entre-el-explorador-y-el-archivista/)
-    *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
     *   [El día que fue inevitable sentirse como Susan Calvin](https://jjdelcerro.github.io/es/blog/el-dia-que-fue-inevitable-sentirse-como-susan-calvin/)
-    *   [Cómo el código mata al misterio matemático en los Transformers](https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/)
-    *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
-    *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
     <!--*   El arquitecto y la máquina.-->
 
-*   **Modelos Cognitivos y Semántica**.
+*   **Serie "No, la IA no programa"**.
+
+    Serie de pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
+   
+    *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
+    *   [No, la ia no programa... las pruebas realizadas (parte 2)](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/)
+    
+*   **Serie "Modelos Cognitivos y Semántica"**.
 
     Esta sección recoge la investigación teórica sobre los límites del modelo estadístico actual. Analizo la necesidad de una arquitectura híbrida que complemente la capacidad de correlación de los LLMs con estructuras lógicas de conocimiento formal. El objetivo no es solo la generación de texto, sino la construcción de un entendimiento verificable.
 
     *   [¿Cómo construir una IA que realmente entienda?](https://jjdelcerro.github.io/es/blog/como-construir-una-ia-que-realmente-entienda-articulo/)
     *   [¿Podemos usar la gramática para modelar el conocimiento?](https://jjdelcerro.github.io/es/blog/podemos-usar-la-gramatica-para-modelar-el-conocimiento/)
     
-*   **El Asistente IA en gvSIG**.
+*   **Serie "El Asistente IA en gvSIG"**.
 
     Un ciclo completo de desarrollo de producto, desde el prototipo inicial hasta una solución distribuible. Esta serie documenta los problemas reales de integración en una aplicación de escritorio Java (Swing). Los costes de las APIs, la gestión del contexto espacial y la implementación final de una arquitectura cliente-servidor local basada en el protocolo MCP (Model Context Protocol).
 
