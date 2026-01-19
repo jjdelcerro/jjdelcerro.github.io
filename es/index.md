@@ -38,6 +38,13 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
     *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
       
+*   **Serie "No, la IA no programa"**.
+
+    Pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
+   
+    *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
+    *   [No, la ia no programa... las pruebas realizadas (parte 2)](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/)
+
 *   **Notas de campo**
 
     *   [Del libro de Hartnell al MCP, 40 años de IA en la estantería de un desarrollador](https://jjdelcerro.github.io/es/blog/del-libro-de-hartnell-al-mcp-40-anos-de-ia-en-la-estanteria-de-un-desarrollador/).
@@ -45,13 +52,6 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Deuda Técnica Mental: El conflicto entre el Explorador y el Archivista](https://jjdelcerro.github.io/es/blog/el-conflicto-entre-el-explorador-y-el-archivista/)
     *   [El día que fue inevitable sentirse como Susan Calvin](https://jjdelcerro.github.io/es/blog/el-dia-que-fue-inevitable-sentirse-como-susan-calvin/)
     <!--*   El arquitecto y la máquina.-->
-
-*   **Serie "No, la IA no programa"**.
-
-    Pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
-   
-    *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
-    *   [No, la ia no programa... las pruebas realizadas (parte 2)](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/)
     
 *   **Serie "Modelos Cognitivos y Semántica"**.
 
