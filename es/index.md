@@ -32,7 +32,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
 
 *   **Reflexiones sobre la naturaleza de la máquina**
 
-    Serie de reflexiones donde intento mirar más allá de la ilusión de inteligencia para entender la mecánica real de la herramienta. Buscan explicar el comportamiento del modelo por lo que es, la consecuencia lógica de su construcción, y no un acto de voluntad de él.
+    Reflexiones donde intento mirar más allá de la ilusión de inteligencia para entender la mecánica real de la herramienta. Buscan explicar el comportamiento del modelo por lo que es, la consecuencia lógica de su construcción, y no un acto de voluntad de él.
 
     *   [Cómo el código mata al misterio matemático en los Transformers](https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/)
     *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
@@ -48,7 +48,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
 
 *   **Serie "No, la IA no programa"**.
 
-    Serie de pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
+    Pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
    
     *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
     *   [No, la ia no programa... las pruebas realizadas (parte 2)](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/)
