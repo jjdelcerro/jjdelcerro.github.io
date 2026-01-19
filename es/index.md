@@ -15,12 +15,16 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
 
 *   **Reflexiones sobre agentes y autonomía**
 
+    De la definición teórica a la implementación proactiva.
+    
     *   [¿Qué es un agente?](https://jjdelcerro.github.io/es/blog/que-es-un-agente/)
     *   [Agentes de IA y la inyección de observaciones proactivas en clientes de chat](https://jjdelcerro.github.io/es/blog/agentes-de-ia-y-la-inyeccion-de-observaciones-proactivas-en-clientes-de-chat/)
     <!--*   Cómo gestionar la observación proactiva.-->
     <!--*   Agentes proactivos y transacciones.-->
     
 *   **Reflexiones sobre RAG y recuperación**
+
+    Más allá de la búsqueda vectorial: arquitectura y abstracción.
 
     *   [RAG y búsqueda semántica](https://jjdelcerro.github.io/es/blog/RAG-busqueda-semantica/)
     *   [Desmontando RAG, del protocolo rígido a la abstracción flexible](https://jjdelcerro.github.io/es/blog/desmontando-rag-del-protocolo-rigido-a-la-abstraccion-flexible/).
