@@ -38,7 +38,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
     *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
       
-*   **Serie "No, la IA no programa"**.
+*   **Serie "Cuando la IA escribe código"**.
 
     Pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
    
