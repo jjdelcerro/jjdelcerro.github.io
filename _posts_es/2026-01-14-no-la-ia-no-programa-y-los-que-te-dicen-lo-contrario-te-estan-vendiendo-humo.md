@@ -89,7 +89,7 @@ No supimos arreglarlo. Así que le pedimos a la IA que nos resumiera la filosof�
 No es que no sepan Java. Es que, cuando la complejidad es real, estado asíncrono, ciclos de vida complejos o integración con sistemas "vivos", sin importar el lenguaje, falla. La IA no tiene modelo mental. Solo tiene probabilidad. Y eso, en un proyecto de verdad, se paga con horas de debug.
 
 >
-> 🔴 Nota: Ya esta publicada la (parte 2)[https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/] con el detalle de los 9 modelos, prompts y el análisis del código generado.
+> 🔴 Nota: Ya esta publicada la [parte 2](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/) con el detalle de los 9 modelos, prompts y el análisis del código generado.
 >
 
 
