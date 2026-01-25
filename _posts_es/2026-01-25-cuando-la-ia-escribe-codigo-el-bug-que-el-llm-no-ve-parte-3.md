@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Cuando la IA programa... el bug que el LLM no ve (parte 3)"
-date: 2026-01-11
+date: 2026-01-25
 canonical_url: "https://jjdelcerro.github.io/es/blog/cuando-la-ia-escribe-codigo-el-bug-que-el-llm-no-ve-parte-3/"
 --- 
 En las dos primeras partes de esta serie (donde analizamos por qué la IA no programa y vimos las pruebas realizadas), nos centramos en el diagnóstico. Ahora voy a pasar a comentar sobre un fallo real en un entorno web.
