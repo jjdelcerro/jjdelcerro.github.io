@@ -44,6 +44,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
    
     *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
     *   [No, la ia no programa... las pruebas realizadas (parte 2)](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/)
+    *   [Cuando la IA programa... el bug que el LLM no ve (parte 3)](https://jjdelcerro.github.io/es/blog/cuando-la-ia-escribe-codigo-el-bug-que-el-llm-no-ve-parte-3/)
 
 *   **Notas de campo**
 
