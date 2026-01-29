@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Cuando la IA escribe código... la ilusión del entendimiento (parte 4)"
+title: "Cuando la IA escribe código... la ilusión del entendimiento (parte 4/4)"
 date: 2026-01-28
 canonical_url: "https://jjdelcerro.github.io/es/blog/cuando-la-ia-escribe-codigo-la-ilusion-del-entendimiento-parte4/"
 ---  
