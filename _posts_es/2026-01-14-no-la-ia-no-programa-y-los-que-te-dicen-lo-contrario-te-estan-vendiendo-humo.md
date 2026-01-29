@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo"
+title: "No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo (parte 1/4)"
 date: 2026-01-11
 canonical_url: "https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/"
 ---  
