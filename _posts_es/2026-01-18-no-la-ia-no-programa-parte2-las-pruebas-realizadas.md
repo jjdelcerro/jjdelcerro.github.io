@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "No, la ia no programa... (parte 2) las pruebas realizadas"
+title: "No, la ia no programa... las pruebas realizadas  (parte 2/4)"
 date: 2026-01-18
 canonical_url: "https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/"
 ---  
