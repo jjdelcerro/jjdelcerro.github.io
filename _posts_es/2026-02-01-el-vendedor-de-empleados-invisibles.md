@@ -8,29 +8,29 @@ canonical_url: "https://jjdelcerro.github.io/es/blog/el-vendedor-de-empleados-in
 
 La oficina de Don Julián olía a papel, café recalentado y quietud. El tic-tac del reloj de pared marcaba el compás de un negocio que no tenía prisa por convertirse en otra cosa. Entre ese sonido y el murmullo lejano de la única impresora matricial que quedaba, se coló la voz del joven comercial.
 
-"- ... y por eso, don Julián, no estamos hablando de simples programas. Estamos hablando de una *sociedad multi-agente autónoma*."
+\- ... y por eso, don Julián, no estamos hablando de simples programas. Estamos hablando de una *sociedad multi-agente autónoma*.
 
 El joven, trajeado con una elegancia que rechinaba contra los muebles de melamina, desplegaba gráficos en una tablet. Don Julián, al otro lado del escritorio, removía con parsimonia una cucharilla en su taza de cerámica con el logotipo desgastado de una feria agrícola de 2022.
 
-- Nuestro sistema -proseguía el joven- implementa protocolos A2A nativos con negociación semántica en la nube. Imagine. Sus procesos se orquestan solos, las máquinas hablan entre ellas en un lenguaje universal de máxima eficiencia de tokens... ¡Es el fin de la intervención humana en la gestión!"
+\- Nuestro sistema -proseguía el joven- implementa protocolos A2A nativos con negociación semántica en la nube. Imagine. Sus procesos se orquestan solos, las máquinas hablan entre ellas en un lenguaje universal de máxima eficiencia de tokens... ¡Es el fin de la intervención humana en la gestión!"
 
 Don Julián dejó la cucharilla. El roce de su silla de oficina, de esas que crujen al moverse, cortó el aire.
 
-- Ya... -dijo, arrastrando la vocal-. A ver, joven, que yo de eso de la 'orquestación' no entiendo mucho. Yo aquí lo que tengo son facturas, nóminas y muchos, muchos Excel. -Hizo una pausa, mirando por la ventana a la calle casi vacía-. Pero mire, eso que me cuenta me suena... De hecho, creo que ya lo tenemos resuelto.
+\- Ya... -dijo, arrastrando la vocal-. A ver, joven, que yo de eso de la 'orquestación' no entiendo mucho. Yo aquí lo que tengo son facturas, nóminas y muchos, muchos Excel. -Hizo una pausa, mirando por la ventana a la calle casi vacía-. Pero mire, eso que me cuenta me suena... De hecho, creo que ya lo tenemos resuelto.
 
 El joven parpadeó. -¿Resuelto? Pero si nuestra tecnología es *pionera*... el stack completo de...
 
-- Espere un momento -lo interrumpió Don Julián sin levantar la voz.
+\- Espere un momento -lo interrumpió Don Julián sin levantar la voz.
 
 Se inclinó, abrió el cajón central de madera que protestó con un gemido familiar. Removió unos papeles, pasó por encima de un manual de contabilidad del 2005 y extrajo un folleto plegado, con una esquina ligeramente doblada. Lo deslizó por la mesa hacia el comercial.
 
-- Esto me lo dejó el chico que instaló el piloto en la sucursal la semana pasada. Trajo la cajita, la enchufó y la configuró en un rato. Me hizo gracia su tarjeta. Se presentó como "Vendedor de empleados invisibles". Dijo que no ocupan sitio, no gastan café y trabajan mientras duermo. Tome, léalo usted mismo.
+\- Esto me lo dejó el chico que instaló el piloto en la sucursal la semana pasada. Trajo la cajita, la enchufó y la configuró en un rato. Me hizo gracia su tarjeta. Se presentó como "Vendedor de empleados invisibles". Dijo que no ocupan sitio, no gastan café y trabajan mientras duermo. Tome, léalo usted mismo.
 
 El joven tomó el folleto. Era de un papel más basto que los suyos, con un diseño casi austero. En la portada, una foto poco inspiradora. Una cajita negra, discreta, colocada al lado de un router doméstico. No había gráficos de flujo, ni jerga. El titular, en una tipografía sencilla, decía **"Hable con sus nuevos empleados. Ellos entienden su negocio."**
 
 El joven frunció el ceño. -Pero... aquí no pone nada de protocolos, de arquitecturas...
 
-- Abra, abra -insistió Don Julián, tomando un sorbo de café.
+\- Abra, abra -insistió Don Julián, tomando un sorbo de café.
 
 El comercial desplegó el folleto. Dentro, en un lenguaje llano, había tres mensajes clave:
 * *"Se integran en su oficina al instante."*
@@ -39,15 +39,15 @@ El comercial desplegó el folleto. Dentro, en un lenguaje llano, había tres men
 
 Había una captura de pantalla, borrosa pero legible, de un cliente de correo. Se veía un mensaje enviado a `informes@empresa.local`. El asunto: "Listado de clientes con pedidos pendientes a fecha de ayer". El cuerpo era igual de simple: "Hola Ana, ¿me puedes preparar esto cruzándolo con la morosidad? Gracias."
 
-- Exacto -asintió Don Julián, siguiendo la mirada del joven-. Eso fue lo que más me gustó. No tengo que aprender nada nuevo. Ayer mismo, poco antes de irme, le escribí un correo a "Ana" -así llamamos a la chica de la cajita- para que me cruzara los datos de los clientes con los pedidos pendientes. En diez minutos tenía el Excel en la carpeta compartida de siempre, con sus celdas bien puestas y todo. Sin una queja, sin pedir aclaraciones.
+\- Exacto -asintió Don Julián, siguiendo la mirada del joven-. Eso fue lo que más me gustó. No tengo que aprender nada nuevo. Ayer mismo, poco antes de irme, le escribí un correo a "Ana" -así llamamos a la chica de la cajita- para que me cruzara los datos de los clientes con los pedidos pendientes. En diez minutos tenía el Excel en la carpeta compartida de siempre, con sus celdas bien puestas y todo. Sin una queja, sin pedir aclaraciones.
 
-- Pero... eso es ineficiente -logró articular el joven, recuperando parte de su discurso-. El correo electrónico tiene latencia, no es un estándar A2A optimizado para...
+\- Pero... eso es ineficiente -logró articular el joven, recuperando parte de su discurso-. El correo electrónico tiene latencia, no es un estándar A2A optimizado para...
 
-- Mire lo que pone en ese recuadro de abajo -lo interrumpió de nuevo Don Julián, señalando con un dedo calloso la parte inferior del folleto-. El que está en azul.
+\- Mire lo que pone en ese recuadro de abajo -lo interrumpió de nuevo Don Julián, señalando con un dedo calloso la parte inferior del folleto-. El que está en azul.
 
 El joven leyó en voz baja, y esta vez su tono no era de incredulidad, sino de algo parecido al desaliento: **"Olvídese de los sistemas que solo entienden otros sistemas. Sus empleados virtuales hablan *su* idioma."**
 
-- Pues eso -concluyó Don Julián, reclinándose en su silla, que volvió a crujir-. Mi contable le escribe correos a Ana, Ana le contesta a él, y yo recibo mis informes donde los he recibido siempre. Sin cosas nuevas, sin configuraciones eternas y -repitió, clavando la mirada en el joven- sin sorpresas en la factura.
+\- Pues eso -concluyó Don Julián, reclinándose en su silla, que volvió a crujir-. Mi contable le escribe correos a Ana, Ana le contesta a él, y yo recibo mis informes donde los he recibido siempre. Sin cosas nuevas, sin configuraciones eternas y -repitió, clavando la mirada en el joven- sin sorpresas en la factura.
 
 Se hizo un silencio. Solo el tic-tac del reloj y el leve zumbido de los fluorescentes llenaban la habitación. El joven miraba el folleto, luego su tablet llena de diagramas relucientes, y otra vez el folleto.
 
@@ -57,7 +57,7 @@ El sonido nítido y familiar de una notificación de correo entrante resonó des
 
 Este esbozó una sonrisa leve, casi paternal.
 
-- Mire, ahí llega Ana con la minuta de hoy. Si no le importa, joven, tengo trabajo que revisar. -Hizo una pausa, como recordando algo-. De hecho, con lo bien que va, igual le pido a los de la cajita que me manden otro. Para la logística, quizás. Le pondremos "Javi" y su propio correo, y asunto arreglado.
+\- Mire, ahí llega Ana con la minuta de hoy. Si no le importa, joven, tengo trabajo que revisar. -Hizo una pausa, como recordando algo-. De hecho, con lo bien que va, igual le pido a los de la cajita que me manden otro. Para la logística, quizás. Le pondremos "Javi" y su propio correo, y asunto arreglado.
 
 El mensaje estaba claro. No había sido un no rotundo. Había sido algo peor. Una indiferencia total hacia la complejidad que vendía. La solución ya estaba aquí, era simple, y funcionaba en silencio, como un buen empleado. Y si hacía falta más, se contrataba a otro. Sin protocolos nuevos, sin integraciones épicas.
 
