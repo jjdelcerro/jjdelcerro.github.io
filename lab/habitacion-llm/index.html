@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Cube Visualization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; padding: 0; background-color: #0f172a; min-height: 100vh; }
+        .viewer-container { width: 100%; height: 100vh; position: relative; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react/": "https://esm.sh/react@19.0.0/",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/": "https://esm.sh/react-dom@19.0.0/",
+    "three": "https://esm.sh/three@0.173.0",
+    "three/": "https://esm.sh/three@0.173.0/",
+    "@react-three/fiber": "https://esm.sh/@react-three/fiber@9.0.0?external=react,react-dom,three",
+    "@react-three/drei": "https://esm.sh/@react-three/drei@10.0.0?external=react,react-dom,three,@react-three/fiber",
+    "htm": "https://esm.sh/htm@3.1.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <!-- 
+      Ejemplo de visor configurable mediante atributos data:
+      - data-cube-viewer: Activa la auto-inicialización.
+      - data-spheres: Lista de esferas visibles inicialmente (dinero, arbol, silla, ingresar, transaccion, banco).
+      - data-scale: Valor inicial de escalado/evolución axial (0 a 5).
+      - data-controls: "true" o "false" para mostrar/ocultar el panel derecho.
+    -->
+    <div 
+        class="viewer-container" 
+        data-cube-viewer 
+        data-spheres="dinero,arbol,banco" 
+        data-scale="2.5" 
+        data-controls="true">
+    </div>
+
+    <script type="module" src="./index.js"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
