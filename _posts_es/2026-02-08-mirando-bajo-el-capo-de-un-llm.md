@@ -21,7 +21,7 @@ Tendremos tres ejes:
 *   Eje naturaleza (Aire libre, parques).
 
 <p align="center">
-  <img src="./assets/images/mirando-bajo-el-capo-de-un-llm/cubo-vacio-v1.png" alt="Nuestra habitación vacía"><br>
+  <img src="/assets/images/mirando-bajo-el-capo-de-un-llm/cubo-vacio-v1.png" alt="Nuestra habitación vacía"><br>
   Nuestra habitación vacía
 </p>
 
@@ -40,7 +40,7 @@ Ya tenemos situadas tres "palabras":
 * "árbol", muy "naturaleza".
 
 <p align="center">
-  <img src="./assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-v1.png" alt="Nuestra habitación con dinero, silla y árbol"><br>
+  <img src="/assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-v1.png" alt="Nuestra habitación con dinero, silla y árbol"><br>
   Nuestra habitación con "dinero", "silla" y "árbol"
 </p>
 
@@ -50,14 +50,14 @@ Vamos a situar un par más:
 * "transacción", bastante "financiero".
 
 <p align="center">
-  <img src="./assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-v1.png" alt="Nuestra habitación con dinero, silla, árbol, ingresar y transacción"><br>
+  <img src="/assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-v1.png" alt="Nuestra habitación con dinero, silla, árbol, ingresar y transacción"><br>
   Nuestra habitación con "dinero", "silla", "árbol", "ingresar" y "transacción"
 </p>
 
 Y vamos a añadir una palabra más... "banco". Uhm... pero banco es "especial", puede significar varias cosas. Puede referirse a una  entidad bancaria o a un banco de sentarse. Tendremos que situarlo a mitad camino de financiero, y a mitad camino de mobiliario... y podría estar relacionado con el concepto "naturaleza", puede estar relacionado con un banco en el parque. Uf! Lo situaremos a mitad de cada uno de estos ejes, flotando más o menos en el centro de nuestra habitación.
 
 <p align="center">
-  <img src="./assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-banco-v1.png" alt="Nuestra habitación con dinero, silla, árbol, ingresar, transacción y banco"><br>
+  <img src="/assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-banco-v1.png" alt="Nuestra habitación con dinero, silla, árbol, ingresar, transacción y banco"><br>
   Nuestra habitación con "dinero", "silla", "árbol", "ingresar", "transacción" y "banco".
 </p>
 
@@ -81,7 +81,7 @@ Imaginemos, que tenemos una serie de textos con los que queremos entrenar a nues
 
 
 <p align="center">
-  <img src="./assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-banco-filetuning1-v1.png" alt="Deformación de la habitación durante el entrenamiento"><br>
+  <img src="/assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-banco-filetuning1-v1.png" alt="Deformación de la habitación durante el entrenamiento"><br>
   Deformación de la habitación durante el entrenamiento
 </p>
 
@@ -108,7 +108,7 @@ En un instante, el espacio de nuestra habitación cambia. La habitación se tran
 * "silla" y "árbol", en cambio, quedan aplastadas contra la pared lejana, casi irrelevantes para el cálculo.
 
 <p align="center">
-  <img src="./assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-banco-inferencia1-v1.png" alt="Deformación de la habitación en la inferencia"><br>
+  <img src="/assets/images/mirando-bajo-el-capo-de-un-llm/cubo-dinero-silla-arbol-transaccion-ingresar-banco-inferencia1-v1.png" alt="Deformación de la habitación en la inferencia"><br>
   Deformación de la habitación en la inferencia
 </p>
 
