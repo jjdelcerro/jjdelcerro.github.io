@@ -10,7 +10,7 @@ Vamos a ver si puedo transmitir lo que he entendido que hay debajo de esa "apari
 
 ## La habitación 
 
-Lo primero que vamos a hacer es fijar un marco en el que situar las "cosas". Imaginemos una habitación de base cuadrada con forma de cubo. Elegimos una esquina de la habitación en el suelo. Las aristas de la habitación que salen de esa esquina van a representar nuestro eje de coordenadas. Dos ejes corren por el suelo, y otro se extiende asta el techo. 
+Lo primero que vamos a hacer es fijar un marco en el que situar las "cosas". Imaginemos una habitación de base cuadrada con forma de cubo. Elegimos una esquina de la habitación en el suelo. Las aristas de la habitación que salen de esa esquina van a representar nuestro eje de coordenadas. Dos ejes corren por el suelo, y otro se extiende hasta el techo. 
 
 Cada uno de esos ejes va a representar un concepto, elegiremos tres conceptos. Uno representara lo "financiero", dinero, economía... Otro representará lo "mobiliario", mesas, sillas, sofás, muebles en general. Y el otro representará "naturaleza", aire libre, parques, ríos. 
 
@@ -123,7 +123,7 @@ El modelo no ha "pensado" en entidades bancarias. No ha recuperado un hecho de u
 
 ## Del cubo a la hipermatriz
 
-Esta explicación visual funciona para entender la intuición, pero no debemos de dejar de prestar atención a los planos reales.
+Esta explicación visual funciona para entender la intuición, pero no debemos dejar de prestar atención a los planos reales.
 
 **He hecho trampa**.
 
