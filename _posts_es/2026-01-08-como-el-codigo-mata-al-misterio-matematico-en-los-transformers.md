@@ -3,6 +3,8 @@ layout: post
 title: "Cómo el código mata al misterio matemático en los Transformers"
 date: 2026-01-08
 canonical_url: "https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/"
+image: "https://images.unsplash.com/photo-1515091943-9d5c0ad475af?q=80&w=1200&auto=format&fit=crop"
+image_caption: 'Photo by <a href="https://unsplash.com/@elimende" target="_blank">Elimende Inagella</a> on Unsplash'
 ---  
 *Por qué los Transformers prefieren el orden al caos sin que nadie se lo pida... spoiler, sí se lo han pedido.*
 
