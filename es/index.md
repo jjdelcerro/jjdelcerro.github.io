@@ -16,6 +16,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
 *   **Reflexiones sobre agentes y autonomía**
 
     *   **Serie "Agentes y proactividad"**
+    
         De la definición teórica a la implementación proactiva.
     
         *   [¿Qué es un agente?](https://jjdelcerro.github.io/es/blog/que-es-un-agente/)
