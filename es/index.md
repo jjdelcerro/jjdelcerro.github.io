@@ -24,7 +24,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
         <!--*   Cómo gestionar la observación proactiva.-->
         <!--*   Agentes proactivos y transacciones.-->
     
-    *   **Serie "Memoria Narrativa Trazable para clientes LLM en conversaciones de larga duración"**
+    *   **Serie "Memoria narrativa trazable para clientes LLM en conversaciones de larga duración"**
   
         Reflexiones relacionadas con cómo podemos organizar la memoria que exponemos a un LLM para que puedan acceder a ella minimizando el olvido o abordándolo cuando sea inevitable.
 
