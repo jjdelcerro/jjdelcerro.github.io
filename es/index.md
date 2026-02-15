@@ -22,6 +22,12 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     <!--*   Cómo gestionar la observación proactiva.-->
     <!--*   Agentes proactivos y transacciones.-->
     
+*   **Serie "Memoria Narrativa Trazable para clientes LLM en conversaciones de larga duración"**
+  
+    Reflexiones relacionadas con cómo podemos organizar la memoria que exponemos a un LLM para que puedan acceder a ella minimizando el olvido o abordándolo cuando sea inevitable.
+
+    * [¿Memoria narrativa o resumen para un LLM?](https://jjdelcerro.github.io/es/blog/memoria-narrativa-o-resumen-para-un-llm/)
+
 *   **Reflexiones sobre RAG y recuperación**
 
     Más allá de la búsqueda vectorial: arquitectura y abstracción.
@@ -37,6 +43,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Cómo el código mata al misterio matemático en los Transformers](https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/)
     *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
     *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
+    *   [Mirando bajo el capó de un LLM](https://jjdelcerro.github.io/es/blog/mirando-bajo-el-capo-de-un-llm/)
       
 *   **Serie "Cuando la IA escribe código"**.
 
@@ -53,6 +60,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Más allá del prompt perfecto. Formando desarrolladores, no operadores de IA](https://jjdelcerro.github.io/es/blog/recetas-de-prompts/)
     *   [Deuda Técnica Mental: El conflicto entre el Explorador y el Archivista](https://jjdelcerro.github.io/es/blog/el-conflicto-entre-el-explorador-y-el-archivista/)
     *   [El día que fue inevitable sentirse como Susan Calvin](https://jjdelcerro.github.io/es/blog/el-dia-que-fue-inevitable-sentirse-como-susan-calvin/)
+    *   [El vendedor de empleados invisibles](El vendedor de empleados invisibles)
     <!--*   El arquitecto y la máquina.-->
     
 *   **Serie "Modelos Cognitivos y Semántica"**.
