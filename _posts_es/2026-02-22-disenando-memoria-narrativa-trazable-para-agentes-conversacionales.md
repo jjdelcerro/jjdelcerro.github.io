@@ -3,6 +3,7 @@ layout: post
 title: "Diseñando memoria narrativa trazable para agentes conversacionales"
 date: 2026-02-22
 canonical_url: "https://jjdelcerro.github.io/es/blog/disenando-memoria-narrativa-trazable-para-agentes-conversacionales/"
+image: "https://github.com/jjdelcerro/jjdelcerro.github.io/raw/main/assets/images/disenando-memoria-narrativa-trazable-para-agentes-conversacionales.png"
 ---  
 La semana pasada publiqué el artículo ["¿Memoria narrativa o resumen para un LLM?"](https://jjdelcerro.github.io/es/blog/memoria-narrativa-o-resumen-para-un-llm/). Contaba mi progresiva desilusión con los resúmenes como mecanismo para mantener conversaciones largas con un asistente de IA. Cómo, a fuerza de usarlos, empecé a notar que se perdía la intencionalidad de las decisiones, la cronología lógica de los razonamientos y los matices desaparecian en una simple lista de hechos. Contaba también que caí en la cuenta de que el problema no era cómo resumía, sino el hecho de resumir. Los LLMs, criaturas entrenadas con ingentes cantidades de prosa, narrativa y texto fluido, entienden mucho mejor cuando les das un texto con una narrativa fluida, cuando les cuentas una "historia".
 
