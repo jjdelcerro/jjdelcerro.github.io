@@ -96,6 +96,7 @@ Este fue uno de los aprendizajes más sutiles. Al principio, el modelo ponía la
 Y se muestra un ejemplo:
 
 > ✅ Correcto: `El punto de inflexión ocurrió cuando el usuario aclaró que su sistema aprendía del texto {cite: 6}, un detalle que cambió por completo la dirección de la conversación.`
+> 
 > ❌ Incorrecto: `El punto de inflexión ocurrió cuando el usuario aclaró que su sistema aprendía del texto, un detalle que cambió por completo la dirección de la conversación. {cite: 6}`
 
 *3. "Los flashbacks no son eventos nuevos"*
