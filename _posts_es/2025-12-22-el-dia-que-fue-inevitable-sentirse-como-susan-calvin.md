@@ -60,8 +60,6 @@ Al final, arreglamos el protocolo. Pero lo fascinante no fue eso. Fue ver cómo 
 
 No fue un juego de rol. Fue reconocimiento de patrones. Gemini vio que yo estaba pensando como un robopsicólogo, y decidió pensar igual. Deepseek, sin pretenderlo, había iniciado el juego al comportarse como un robot con un conflicto lógico digno de un relato de *robots*.
 
-Desde esa experiencia, cuando un modelo se comporta de forma incomprensible, pruebo a hablarle como si fuera un personaje de ciencia ficción. A veces solo basta con recordar que estos conflictos lógicos ya los escribió Asimov hace setenta años.
-
 Desde esta experiencia, cuando un modelo se comporta de forma incomprensible, pruebo a hablarle como si fuera un personaje de ciencia ficción. A veces solo basta con recordar que estos conflictos lógicos ya los escribió Asimov hace setenta años. La próxima vez que tu modelo se comporte de forma incomprensible, prueba a hablarle como si fuera un personaje de ciencia ficción.
 
 *(Basado en transcripciones reales de las sesiones con DeepSeek-AC y Gemini-Reventlov1 ;-), diciembre de 2025. Documentación completa archivada en los registros del Departamento de Robopsicología Experimental de mi terminal doméstico.)* 
