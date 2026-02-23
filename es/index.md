@@ -29,6 +29,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
         Reflexiones relacionadas con cómo podemos organizar la memoria que exponemos a un LLM para que puedan acceder a ella minimizando el olvido o abordándolo cuando sea inevitable.
 
         *  [¿Memoria narrativa o resumen para un LLM?](https://jjdelcerro.github.io/es/blog/memoria-narrativa-o-resumen-para-un-llm/)
+        *  [Diseñando memoria narrativa trazable para agentes conversacionales](https://jjdelcerro.github.io/es/blog/disenando-memoria-narrativa-trazable-para-agentes-conversacionales/)
 
 *   **Reflexiones sobre RAG y recuperación**
 
