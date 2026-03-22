@@ -70,16 +70,16 @@ Flujo de decisión y acción del orquestador:
 
 1.  *Recepción y clasificación.* Al llegar un evento, el orquestador lo etiqueta como **normal**, **prioritario** o **urgente**, según reglas preconfiguradas o políticas de la aplicación. Esta clasificación se basa en la taxonomía de urgencia, independientemente de la naturaleza del evento (discreto, agregable, etc.) que ya fue procesada en la capa fisiológica.
 
-2.  *Evaluación del ciclo actual.* El orquestador consulta su estado interno: *¿Se ha ejecutado ya alguna herramienta con efectos secundarios en este ciclo?* La respuesta determina si el ciclo es *"seguro"* para una cancelación transparente. Esta información la obtiene rastreando cada invocación de herramienta durante el ciclo en curso.
+2. *Evaluación del ciclo actual.* El orquestador consulta su estado interno: *¿Se ha ejecutado ya alguna herramienta con efectos secundarios en este ciclo?* La respuesta determina si el ciclo es *"seguro"* para una cancelación transparente. Esta información la obtiene rastreando cada invocación de herramienta durante el ciclo en curso.
 
-3.  *Aplicación de la política y selección del mecanismo*:
-    *   Si el evento es **normal**, se añade a una cola de agregación para su procesamiento normal. El orquestador lo mantendrá en espera, posiblemente aplicando técnicas de empaquetado cuando llegue el momento de inyectarlo.
-    *   Si el evento es **prioritario**:
-        *   Si el ciclo es *seguro*, no han habido escrituras, se desencadena una *cancelación segura*. El orquestador corta el flujo de tokens al LLM, sanitiza el historial eliminando el turno en curso y reintroduce el evento prioritario en un nuevo ciclo.
-        *   Si el ciclo *no es seguro*, ya han habido escrituras, el evento se inyecta en la cola, pero no al final, si no como proximo evento a procesar, y espera al final del ciclo. El orquestador prioriza la integridad del estado sobre la inmediatez.
-    *   Si el evento es **urgente**:
-        *   Si el ciclo es *seguro*, se aplica una *cancelación segura*, es la opción más eficiente y limpia.
-        *   Si el ciclo *no es seguro*, se aplica una *cancelación insegura*. El orquesatdor aborta la petición, inyecta la herramienta `haveCurrentOperationsBeenCancelled` con valor `true`, inyecta inmediatamente el evento urgente a continuación, y reinicia el ciclo.
+3. *Aplicación de la política y selección del mecanismo* 1:
+   * Si el evento es **normal**, se añade a una cola de agregación para su procesamiento normal. El orquestador lo mantendrá en espera, posiblemente aplicando técnicas de empaquetado cuando llegue el momento de inyectarlo.
+   * Si el evento es **prioritario**:
+     * Si el ciclo es *seguro*, no han habido escrituras, se desencadena una *cancelación segura*. El orquestador corta el flujo de tokens al LLM, sanitiza el historial eliminando el turno en curso y reintroduce el evento prioritario en un nuevo ciclo.
+   * Si el ciclo *no es seguro*, ya han habido escrituras, el evento se inyecta en la cola, pero no al final, si no como proximo evento a procesar, y espera al final del ciclo. El orquestador prioriza la integridad del estado sobre la inmediatez.
+   * Si el evento es **urgente**:
+     * Si el ciclo es *seguro*, se aplica una *cancelación segura*, es la opción más eficiente y limpia.
+     * Si el ciclo *no es seguro*, se aplica una *cancelación insegura*. El orquesatdor aborta la petición, inyecta la herramienta `haveCurrentOperationsBeenCancelled` con valor `true`, inyecta inmediatamente el evento urgente a continuación, y reinicia el ciclo.
 4.  *Ejecución y limpieza.* Dependiendo del mecanismo seleccionado, el orquestador manipula el historial, gestiona las colas de eventos y, en el caso de la cancelación insegura, asegura que la secuencia de notificación y evento nuevo sea atómica dentro del historial. En todos los casos, el orquestador mantiene un registro de los eventos procesados para evitar bucles o reintentos infinitos.
 
 Este protocolo hace explícito el compromiso entre capacidad de respuesta e integridad del estado. Toda cancelación tiene un coste inmediato: los tokens consumidos por el ciclo interrumpido se pierden. Sin embargo, una cancelación insegura añade capas de complejidad: el coste adicional de los tokens de notificación, la obligación de gestionar un estado potencialmente inconsistente y la posible necesidad de compensaciones futuras. Por el contrario, una cancelación segura es óptima en simplicidad: el sistema retorna a un estado conocido sin requerir ninguna intervención del LLM. La inteligencia del orquestador reside, por tanto, en maximizar las oportunidades para una cancelación segura, eligiendo ese camino siempre que la política (evento prioritario o urgente) y el estado (ciclo seguro) lo permitan.
