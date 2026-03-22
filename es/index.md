@@ -21,8 +21,8 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     
         *   [¿Qué es un agente?](https://jjdelcerro.github.io/es/blog/que-es-un-agente/)
         *   [Agentes de IA y la inyección de observaciones proactivas en clientes de chat](https://jjdelcerro.github.io/es/blog/agentes-de-ia-y-la-inyeccion-de-observaciones-proactivas-en-clientes-de-chat/)
-        <!--*   Cómo gestionar la observación proactiva.-->
-        <!--*   Agentes proactivos y transacciones.-->
+        *   [Control proactivo de la percepción en agentes de IA](https://jjdelcerro.github.io/es/blog/como-gestionar-la-observacion-proactiva/)
+        *   [Cuando la proactividad de un agente requiere cancelar y priorizar en su percepción](https://jjdelcerro.github.io/es/blog/mas-alla-del-pool-event-cuando-la-proactividad-requiere-cancelar-y-priorizar/)
     
     *   **Serie "Memoria narrativa trazable para clientes LLM en conversaciones de larga duración"**
   
