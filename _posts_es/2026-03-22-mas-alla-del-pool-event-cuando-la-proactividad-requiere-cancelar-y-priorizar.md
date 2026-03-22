@@ -5,7 +5,7 @@ date: 2026-03-22
 canonical_url: "https://jjdelcerro.github.io/es/blog/mas-alla-del-pool-event-cuando-la-proactividad-requiere-cancelar-y-priorizar/"
 ---  
 Hola,
-En el artículo anterior, ["Control proactivo de la percepción en agentes de IA"](https://jjdelcerro.github.io/es/blog/como-gestionar-la-observacion-proactiva/), vimos que teniamos la necesidad de filtrar y procesar los eventos del exterior. Pero proteger al LLM de la sobrecarga no basta si el entorno envía información más rápido de lo que el LLM puede procesar. Necesitamos procesar la entrada de información, a gestionar "turnos", y decidir cuándo un evento merece interrumpir el dialogo con el LLM.
+en el artículo anterior, "[Control proactivo de la percepción en agentes de IA](https://jjdelcerro.github.io/es/blog/como-gestionar-la-observacion-proactiva/)", vimos que teniamos la necesidad de filtrar y procesar los eventos del exterior. Pero proteger al LLM de la sobrecarga no basta si el entorno envía información más rápido de lo que el LLM puede procesar. Necesitamos procesar la entrada de información, a gestionar "turnos", y decidir cuándo un evento merece interrumpir el dialogo con el LLM.
 
 Sin embargo, cuando sacas el patrón *pool_event* del laboratorio y lo enfrentas a un sistema real, la arquitectura empieza a sufrir. Porque la proactividad no es solo un problema de atención; es, sobre todo, un problema de **gestión de turnos**.
 
