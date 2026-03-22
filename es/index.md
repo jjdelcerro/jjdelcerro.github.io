@@ -46,16 +46,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
     *   [Cómo el código mata al misterio matemático en los Transformers](https://jjdelcerro.github.io/es/blog/como-el-codigo-mata-al-misterio-matematico-en-los-transformers/)
     *   [Cuando le dices a tu LLM 'No pulses ese botón'](https://jjdelcerro.github.io/es/blog/cuando-le-dices-a-tu-llm-no-pulses-ese-boton/)
     *   [Cuando mi LLM aprendió a tener prisa, diagnóstico y contención del sesgo agéntico](https://jjdelcerro.github.io/es/blog/cuando-mi-llm-aprendio-a-tener-prisa-diagnostico-y-contencion-del-sesgo-agentico/)
-    *   [Mirando bajo el capó de un LLM](https://jjdelcerro.github.io/es/blog/mirando-bajo-el-capo-de-un-llm/)
-      
-*   **Serie "Cuando la IA escribe código"**.
-
-    Pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
-   
-    *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
-    *   [No, la ia no programa... las pruebas realizadas (parte 2)](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/)
-    *   [Cuando la IA escribe código... el bug que el LLM no ve (parte 3)](https://jjdelcerro.github.io/es/blog/cuando-la-ia-escribe-codigo-el-bug-que-el-llm-no-ve-parte-3/)
-    *   [Cuando la IA escribe código... la ilusión del entendimiento (parte 4)](https://jjdelcerro.github.io/es/blog/cuando-la-ia-escribe-codigo-la-ilusion-del-entendimiento-parte4/)
+    *   [Mirando bajo el capó de un LLM](https://jjdelcerro.github.io/es/blog/mirando-bajo-el-capo-de-un-llm/)      
 
 *   **Notas de campo**
 
@@ -72,6 +63,15 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
 
     *   [¿Cómo construir una IA que realmente entienda?](https://jjdelcerro.github.io/es/blog/como-construir-una-ia-que-realmente-entienda-articulo/)
     *   [¿Podemos usar la gramática para modelar el conocimiento?](https://jjdelcerro.github.io/es/blog/podemos-usar-la-gramatica-para-modelar-el-conocimiento/)
+
+*   **Serie "Cuando la IA escribe código"**.
+
+    Pruebas y reflexiones nacidas de la necesidad de confrontar el 'hype' con la realidad técnica. Documentan el abismo que separa la generación de texto sintácticamente correcto de la verdadera ingeniería de software, desmintiendo la promesa de un 'desarrollador senior' en una caja para reposicionar a la IA en su lugar real: una herramienta poderosa en manos expertas, pero incapaz de sustituir el modelo mental y la responsabilidad del arquitecto.
+   
+    *   [No, la IA no programa. Y los que te dicen lo contrario te están vendiendo humo](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-y-los-que-te-dicen-lo-contrario-te-estan-vendiendo-humo/)
+    *   [No, la ia no programa... las pruebas realizadas (parte 2)](https://jjdelcerro.github.io/es/blog/no-la-ia-no-programa-parte2-las-pruebas-realizadas/)
+    *   [Cuando la IA escribe código... el bug que el LLM no ve (parte 3)](https://jjdelcerro.github.io/es/blog/cuando-la-ia-escribe-codigo-el-bug-que-el-llm-no-ve-parte-3/)
+    *   [Cuando la IA escribe código... la ilusión del entendimiento (parte 4)](https://jjdelcerro.github.io/es/blog/cuando-la-ia-escribe-codigo-la-ilusion-del-entendimiento-parte4/)
     
 *   **Serie "El Asistente IA en gvSIG"**.
 
