@@ -27,7 +27,7 @@ Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es
         *  [¿Memoria narrativa o resumen para un LLM?](https://jjdelcerro.github.io/es/blog/memoria-narrativa-o-resumen-para-un-llm/)
         *  [Diseñando memoria narrativa trazable para agentes conversacionales](https://jjdelcerro.github.io/es/blog/disenando-memoria-narrativa-trazable-para-agentes-conversacionales/)
     
-    *   [Noema: cuando el patio de juegos no viene de serie](...) — la implementación que integra ambas líneas en una arquitectura única.
+    *   [Noema: cuando el patio de juegos no viene de serie](https://jjdelcerro.github.io/es/blog/noema-cuando-el-patio-de-juegos-no-viene-de-serie/) implementación que integra ambas líneas en una arquitectura única.
 
 *   **Reflexiones sobre RAG y recuperación**
 
