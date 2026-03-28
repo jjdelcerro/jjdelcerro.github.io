@@ -14,22 +14,20 @@ Aquí encontrarás mis artículos, un repositorio de ideas, análisis técnicos 
 Puedes ver la lista completa de articulos [aqui](https://jjdelcerro.github.io/es/articulos.html).
 
 *   **Reflexiones sobre agentes y autonomía**
+  
+    Una exploración continua sobre cómo construir agentes autónomos que no solo reaccionan, sino que perciben, priorizan y recuerdan con coherencia.
 
-    *   **Serie "Agentes y proactividad"**
-    
-        De la definición teórica a la implementación proactiva.
-    
+    *   *Proactividad y control sensorial*
         *   [¿Qué es un agente?](https://jjdelcerro.github.io/es/blog/que-es-un-agente/)
         *   [Agentes de IA y la inyección de observaciones proactivas en clientes de chat](https://jjdelcerro.github.io/es/blog/agentes-de-ia-y-la-inyeccion-de-observaciones-proactivas-en-clientes-de-chat/)
         *   [Control proactivo de la percepción en agentes de IA](https://jjdelcerro.github.io/es/blog/como-gestionar-la-observacion-proactiva/)
         *   [Cuando la proactividad de un agente requiere cancelar y priorizar en su percepción](https://jjdelcerro.github.io/es/blog/mas-alla-del-pool-event-cuando-la-proactividad-requiere-cancelar-y-priorizar/)
-    
-    *   **Serie "Memoria narrativa trazable para clientes LLM en conversaciones de larga duración"**
-  
-        Reflexiones relacionadas con cómo podemos organizar la memoria que exponemos a un LLM para que puedan acceder a ella minimizando el olvido o abordándolo cuando sea inevitable.
 
+    *   *Memoria narrativa y trazabilidad*
         *  [¿Memoria narrativa o resumen para un LLM?](https://jjdelcerro.github.io/es/blog/memoria-narrativa-o-resumen-para-un-llm/)
         *  [Diseñando memoria narrativa trazable para agentes conversacionales](https://jjdelcerro.github.io/es/blog/disenando-memoria-narrativa-trazable-para-agentes-conversacionales/)
+    
+    *   [Noema: cuando el patio de juegos no viene de serie](...) — la implementación que integra ambas líneas en una arquitectura única.
 
 *   **Reflexiones sobre RAG y recuperación**
 
