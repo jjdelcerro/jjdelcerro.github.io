@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Noema: cuando el patio de juegos no viene de serie"
-date: 2026-03-22
+date: 2026-03-28
 canonical_url: "https://jjdelcerro.github.io/es/blog/noema-cuando-el-patio-de-juegos-no-viene-de-serie/"
 ---  
 Hola,
