@@ -9,8 +9,17 @@ Esta página es una inmersión profunda en algunos de los sistemas más signific
 
 ---
 
+<h2 id="noema">Noema: Agente Conversacional Autónomo con Memoria Narrativa Trazable</h2>
+Periodo: 2026 - actualidad
+
+Noema es mi laboratorio personal para investigar arquitecturas de agentes autónomos de larga duración. Nació para validar conceptos como la memoria narrativa trazable, la percepción proactiva y el filtrado sensorial. El agente está implementado íntegramente en Java
+
+El código es público y está disponible en [GitHub](https://github.com/jjdelcerro/io.github.jjdelcerro.noema).
+
+---
+
 <h2 id="asistente-ia">Asistente de IA para Aplicaciones de Escritorio (I+D Personal)</h2>
-Periodo: 2025 - actualidad
+Periodo: 2025
 
 Diseñé y desarrollé un prototipo funcional para integrar un asistente de IA en una aplicación de escritorio Java/Swing (gvSIG desktop). El proyecto incluyó el análisis de viabilidad de las APIs de LLMs y la creación de una arquitectura de cliente-servidor local (Model Context Protocol - MCP) para resolver los problemas de coste y distribución.
 
