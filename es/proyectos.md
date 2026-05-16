@@ -27,6 +27,17 @@ Todo el proceso, desde la arquitectura hasta la implementación, está documenta
 
 ---
 
+<h2 id="urbansignage">UrbanSignage: Sistema de Inventario de Señalización Urbana</h2>
+Periodo: 2021 - 2023
+
+Diseñé y desarrollé UrbanSignage, una aplicación vertical completa para la gestión del inventario de señalización urbana (vertical, horizontal, cartelería, soportes y reservas). El proyecto nació como un encargo del Ayuntamiento de Alicante, donde se integró con su sistema web de gestión de partes de trabajo e incidencias. Ambos sistemas (escritorio y web) operaban sobre el mismo repositorio de datos, lo que exigió un profundo trabajo de integración y de alineamiento conceptual.
+
+Mi rol abarcó la arquitectura completa, el desarrollo del modelo de datos, la implementación de los formularios de edición (con selectores de diccionario, entidades vinculadas, selección espacial y cálculos asistidos), y las herramientas auxiliares como la capa paramétrica para líneas horizontales, la paleta de símbolos y el catálogo de modelos.
+
+UrbanSignage demostró que VCSGis podía ser la base de aplicaciones verticales para necesidades de inventario urbano no cubiertas por la mayoría de ayuntamientos. 
+
+---
+
 <h2 id="vcsgis">VCSGis: Sistema de Control de Versiones para Datos GIS</h2>
 Periodo: Desarrollo principal 2020 - 2023
 
