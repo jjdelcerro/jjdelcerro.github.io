@@ -17,6 +17,7 @@ Con casi dos décadas de dedicación, mi rol en el proyecto gvSIG ha evolucionad
 *   **Responsabilidades:** Ejercí como el referente técnico principal en un ecosistema de desarrollo distribuido, definiendo la arquitectura, coordinando la integración entre múltiples empresas y actuando como mentor de los equipos. Actualmente, mi rol se ha expandido para incluir el desarrollo en el backend de gvSIG Online sobre un stack moderno (Django, React, PostgreSQL).
 
 *   **Proyectos Destacados:**
+    *   [UrbanSignage: Sistema de Inventario de Señalización Urbana](./proyectos.html#urbansignage)
     *   [VCSGis: Sistema de Control de Versiones para Datos GIS](./proyectos.html#vcsgis)
     *   [SIGCAR: Sistema de Información Geográfica de Accidentalidad](./proyectos.html#sigcar)
 
