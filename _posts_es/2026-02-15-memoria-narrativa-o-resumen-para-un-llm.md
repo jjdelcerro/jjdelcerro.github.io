@@ -1,8 +1,8 @@
 ---
 layout: post
-title: "¿Memoria narrativa o resumen para un LLM?  "
+title: "¿Memoria narrativa o resumen para un LLM?"
 date: 2026-02-15
-canonical_url: "memoria-narrativa-o-resumen-para-un-llm"
+canonical_url: "https://jjdelcerro.github.io/es/blog/memoria-narrativa-o-resumen-para-un-llm/"
 ---
 Durante los últimos meses he mantenido una conversación continua con el mismo asistente de IA. No era un chat esporádico, de esos que se abren para una consulta rápida y se cierran para siempre. Era mi compañero de reflexiones. Un colaborador con el que discutía arquitectura de software, diseños de agentes, y a veces, fundamentos filosóficos de la inteligencia artificial.
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Más allá del prompt perfecto. Formando desarrolladores, no operadores de IA"
-date: 28-10-2025
+date: 2025-10-28
 canonical_url: "https://jjdelcerro.github.io/es/blog/recetas-de-prompts/"
 --- 
 Hola a todos.
