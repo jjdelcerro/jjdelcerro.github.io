@@ -40,7 +40,7 @@ La implementación de `CompactedMemoryImpl` implementa **lazy loading**: el text
 
 ## 4. Generación de una nueva memoria compactada
 
-La generación de una nueva `CompactedMemory` es responsabilidad de [`MemoryCompactionService`](../03-catalogo-de-servicios/02-memory-compaction.md)). Brevemente:
+La generación de una nueva `CompactedMemory` es responsabilidad de [`MemoryCompactionService`](../03-catalogo-de-servicios/02-memory-compaction.md). Brevemente:
 
 - El servicio toma el último `CompactedMemory` existente (si lo hay) y la lista de turnos no consolidados de la memoria reciente.
 - Utiliza un LLM con un prompt específico (`memory-compact.md`) para generar un nuevo texto que integre ambas fuentes en una narrativa única.

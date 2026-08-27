@@ -1,23 +1,28 @@
-## Seguridad y Control de Acceso (`AgentAccessControl`)
+# Seguridad y control de acceso (`AgentAccessControl`)
 
-### 1. Introducción
+## 1. El marco de contención del agente
 
-Noema no es un simple conversador; tiene la capacidad de leer y escribir archivos, ejecutar comandos en el sistema operativo y conectarse a servicios externos. Esta autonomía es necesaria para que el agente resulte útil, pero también introduce riesgos evidentes: un error del modelo, una alucinación o una instrucción maliciosa podrían tener consecuencias no deseadas sobre el sistema de archivos o la privacidad del usuario.
+Noema tiene capacidad para leer y escribir archivos, ejecutar comandos en el sistema operativo, procesar scripts en la JVM y conectarse a servicios externos en red. Esta autonomía operativa introduce riesgos evidentes: un fallo del modelo, una alucinación o una inyección de prompt podrían causar modificaciones no deseadas sobre el sistema de archivos o comprometer la privacidad del entorno de desarrollo.
 
-Para gestionar este dilema, Noema incorpora un subsistema de seguridad explícito centrado en la clase `AgentAccessControl`. Su misión es doble: por un lado, **definir qué operaciones están permitidas** en función del contexto y la configuración; por otro, **someter las operaciones peligrosas a confirmación humana** antes de ejecutarlas. Actúa como un guardián que filtra todas las acciones del agente, asegurando que la autonomía se ejerza siempre dentro de unos límites controlados.
+Para gobernar este comportamiento, el agente incorpora un subsistema de control de acceso centralizado en la clase `AgentAccessControlImpl`. Su responsabilidad es doble:
 
-El diseño parte de una premisa pragmática: la seguridad no consiste en impedir que el agente actúe, sino en garantizar que cada acción con posibles efectos destructivos cuente con la supervisión explícita del usuario. De este modo, Noema puede ofrecer capacidades avanzadas (escribir archivos, ejecutar scripts) sin renunciar a la confianza del operador humano.
+1. **Definir qué operaciones están permitidas** evaluando las políticas de configuración y el modo declarado por cada herramienta.
+2. **Interponer un mecanismo de confirmación humana síncrono** antes de permitir cualquier acción con efectos secundarios o destructivos.
 
-### 2. El modelo de permisos: modos de acceso y políticas
+El diseño asume una premisa pragmática: la seguridad no consiste en bloquear la capacidad de acción del agente, sino en garantizar que cada operación potencialmente destructiva pase por la supervisión explícita del usuario o por un entorno de ejecución estrictamente aislado.
 
-Toda herramienta (`AgentTool`) declara, mediante el método `getMode()`, uno de los siguientes modos de operación:
 
-- **`MODE_READ`**: operaciones de solo lectura (leer un archivo, consultar una API, buscar en el historial). No alteran el estado del sistema y se consideran seguras.
-- **`MODE_WRITE`**: operaciones que modifican el sistema de archivos (escribir, parchear, crear directorios). Pueden destruir información si se usan incorrectamente.
-- **`MODE_EXECUTION`**: ejecución de comandos en el shell del sistema. El más peligroso, pues permite cualquier acción que el usuario pueda realizar desde la terminal.
-- **`MODE_WEB`**: acceso a internet (búsquedas, descargas). Aunque no suele ser destructivo, puede comprometer la privacidad o consumir recursos.
+## 2. Modelo de permisos y modos de operación
 
-Estos modos se combinan con políticas globales que el usuario puede configurar en `settings.json` bajo la sección `access_control`:
+Cada herramienta (`AgentTool`) declara de forma obligatoria su naturaleza técnica mediante el método `getMode()`:
+
+* **`MODE_READ` (1):** Operaciones de solo lectura e introspección (leer archivos, consultar el catálogo de sensores, buscar en el historial de memoria). Se consideran seguras y no requieren confirmación humana.
+* **`MODE_WRITE` (2):** Operaciones que modifican el sistema de archivos (escribir o sobrescribir ficheros, aplicar parches diff, crear directorios o alterar la configuración).
+* **`MODE_WEB` (3):** Peticiones de red e Internet (búsquedas en la web, descargas de URLs).
+* **`MODE_EXECUTION` (4):** Ejecución de procesos en el shell del sistema operativo (`shell_execute`).
+* **`MODE_SCRIPTING` (5):** Ejecución de código Groovy embebido en la JVM (`execute_script`).
+
+Estos modos se evalúan contra las políticas globales definidas en `settings.json` bajo la sección `access_control`:
 
 ```json
 "access_control": {
@@ -27,128 +32,152 @@ Estos modos se combinan con políticas globales que el usuario puede configurar 
   "allow_internet_access": false,
   "enable_rcs_backup": true,
   "enable_firejail": false,
-  ...
+  "allowed_external_paths": [],
+  "nom_writable_paths": null,
+  "nom_readable_paths": null
 }
 ```
 
-`AgentAccessControl` expone métodos como `isAllowedDiskWrite()`, `isAllowedShellExecution()` e `isAllowedInternetAccess()`. Si una herramienta intenta ejecutarse en un modo que está deshabilitado globalmente, `isToolAllowed()` devuelve `false` y `ReasoningService` ni siquiera la ofrecerá al modelo (o la ejecución se denegará). Esta doble capa (declaración local + política global) permite un control muy fino: el usuario puede, por ejemplo, permitir lectura de archivos pero prohibir cualquier escritura, o activar la ejecución de shell solo cuando realmente confíe en el agente.
+El método `isToolAllowed(AgentTool tool)` evalúa estas directivas antes de que el motor de razonamiento intente ejecutar una herramienta: si una herramienta requiere escritura en disco y `allow_disk_write` es `false`, la ejecución se deniega inmediatamente sin llegar a consultar al LLM.
 
-### 3. El sandbox de archivos
 
-El control de acceso al sistema de archivos se basa en un mecanismo de **resolución de rutas** implementado en `resolvePath(String rawPath, AccessMode mode)`. El proceso es el siguiente:
+## 3. El sandbox de archivos
 
-1. **Normalización y absoluto**: la ruta introducida (puede ser relativa o absoluta) se resuelve contra la raíz del workspace (`getWorkspaceFolder()`). Se normaliza y se convierte a ruta real (`toRealPath()`) para eliminar `..` y enlaces simbólicos maliciosos.
-
-2. **Comprobación de jailbreak**: se verifica que la ruta resultante esté dentro del workspace o dentro de alguna de las rutas externas autorizadas (lista blanca configurable mediante `allowed_external_paths`). Si no es así, se lanza una excepción de seguridad.
-
-3. **Restricciones específicas de escritura**: si el modo es `PATH_ACCESS_WRITE`, se aplican reglas adicionales:
-   - No se puede escribir sobre archivos con extensión `,jv` (los backups de RCS). Son de solo lectura para preservar la integridad del historial de versiones.
-   - No se puede escribir dentro de la carpeta `.git` (evita corromper repositorios de control de versiones).
-   - Se comprueba si la ruta está en `nom_writable_paths` (lista de rutas no escribibles configurada por el usuario).
-
-4. **Comprobaciones de lectura**: incluso para `PATH_ACCESS_READ`, se verifica que la ruta no esté en `nom_readable_paths` (lista de rutas prohibidas, como archivos de configuración sensibles del agente).
-
-Si alguna de estas condiciones falla, se lanza una `SecurityException`. Para situaciones en las que no se desea interrumpir el flujo (por ejemplo, al listar archivos), existe `resolvePathOrNull()` que devuelve `null` en lugar de lanzar excepción.
-
-Este diseño impide eficazmente los ataques de *path traversal* (ejemplo: `../../etc/passwd`). Además, es extensible: el usuario puede añadir nuevas rutas a la lista blanca (como su carpeta `Documentos`) y restringir otras que considere peligrosas.
-
-### 4. Confirmación humana
-
-El filtro más importante es la **confirmación humana**. Cuando una herramienta con modo `MODE_WRITE` o `MODE_EXECUTION` está a punto de ejecutarse, y la política global `humanConfirmationRequired` está activa, `AgentAccessControl` (o más bien el `ReasoningService` antes de invocar la herramienta) solicita autorización al usuario mediante `AgentConsole.confirm()`.
-
-El mensaje incluye el nombre de la herramienta y los argumentos que se van a utilizar. Por ejemplo:
+El acceso al sistema de archivos se canaliza a través del método `resolvePath(String rawPath, AccessMode mode)` en `AgentAccessControlImpl`. El proceso de validación aplica los siguientes filtros:
 
 ```
-El agente quiere ejecutar la herramienta: file_write
-Argumentos: {"path": "config.json", "content": "{\"key\": \"value\"}"}
-¿Autorizar? (s/n):
+[Ruta solicitada]
+        │
+        ▼
+1. Resolución y normalización (toRealPath)
+        │
+        ▼
+2. ¿Está en lista de lectura prohibida (nom_readable_paths)? ──► SÍ ──► [SecurityException]
+        │ NO
+        ▼
+3. ¿Está bajo workspaceFolder o en allowed_external_paths? ───► NO ──► [SecurityException]
+        │ SÍ
+        ▼
+4. Si el modo es ESCRITURA:
+   ├── ¿Termina en ',jv'? (Backup RCS) ────────────────────────► SÍ ──► [SecurityException]
+   ├── ¿Contiene '/.git/'? (Control de versiones) ─────────────► SÍ ──► [SecurityException]
+   ├── ¿Está dentro de '/.claude/skills/'? (Directivas base) ──► SÍ ──► [SecurityException]
+   └── ¿Está en lista de solo lectura (nom_writable_paths)? ───► SÍ ──► [SecurityException]
+        │ NO
+        ▼
+   [Ruta validada]
 ```
 
-El usuario puede responder afirmativa o negativamente. Si deniega, la herramienta no se ejecuta y se devuelve un mensaje de error que el LLM recibe como resultado de su llamada. El agente puede entonces explicar que la operación no fue autorizada y, opcionalmente, proponer una alternativa.
+### Reglas duras de protección
 
-La confirmación es **bloqueante**: el hilo del `eventDispatcher` se detiene hasta que el usuario responda. Esto es intencionado, pues el agente no debe continuar razonando mientras una acción peligrosa está pendiente de decisión. En la interfaz gráfica, se muestra un diálogo modal; en la consola, se espera entrada por teclado.
+1. **Protección del núcleo del agente:** Durante la inicialización, `AgentImpl` añade automáticamente la carpeta interna `.noema-agent` a `nomReadablePaths`. Las herramientas estándar del LLM (`file_read`, `file_write`, `file_grep`) tienen prohibido acceder directamente a las bases de datos H2 o a los archivos internos de sesión.
+2. **Protección de manuales y habilidades (`.claude/skills/`):** El sistema deniega cualquier intento de escritura sobre archivos ubicados en `.claude/skills/`, garantizando que el agente no pueda modificar o corromper sus propios protocolos operativos.
+3. **Inmutabilidad de los historiales de respaldo (`,jv`):** Los archivos de versión de JavaRCS son de solo lectura; el LLM puede consultar su historial (`file_history`), pero no puede alterarlos directamente.
+4. **Protección de repositorios Git (`.git/`):** Se bloquea la escritura dentro del árbol de metadatos de Git para evitar la corrupción del control de versiones del proyecto anfitrión.
 
-Este mecanismo sitúa al usuario en la posición de **supervisor último**. Incluso si el agente, por error o engaño, intenta borrar un archivo crítico, el humano tiene la oportunidad de detenerlo. Es una salvaguarda rudimentaria pero efectiva, especialmente en una fase de prototipo donde el comportamiento del LLM no es totalmente fiable.
+---
 
-### 5. Backup automático con RCS
+## 4. Confirmación humana y supervisión interactiva
 
-Antes de que cualquier herramienta modifique un archivo existente (escritura, parche, búsqueda y reemplazo), se invoca al sistema RCS embebido (JavaRCS) para hacer un **check-in automático** de la versión actual. El código típico es:
+Cuando una herramienta declara un modo distinto de `MODE_READ` (`MODE_WRITE`, `MODE_EXECUTION`, `MODE_WEB` o `MODE_SCRIPTING`) y la directiva `humanConfirmationRequired` está activa, `ReasoningServiceImpl` detiene el flujo de ejecución e invoca `AgentConsole.confirm()`:
 
 ```java
-if (Files.exists(filePath)) {
-    RCSManager rcsmanager = RCSLocator.getRCSManager();
-    CheckinOptions opciones = rcsmanager.createCheckinOptions(filePath);
-    opciones.setAuthor(getReasoningService().getModelName());
-    opciones.setInit(true);
-    RCSCommand ci = rcsmanager.create(opciones);
-    ci.execute(opciones);
+if (tool.getMode() != AgentTool.MODE_READ && agent.getAccessControl().isHumanConfirmationRequired()) {
+    boolean authorized = console.confirm(
+        String.format("El agente quiere ejecutar la herramienta: %s\nArgumentos: %s\n¿Autorizar?", toolName, args)
+    );
+    if (!authorized) {
+        return "Ejecución de herramienta denegada por el usuario.";
+    }
 }
 ```
 
-El resultado es que, junto al archivo original, se genera un fichero de historial (normalmente con extensión `,jv`) que contiene todas las versiones anteriores. El LLM puede recuperar una versión antigua mediante las herramientas `file_history` (para listar revisiones) y `file_recovery` (para restaurar una revisión concreta).
+* **Bloqueo síncrono:** La llamada detiene el hilo `Noema-Event-Dispatcher`. En Swing, presenta un diálogo modal sobre la ventana activa; en Lanterna, una ventana emergente de confirmación; en JLine, un prompt interactivo `(s/n)` en la terminal.
+* **Modo desatendido en subagentes:** En `SubagentImpl`, la seguridad se reconfigura para entornos no interactivos: `humanConfirmationRequired` se establece en `false` y `SubagentConsole` auto-aprueba las operaciones registrando un evento `CONFIRM:AUTO_APPROVED` en el archivo de log correspondiente (`subagent_*.log`).
 
-Esta funcionalidad, que se activa mediante `enable_rcs_backup` (por defecto `true`), constituye una **red de seguridad** frente a errores del LLM. Si el agente escribe un contenido erróneo o corrompe un archivo, el usuario. o el propio agente, puede deshacer el cambio. Además, fomenta la experimentación: el usuario puede permitir escrituras sin temor a perder información valiosa.
+---
 
-### 6. Ejecución de comandos
+## 5. Respaldo automático con JavaRCS
 
-La herramienta `shell_execute` es la más sensible, pues permite ejecutar cualquier comando en el sistema. Por ello, incorpora capas de protección adicionales:
+Para evitar la pérdida irreversible de código ante ediciones defectuosas del modelo, las herramientas de modificación (`file_write`, `file_patch`, `file_search_and_replace` y la fachada `agent.fs.write` en scripts Groovy) realizan un **check-in automático** antes de aplicar cambios sobre un archivo preexistente:
 
-- **Confirmación humana obligatoria**: su modo es `MODE_EXECUTION`, y siempre requiere autorización explícita, independientemente de otras políticas.
+```java
+if (Files.exists(filePath) && accessControl.isEnabledRCSBackup()) {
+    RCSManager rcsManager = RCSLocator.getRCSManager();
+    CheckinOptions options = rcsManager.createCheckinOptions(filePath);
+    options.setAuthor(reasoningService.getModelName());
+    options.setInit(true);
+    RCSCommand<CheckinOptions> ci = rcsManager.create(options);
+    ci.execute(options);
+}
+```
 
-- **Sandboxing con firejail**: si el sistema tiene instalado `firejail` y `enable_firejail` está activo, el comando se envuelve en un entorno restringido. El directorio home del agente se aísla, el acceso al sistema de archivos se limita a una lista blanca (el workspace y poco más), y se bloquean ciertas capacidades de red. La herramienta detecta automáticamente si `firejail` está disponible y muestra una advertencia si no lo está.
+Este proceso genera un archivo de historial (con sufijo `,jv`) en el mismo directorio. Si el modelo introduce un error lógico o borra contenido crítico:
+* El agente o el usuario pueden inspeccionar las revisiones con `file_history`.
+* Se puede restaurar una versión anterior exacta mediante `file_recovery`.
 
-- **Timeout y control de procesos**: el comando se lanza en un proceso separado y se supervisa. Cada 30 segundos se pregunta al usuario si desea continuar esperando, permitiéndole abortar comandos que se eternicen.
+---
 
-- **Captura de salida**: la salida estándar y de error se redirigen a un archivo temporal en `var/tmp`. La salida se sirve paginada mediante `AbstractPaginatedAgentTool`, evitando saturar la ventana de contexto del LLM.
+## 6. Seguridad en la ejecución de código y comandos
 
-- **Desactivación global**: el usuario puede prohibir completamente la ejecución de comandos mediante `allow_shell_execution: false`. En ese caso, la herramienta ni siquiera aparecerá en el catálogo de capacidades del agente.
+Noema implementa dos estrategias diferenciadas según el entorno de ejecución:
 
-Estas medidas reducen drásticamente el riesgo de que un comando malicioso o erróneo cause daños. No obstante, la responsabilidad última sigue recayendo en el usuario, que debe autorizar cada ejecución conscientemente.
+### Aislamiento en el shell del sistema (`shell_execute`)
 
-### 7. Recarga en caliente y listas dinámicas
+* **Supervisión por pasos de tiempo:** El proceso lanzado se supervisa en intervalos de 30 segundos (`WAIT_STEP_SECONDS`). Si el comando no finaliza, el sistema pausa y pregunta al usuario si desea mantenerlo en ejecución o destruirlo forzosamente.
+* **Sandbox con Firejail:** Si `enable_firejail` está activo y el binario `firejail` está presente en el sistema operativo, el comando se ejecuta encapsulado:
+  ```bash
+  firejail --quiet --private="<workspace>/.noema-agent/home" \
+           --whitelist="<workspace>" \
+           --blacklist="<workspace>/.noema-agent/var/lib" \
+           -- bash -c "<comando>"
+  ```
+  Esto confina el directorio home a un entorno efímero (`var/home`), restringe el acceso a la raíz del proyecto y oculta las bases de datos de la memoria episódica.
 
-La configuración de seguridad puede modificarse sin reiniciar el agente gracias a la acción `RELOAD_ACCESS_CONTROL`. Cuando el usuario cambia alguna de las listas (rutas blancas, rutas prohibidas, flags booleanos) en `settings.json`, puede ejecutar esta acción desde el menú de depuración. `AgentAccessControlImpl` vuelve a leer todas las propiedades y actualiza sus estructuras internas (listas de rutas, flags). Esto permite, por ejemplo, autorizar temporalmente la escritura en disco para una tarea específica y revocarla después, todo ello sin detener al agente.
+### Sandbox en memoria para scripts Groovy (`ScriptExecuteTool`)
 
-Las listas se gestionan mediante `AgentSettingsPaths` y `AgentSettingsCheckedList`, lo que facilita su edición desde la interfaz gráfica de configuración. El usuario puede añadir o eliminar rutas externas permitidas, marcar directorios como de solo lectura, o establecer exclusiones completas, todo desde una UI amigable.
+Los scripts ejecutados mediante el motor embebido de Groovy no interactúan libremente con el runtime de Java; están sujetos a un doble filtro de seguridad:
 
-### 8. Integración con el subsistema de herramientas
+1. **`SecureASTCustomizer`:** Inspecciona el árbol sintáctico (AST) antes de compilar y prohíbe explícitamente:
+   * Acceso a `java.lang.System`, `java.lang.Runtime` y `java.lang.ProcessBuilder`.
+   * Uso de reflexión (`java.lang.reflect.*`) y llamadas dinámicas (`java.lang.invoke.*`).
+2. **`TimedInterrupt`:** Inyecta comprobaciones de tiempo en el bytecode para abortar la ejecución si supera los 30 segundos, impidiendo bucles infinitos.
+3. **I/O intermediado:** Los scripts no tienen acceso directo a `java.io.File`; cualquier lectura o escritura debe realizarse mediante las fachadas de contexto (`agent.fs`), que validan cada ruta contra `AgentAccessControl`.
 
-`AgentAccessControl` no actúa de forma aislada; está integrado en los puntos críticos del flujo de ejecución:
+---
 
-- **En `ReasoningService`**: antes de ejecutar cualquier herramienta, se invoca a `accessControl.isToolAllowed(tool)`. Si devuelve `false`, la herramienta se considera no disponible (no se ofrece al modelo) o su ejecución se deniega con un mensaje de error.
+## 7. Control de acceso a la red y prevención de SSRF
 
-- **En `AbstractAgentTool` y sus descendientes**: los métodos `resolvePathOrNull()` y `resolvePath()` utilizan `agent.getAccessControl()` para validar cada acceso a archivo. De este modo, todas las herramientas de lectura/escritura comparten la misma política de sandbox.
+El acceso a recursos externos (`web_search`, `web_get_content` y `agent.web`) se valida a través de `isAccessible(URI url)`:
 
-- **En `AgentPaths`**: aunque no depende directamente de `AgentAccessControl`, la raíz del workspace (`getWorkspaceFolder()`) es el punto de partida para la resolución de rutas. Ambas clases colaboran estrechamente.
+```java
+@Override
+public boolean isAccessible(URI url) {
+    if (!isAllowedInternetAccess()) {
+        return false;
+    }
+    String lower = url.toString().toLowerCase();
+    return !(lower.contains("localhost") || lower.contains("127.0.0.1") || lower.contains("192.168."));
+}
+```
 
-- **En `ShellExecuteTool`**: además de consultar `isToolAllowed()`, verifica `isFirejailEnabled()` y utiliza `getSandboxHomeFolder()` para configurar el entorno aislado.
+* **Bloqueo global:** Si `allow_internet_access` es `false`, se deniega cualquier petición HTTP saliente.
+* **Protección contra SSRF (Server-Side Request Forgery):** Se bloquea el acceso a direcciones de loopback local (`localhost`, `127.0.0.1`) y segmentos de red local privada (`192.168.*`), impidiendo que el LLM acceda a servicios internos de la máquina anfitriona (como la consola H2 en el puerto 8082).
 
-Esta integración garantiza que no haya ningún "camino secreto" para eludir los controles de seguridad. Cada operación de lectura, escritura o ejecución pasa por el guardián.
+---
 
-### 9. Limitaciones y decisiones deliberadas
+## 8. Auditoría de reglas de configuración
 
-El sistema de seguridad de Noema no pretende ser infranqueable ni adecuado para entornos multiusuario. Está diseñado para un agente de escritorio que opera en una sola máquina bajo la supervisión directa del usuario. Por ello, presenta limitaciones asumidas:
+Durante el arranque o tras ejecutar la acción `RELOAD_ACCESS_CONTROL`, `AgentAccessControlImpl.validateRules()` analiza las listas configuradas en `settings.json` para detectar inconsistencias:
 
-- **Sin control de acceso basado en roles**: no hay distinción entre distintos tipos de usuarios (administrador, invitado). Solo existe el usuario que ejecuta el agente.
+* **Rutas aisladas:** Advierte si hay rutas en `nom_writable_paths` o `nom_readable_paths` ubicadas fuera del workspace que no hayan sido añadidas a `allowed_external_paths` (ya que el sandbox las bloqueará por defecto).
+* **Rutas redundantes:** Señala rutas dentro del workspace declaradas innecesariamente en `allowed_external_paths`.
+* **Solapamientos de políticas:** Identifica si una ruta está simultáneamente en `nom_readable_paths` (bloqueo total) y `nom_writable_paths` (solo lectura), recordando que prevalecerá el bloqueo total.
 
-- **Sin sandboxing a nivel de red**: la política `allow_internet_access` es un veto global. No se pueden permitir ciertos dominios y denegar otros, ni restringir por puertos o protocolos.
+---
 
-FIXME: Repasar lo del sandboxing a nivel de red, no tengo claro si es correcto.
+## 9. Límites del diseño
 
-- **Dependencia de `firejail` externo**: el sandbox de comandos solo funciona si `firejail` está instalado en el sistema. Noema no proporciona su propio contenedor ni mecanismos de aislamiento más ligeros.
-
-- **Confirmación humana bloqueante**: no hay timeout. Si el usuario se ausenta, el agente quedará detenido indefinidamente esperando respuesta. Esto puede ser problemático en tareas automáticas que requieran supervisión.
-
-- **Protección limitada contra ataques de inyección**: si el LLM recibe un prompt malicioso que le hace invocar herramientas con argumentos peligrosos, el filtro de rutas y la confirmación humana pueden detenerlo, pero no hay análisis semántico de los argumentos (por ejemplo, detectar `rm -rf /`).
-
-Estas limitaciones son aceptables para un prototipo de investigación. En un escenario de producción o de alta seguridad se requerirían medidas adicionales (como listas de comandos permitidos, análisis heurístico de la salida del modelo o ejecución en contenedores completos).
-
-### 10. Conclusión
-
-`AgentAccessControl` no es un sistema de seguridad industrial, pero proporciona las barreras necesarias para prevenir daños accidentales y mantener al usuario en control. Su diseño combina tres principios fundamentales:
-
-- **Declaración explícita del peligro**: cada herramienta etiqueta su modo, y el sistema aplica políticas coherentes.
-- **Defensa en profundidad**: sandbox de archivos + confirmación humana + backups automáticos + sandbox de comandos.
-- **Transparencia y control**: el usuario puede inspeccionar y modificar todas las políticas en caliente, y es consultado antes de cualquier acción irreversible.
-
-Gracias a este diseño, Noema puede ofrecer capacidades avanzadas (escritura de archivos, ejecución de comandos) sin generar una sensación de inseguridad constante. El usuario sabe que, en última instancia, la decisión es suya. Y si algo sale mal, los backups RCS permiten deshacer el cambio. Es un equilibrio pragmático que refleja bien la filosofía general del proyecto: **autonomía con supervisión, poder con responsabilidad**.
+* **Monousuario:** No existe un modelo de permisos basado en roles de usuario; el sistema asume un único operador local frente a la máquina.
+* **Filtrado de red básico:** El control de red opera por exclusión de rangos locales comunes; no implementa una lista blanca estricta de dominios ni inspección profunda de tráfico.
+* **Dependencia de utilidades externas para aislamiento total del shell:** El sandboxing a nivel de sistema operativo para comandos Bash depende de la disponibilidad de `firejail` en el sistema anfitrión Linux. En su ausencia, el comando se ejecuta con los permisos del usuario que lanzó la JVM.

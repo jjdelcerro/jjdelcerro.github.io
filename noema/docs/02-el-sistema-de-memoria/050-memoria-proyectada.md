@@ -150,7 +150,7 @@ Las operaciones registradas actualmente son:
   - Inyecta un aviso efímero para que el modelo consolide el conocimiento.
   - Solo se activa para recursos en la "zona de riesgo" (próximos a salir del contexto).
 
-- **`[TemporalPerceptionOperation](054-operation-temporal-perception.md)` (prioridad 30)**:
+- **[`TemporalPerceptionOperation`](054-operation-temporal-perception.md) (prioridad 30)**:
   - Inyecta una notificación si ha pasado más de una hora desde la última interacción.
   - El mensaje informa al modelo del tiempo transcurrido para que contextualice su respuesta.
 

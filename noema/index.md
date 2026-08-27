@@ -33,7 +33,7 @@ Este bloque cubre los pilares sobre los que se asienta el agente: cómo se arran
 
 * **[Configuración](./docs/01-fundamentos-y-ciclo-de-vida/03-agent-settings.md)**: la configuración jerárquica con `AgentSettings`, y la generación dinámica de interfaces con `ExpressionEvaluator` y `settingsui.json`.
 
-* **[Seguridad y control de acceso](./docs/01-fundamentos-y-ciclo-de-vida/03-seguridad-y-control-de-acceso.md)**: `AgentAccessControl`, sandbox de disco, listas blancas y negras, confirmación humana, RCS automático y sandbox de comandos con Firejail.
+* **[Seguridad y control de acceso](./docs/01-fundamentos-y-ciclo-de-vida/04-seguridad-y-control-de-acceso.md)**: `AgentAccessControl`, sandbox de disco, listas blancas y negras, confirmación humana, RCS automático y sandbox de comandos con Firejail.
 
 
 ## El Sistema de Memoria (Las 4 Capas)
@@ -42,7 +42,7 @@ El corazón de Noema. Este bloque describe cómo se organiza la memoria para evi
 
 * **[Visión general del modelo de memoria](./docs/02-el-sistema-de-memoria/010-vision-general-de-modelo-de-memoria.md)**: El problema del contexto finito y la estrategia de Noema: memoria episódica, compactada, reciente y proyectada.
 * **[Memoria episódica (`EpisodicMemory`)](./docs/02-el-sistema-de-memoria/020-memoria-episodica.md)**: Inmutabilidad de `Turn`, tabla H2, política de truncado de resultados pesados y búsqueda semántica con embeddings.
-* **[Memoria compactada (`CompactedMemory`)](./02-el-sistema-de-memoria/030-memoria-compactada.md)**: El `CheckPoint`, persistencia híbrida (BD + `.md`), estructura dual (Resumen + El Viaje) y trazabilidad con `{cite:ID}`.
+* **[Memoria compactada (`CompactedMemory`)](./docs/02-el-sistema-de-memoria/030-memoria-compactada.md)**: El `CheckPoint`, persistencia híbrida (BD + `.md`), estructura dual (Resumen + El Viaje) y trazabilidad con `{cite:ID}`.
 * **[Memoria reciente (`RecentMemory`)](./docs/02-el-sistema-de-memoria/040-memoria-reciente.md)**: Ventana activa de sesión, backfill de `turnId`, gestión de límites atómicos y condición de compactación.
 * **[Memoria proyectada (`ProjectedMemory`)](./docs/02-el-sistema-de-memoria/050-memoria-proyectada.md)**: El pipeline de operaciones efímeras que construye la vista final para el LLM.
 
@@ -54,7 +54,7 @@ Los servicios son los módulos funcionales que el agente activa durante su ejecu
 * **[`ReasoningService`](./docs/03-catalogo-de-servicios/01-reasoning.md)**: El orquestador principal: bucle de consciencia `eventDispatcher`, gestión del contexto, ejecución de herramientas y coordinación de la memoria.
 * **[`MemoryCompactionService`](./docs/03-catalogo-de-servicios/02-memory-compaction.md)**: La compactación narrativa: generación de `CompactedMemory` a partir de turnos, validación de citas y uso de LLM específico.
 * **[`SensorsService`](./docs/03-catalogo-de-servicios/03-sensors.md)**: El sistema nervioso autónomo: gestión de eventos asíncronos, naturalezas sensoriales, arbitraje cronológico y persistencia.
-* **[`EmbeddingsService`](./docs/03-catalogo-de-servicios/embeddings.md)**: Vectorización local con ONNX, similitud coseno, búsqueda top-K y serialización BLOB.
+* **[`EmbeddingsService`](./docs/03-catalogo-de-servicios/05-embeddings.md)**: Vectorización local con ONNX, similitud coseno, búsqueda top-K y serialización BLOB.
 * **[`SchedulerService`](./docs/03-catalogo-de-servicios/04-scheduler.md)**: Planificación temporal persistente con Natty, cola de alarmas y emisión de eventos.
 * **Servicios de integración (Telegram, Email, MCP)**: Puentes con el mundo exterior: escucha de mensajes, correos y protocolo MCP.
 

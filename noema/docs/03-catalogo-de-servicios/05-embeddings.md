@@ -1,160 +1,184 @@
-## Servicio de Embeddings (`EmbeddingsService`)
+# Servicio de embeddings (`EmbeddingsService`)
 
-### 1. Introducción: el poder de la representación vectorial
+## 1. Representación vectorial y búsqueda por significado
 
-Los modelos de lenguaje no entienden el texto como una secuencia de caracteres; lo transforman en **vectores numéricos** (embeddings) que capturan su significado semántico. Dos textos similares (aunque usen palabras distintas) producirán vectores cercanos en el espacio multidimensional. Esta propiedad es la base de la **búsqueda por similitud semántica**, una capacidad fundamental para un agente que necesita recuperar información relevante de su historial o de documentos sin depender de palabras clave exactas.
+Los modelos de lenguaje operan internamente proyectando conceptos en espacios vectoriales multidimensionales. En este espacio, la distancia geométrica entre dos vectores se correlaciona con su afinidad semántica: dos textos con significados similares generan vectores cercanos, con independencia de las palabras exactas que utilicen.
 
-Noema integra esta funcionalidad a través de `EmbeddingsService`. Su cometido es doble: por un lado, proporciona la infraestructura para **vectorizar texto** (convertir frases en vectores de números reales); por otro, ofrece herramientas para **comparar vectores** (similitud coseno) y **recuperar los más similares** a una consulta (búsqueda top-K). Todo ello se ejecuta completamente en local, sin llamadas a APIs externas, utilizando un modelo de embeddings ligero y de código abierto.
+Noema aprovecha esta propiedad para dotar al agente de **búsqueda semántica en su memoria a largo plazo**. El componente `EmbeddingsService` gestiona este subsistema de forma 100% local, ligera y determinista, sin realizar llamadas a APIs externas de pago ni requerir servicios auxiliares en la nube.
 
-El servicio es transversal: lo utilizan `SourceOfTruth` para la búsqueda semántica en el historial de conversación (herramienta `search_full_history`) y `DocumentsService` para la búsqueda en los resúmenes de documentos indexados. Sin embeddings, Noema estaría limitado a búsquedas por palabra clave o expresiones regulares, que son mucho menos flexibles.
+Sus funciones principales son:
+1. **Vectorización local:** Transformar fragmentos de texto en vectores de números reales utilizando un modelo cuantizado en formato ONNX.
+2. **Particionado y recuperación MaxP (*Maximum Passage*):** Dividir turnos extensos en bloques (*chunks*) para evitar la dilución semántica y comparar contra el fragmento de máxima similitud.
+3. **Serialización binaria:** Convertir arrays de coma flotante (`float[]`) en secuencias de bytes (`byte[]`) optimizadas para su almacenamiento en columnas BLOB de la base de datos relacional H2.
+4. **Filtrado y ordenación Top-K (`EmbeddingFilter`):** Evaluar similitudes coseno en memoria sobre los registros de la memoria episódica para entregar los resultados más relevantes ordenados de forma descendente.
 
-### 2. Arquitectura general: modelo local y utilidades asociadas
 
-`EmbeddingsService` es un servicio más del agente, registrado con el nombre `"Embeddings"`. Sus componentes principales son:
+## 2. El modelo de embeddings ONNX multilingüe
 
-- **`EmbeddingsServiceImpl`**: implementación concreta. Gestiona la carga del modelo, ofrece métodos de vectorización, serialización y similitud.
-- **Modelo de embeddings**: una instancia de `AllMiniLmL6V2EmbeddingModel`, de LangChain4j. Es un modelo de 384 dimensiones, entrenado por sentence-transformers, optimizado para CPU y de tamaño reducido (unos 80 MB en disco).
-- **`EmbeddingFilter`**: interfaz que define el contrato para búsquedas top-K. Permite añadir candidatos y recuperar los más similares.
-- **`EmbeddingFilterImpl`**: implementación con una cola de prioridad (min-heap) que mantiene los K elementos con mayor similitud a la query.
-- **Utilidades de conversión**: métodos `toBytes()` y `fromBytes()` para serializar `float[]` a `byte[]` y viceversa, necesarios para almacenar vectores en las columnas BLOB de H2.
+A diferencia de aproximaciones que dependen de modelos monolingües descargados en tiempo de ejecución, Noema empaqueta un modelo local optimizado para inferencia en CPU:
 
-El servicio se inicia en cuanto el agente arranca (su fábrica siempre devuelve `true`). Al hacerlo, carga el modelo en memoria, lo que puede tomar unos segundos la primera vez (la descarga de pesos ocurre automáticamente). Una vez cargado, permanece residente durante toda la sesión.
+* **Modelo principal (ID `0`):** `paraphrase-multilingual-MiniLM-L12-v2` cuantizado (`model_quantized.onnx`), con su correspondiente tokenizador (`tokenizer.json`).
+* **Dimensiones:** 384 dimensiones por vector.
+* **Modo de pooling:** `PoolingMode.MEAN`.
+* **Despliegue:** Los archivos del modelo se instalan en el sandbox del agente bajo `var/models/embeddings/paraphrase-multilingual-MiniLM-L12-v2/` mediante el script de compilación Maven (`download.sh`).
 
-### 3. El modelo de embeddings: ligero, local y sin API externa
-
-Noema no depende de proveedores externos para los embeddings. La elección recayó en `AllMiniLmL6V2EmbeddingModel` por varias razones:
-
-- **Local**: se ejecuta íntegramente en la JVM, sin necesidad de conexión a internet ni de API keys. Esto garantiza la privacidad de los datos y la portabilidad.
-- **Ligero**: produce vectores de 384 dimensiones (frente a las 1536 de OpenAI o las 768 de otros modelos). Suficiente para tareas de similitud semántica moderada, con un consumo de memoria y CPU razonable.
-- **Open source**: basado en el modelo `all-MiniLM-L6-v2` de sentence-transformers, con licencia Apache 2.0.
-- **Integración sencilla**: LangChain4j proporciona el `EmbeddingModel` listo para usar, sin configuración adicional.
-
-El modelo se instancia en `start()` mediante `new AllMiniLmL6V2EmbeddingModel()`. LangChain4j se encarga de descargar los pesos (la primera vez) a una caché local. Posteriormente, el modelo se carga desde disco. El servicio no gestiona la descarga; LangChain4j lo hace internamente.
-
-Actualmente no se utiliza la integración con Jlama para embeddings, aunque las dependencias están presentes. El código también contiene comentarios sobre cómo implementar una función `COSINE_DISTANCE` en H2 (usando un alias de Java), pero no está activa porque H2 no soporta índices vectoriales nativos.
-
-### 4. Vectorización de texto: el método `embed()`
-
-El método público más importante es `embed(String text)`. Su implementación es directa:
+Durante la inicialización del servicio (`start()`), `EmbeddingsService` instancia `OnnxEmbeddingModel` y precarga los pesos en memoria para evitar latencias en la primera consulta:
 
 ```java
-public synchronized float[] embed(String text) {
-    if (StringUtils.isBlank(text)) {
-        return null;
+this.embeddingModels = new EmbeddingModel[]{
+  new EmbeddingModel(
+      0, 
+      384, 
+      agent.getPaths().getAgentPath(resources[0]),
+      agent.getPaths().getAgentPath(resources[1])
+  ),
+  new EmbeddingModel(1, 384, AllMiniLmL6V2QuantizedEmbeddingModel.class),
+  new EmbeddingModel(2, 384, BgeSmallEnV15QuantizedEmbeddingModel.class)
+};
+this.embeddingModel = embeddingModels[0];
+this.embeddingModel.getModel(); // Fuerza la carga en RAM
+```
+
+La elección de un modelo multilingüe cuantizado de 384 dimensiones ofrece un equilibrio óptimo: precisión adecuada para español e inglés técnico, huella de memoria reducida (inferior a 150 MB en RAM) y tiempos de inferencia en CPU del orden de pocos milisegundos por fragmento.
+
+
+## 3. Particionado de texto y estrategia MaxP (`Embedding`)
+
+Cuando un turno de conversación es extenso (por ejemplo, una respuesta con explicaciones conceptuales y llamadas a herramientas), vectorizar todo el bloque en un único vector genera un promedio ponderado que diluye los conceptos específicos.
+
+Para resolver este problema, la clase interna `EmbeddingsService.Embedding` implementa una estrategia de **recuperación por pasaje máximo (MaxP)**:
+
+```
+Texto del turno (> 1024 caracteres)
+        │
+        ├──► Chunk 0 (1024 chars) ──► Vector 0 (384 floats)
+        ├──► Chunk 1 (1024 chars) ──► Vector 1 (384 floats)
+        └──► Metadatos ─────────────► [ (float) modelId, (float) dimension ]
+```
+
+### Proceso de particionado (`computeTextChunks`)
+
+1. El texto se divide en bloques de un tamaño máximo de 1024 caracteres (`TEXT_CHUNK_SIZE`).
+2. Para no cortar oraciones a mitad, el algoritmo busca hacia atrás el último signo de puntuación (`.`, `?`, `!`) dentro del bloque. Si no encuentra puntuación, busca el último espacio en blanco.
+3. Cada bloque resultante se vectoriza de forma independiente con el modelo ONNX.
+
+### Estructura binaria del vector resultante
+
+Todos los vectores generados para un texto se concatenan en un único array unidimensional `float[]`, añadiendo dos metadatos obligatorios en las últimas dos posiciones:
+
+$$\text{Longitud del array} = (\text{numChunks} \times \text{dimension}) + 2$$
+
+* `data[data.length - 2]`: Identificador numérico del modelo (`modelId`).
+* `data[data.length - 1]`: Dimensión de cada vector (`dimension`, típicamente 384).
+
+### Algoritmo de distancia MaxP (`cosineDistance`)
+
+Cuando se compara una consulta (que generalmente ocupa un único chunk) contra un turno almacenado (que puede tener $N$ chunks), el método `cosineDistance` calcula la similitud coseno contra cada uno de los bloques y se queda con la máxima afinidad encontrada:
+
+```java
+double maxSimilarity = -1.0;
+for (int i = 0; i < targetNumChunks; i++) {
+    int targetOffset = i * this.dimension;
+    double similarity = cosineSimilarity(queryData, queryOffset, target.data, targetOffset);
+    if (similarity > maxSimilarity) {
+        maxSimilarity = similarity;
     }
-    float[] vector = embeddingModel.embed(text).content().vector();
+}
+return 1.0 - maxSimilarity;
+```
+
+Esto permite que el agente localice un turno histórico relevante incluso si la idea buscada está oculta en medio de un párrafo dentro de una respuesta muy larga.
+
+### Validación estricta de compatibilidad
+
+Antes de realizar el cálculo, `cosineDistance` valida que ambos vectores compartan el mismo `modelId` y la misma `dimension`. Si los metadatos difieren (por ejemplo, si se cambiara el modelo en una migración sin regenerar la base de datos), el sistema lanza una excepción inmediata (`IllegalArgumentException`), evitando comparaciones numéricas sin sentido geométrico.
+
+
+## 4. Serialización binaria para bases de datos
+
+Las bases de datos relacionales embebidas como H2 no disponen de un tipo nativo para arrays de punto flotante de Java. `EmbeddingsService` gestiona la conversión bidireccional entre `float[]` y `byte[]` mediante buffers directos:
+
+```java
+public byte[] toBytes(float[] vector) {
+    if (vector == null) return null;
+    ByteBuffer buffer = ByteBuffer.allocate(vector.length * 4);
+    buffer.asFloatBuffer().put(vector);
+    return buffer.array();
+}
+
+public float[] fromBytes(byte[] bytes) {
+    if (bytes == null) return null;
+    FloatBuffer buffer = ByteBuffer.wrap(bytes).asFloatBuffer();
+    float[] vector = new float[buffer.remaining()];
+    buffer.get(vector);
     return vector;
 }
 ```
 
-- Normaliza el texto (si está vacío o es null, retorna null).
-- Invoca al modelo de LangChain4j, que devuelve un `EmbeddingResponse`.
-- Extrae el vector como `float[]`.
+Cada valor `float` ocupa 4 bytes. Para un turno estándar de 1 chunk (384 floats + 2 metadatos = 386 valores), el BLOB almacenado en la tabla `episodicmemory` ocupa exactamente 1.544 bytes, optimizando el espacio en disco y acelerando la lectura secuencial.
 
-Para casos en los que se necesita el vector serializado (por ejemplo, para guardar en la base de datos), se proporciona `embedAsBytes()`, que llama a `embed()` y luego a `toBytes()`.
 
-El método es `synchronized` porque el modelo de LangChain4j puede no ser thread-safe (depende de la implementación). En la práctica, la concurrencia es baja (solo se invoca durante la persistencia de turnos o búsquedas), por lo que no supone un cuello de botella.
+## 5. Búsqueda y ordenación con `EmbeddingFilter`
 
-### 5. Serialización de vectores: `toBytes()` y `fromBytes()`
+Dado que H2 carece de indexación vectorial nativa (como HNSW o IVFFlat), Noema implementa el filtrado y ordenación semántica en cliente mediante la clase `EmbeddingFilterImpl<T>`.
 
-H2 (y otras bases de datos) no tienen un tipo nativo para `float[]`, pero pueden almacenar BLOBs (Binary Large Objects). Para ello, `EmbeddingsService` ofrece dos métodos de conversión:
-
-- **`toBytes(float[] vector)`**: convierte un array de floats en un array de bytes. Utiliza `ByteBuffer.allocate(vector.length * 4)` (cada float son 4 bytes), obtiene un `FloatBuffer` y escribe los valores. El orden de bytes es el nativo de la máquina (little-endian en la mayoría de los casos), pero al ser siempre la misma JVM no hay problemas de interoperabilidad.
-
-- **`fromBytes(byte[] bytes)`**: realiza la operación inversa. Envuelve el array de bytes en un `ByteBuffer`, obtiene un `FloatBuffer` y lee los valores en un nuevo `float[]`. Si `bytes` es null, retorna null.
-
-Esta serialización se utiliza en `SourceOfTruthImpl` para guardar el embedding de cada turno en la columna `embedding_blob` y para recuperarlo después. Ejemplo al persistir:
-
-```java
-byte[] blobBytes = (vector != null) ? embedding.toBytes(vector) : null;
-ps.setBytes(9, blobBytes);
+```
+[Consulta del usuario: 'copias de seguridad']
+                   │
+                   ▼
+       Vectorización de la query
+                   │
+                   ▼
+ Lectura secuencial de BLOBs en BD (H2)
+                   │
+                   ▼
+  Cálculo de similitud coseno en RAM
+                   │
+                   ▼
+ Min-Heap de tamaño K (PriorityQueue)
+ ├── Descarta candidatos con score < minSimilarity (0.2)
+ └── Expulsa al peor elemento si entra uno mejor
+                   │
+                   ▼
+   Lista final ordenada de mayor a menor
 ```
 
-Y al leer:
+### Características del filtro
+
+* **Min-Heap eficiente:** Utiliza una `PriorityQueue` de tamaño acotado (`maxResults`) ordenada ascendentemente por score. La cabeza de la cola siempre contiene el peor candidato del conjunto actual; si un nuevo turno supera ese valor mínimo, el peor es descartado y el nuevo toma su lugar.
+* **Umbral de corte (`minSimilarity`):** Permite fijar un suelo de relevancia (rango `0.0` a `1.0`, por defecto `0.2` en `SearchFullHistoryTool`). Aquellos registros cuya similitud matemática no alcance el umbral son ignorados antes de entrar a la cola.
+* **Resultado descendente:** Al finalizar la iteración, el filtro extrae los elementos y los invierte para entregar la lista ordenada desde la mayor afinidad hacia la menor.
+
+
+## 6. Integración con los subsistemas de Noema
+
+### Memoria episódica (`EpisodicMemoryImpl`)
+
+Durante la persistencia de un nuevo turno (`add(Turn turn)`), si el turno no dispone de vector semántico, `EpisodicMemoryImpl` invoca automáticamente al servicio:
 
 ```java
-float[] dbVec = embedding.fromBytes(rs.getBytes("embedding_blob"));
-```
-
-No se aplica compresión, porque los vectores de 384 dimensiones ocupan apenas 1.5 KB cada uno. Para miles de turnos, el espacio total es manejable.
-
-### 6. Similitud coseno: el corazón de la búsqueda semántica
-
-La medida de similitud entre dos vectores se calcula mediante la **similitud coseno**, implementada en el método `cosineSimilarity(float[] vectorA, float[] vectorB)`:
-
-```java
-double dotProduct = 0.0;
-double normA = 0.0;
-double normB = 0.0;
-for (int i = 0; i < vectorA.length; i++) {
-    dotProduct += vectorA[i] * vectorB[i];
-    normA += Math.pow(vectorA[i], 2);
-    normB += Math.pow(vectorB[i], 2);
+float[] vector = turn.getEmbedding();
+if (vector == null) {
+    String textToEmbed = turn.getContentForEmbedding();
+    vector = embedding.embed(textToEmbed);
 }
-return (normA == 0 || normB == 0) ? 0.0 : dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+byte[] blobBytes = (vector != null) ? embedding.toBytes(vector) : null;
 ```
 
-El resultado es un valor entre -1 y 1:
-- **1.0**: vectores idénticos (misma dirección). Textos semánticamente equivalentes.
-- **0.0**: ortogonales, sin relación semántica.
-- **-1.0**: opuestos (raro en embeddings de texto, pero posible si los significados son antitéticos).
+Cuando el modelo solicita una búsqueda histórica mediante `search_full_history`, `EpisodicMemoryImpl.getTurnsByText()` recupera los registros con `embedding_blob IS NOT NULL`, filtra por `subchannel` y por `annotation_type` (si aplica), y delega el ranking en `EmbeddingFilter`.
 
-Esta medida se usa para ordenar los resultados de búsqueda. El código también contiene (comentado) una función `cosineDistance` (1 - similitud), que sería útil si se implementara una función SQL en H2 para filtrar por distancia, pero actualmente no se utiliza.
+### Reutilización de recursos en subagentes (`SubagentImpl`)
 
-### 7. Búsqueda top-K con `EmbeddingFilter`
+La carga de un modelo ONNX y su tokenizador en memoria tiene un coste no despreciable. Para evitar que la creación de múltiples subagentes concurrentes multiplique el consumo de RAM, `SubagentImpl` no instancia un nuevo servicio de embeddings; en su lugar, recibe la instancia del agente padre como servicio compartido:
 
-Para evitar tener que calcular la similitud de todos los candidatos en cada búsqueda (lo cual sería costoso), `EmbeddingsService` proporciona `EmbeddingFilter`, una interfaz que permite acumular candidatos y mantener solo los K más relevantes. La implementación concreta es `EmbeddingFilterImpl`.
+```java
+this.subAgent.addSharedService(this.parent.getService(EmbeddingsService.NAME));
+```
 
-Su lógica interna es un **min-heap** (cola de prioridad) que ordena los elementos por su puntuación de similitud (de menor a mayor). La cabecera del heap es el peor de los K mejores. Cuando se añade un nuevo candidato:
+Esto permite que todos los procesos trabajadores ejecuten vectorizaciones sobre la misma instancia del modelo en memoria de forma segura.
 
-- Si el heap tiene menos de K elementos, se añade directamente.
-- Si tiene K y la similitud del nuevo candidato es mayor que la del peor elemento actual, se elimina el peor y se añade el nuevo.
-- Si la similitud es menor, se descarta.
+## 7. Límites del diseño
 
-El método `add()` devuelve la similitud calculada (útil para depuración). Una vez añadidos todos los candidatos, `get()` devuelve la lista ordenada de mayor a menor similitud (invirtiendo el heap, que da el orden inverso).
-
-También se puede pasar un `minScore` para filtrar candidatos que no alcancen un umbral mínimo de similitud (por defecto `Double.NaN`, que no filtra). Esto es útil para búsquedas que requieran una relevancia mínima.
-
-`EmbeddingFilterImpl` se utiliza tanto en `SourceOfTruth.getTurnsByText()` como en `DocumentsService.search()`.
-
-### 8. Integración con `SourceOfTruth`: búsqueda híbrida
-
-El método `SourceOfTruth.getTurnsByText(String query, int maxResults)` es el que permite al agente buscar en todo el historial mediante la herramienta `search_full_history`. Su implementación es un ejemplo perfecto del uso de `EmbeddingsService`:
-
-1. Obtiene una referencia al servicio de embeddings.
-2. Crea un `EmbeddingFilter` para la query con el límite de resultados.
-3. Ejecuta una consulta SQL que selecciona todos los turnos que tienen `embedding_blob` no nulo.
-4. Para cada turno, recupera el blob, lo deserializa a `float[]` mediante `embedding.fromBytes()` y lo añade al filtro con `search.add(dbVec, turn)`.
-5. Finalmente, obtiene la lista de turnos más similares con `search.get()`.
-
-Esta estrategia es un **escaneo completo** de la tabla (sin índices). Para una base de datos con miles de turnos, el coste es aceptable (unos pocos milisegundos por búsqueda). Para decenas de miles, puede comenzar a ser lento. Noema asume que el historial de un usuario individual no crecerá a millones de turnos (al menos en esta fase de prototipo).
-
-El código incluye comentarios sobre cómo se podría migrar a PostgreSQL con `pgvector` para tener índices reales, pero actualmente no es una prioridad.
-
-### 9. Integración con Documentos: búsqueda en resúmenes
-
-`DocumentsService` también utiliza `EmbeddingsService` para la búsqueda semántica en los resúmenes de documentos indexados. El proceso es muy similar al de los turnos, pero con algunas diferencias:
-
-- Los documentos se almacenan en la tabla `DOCUMENTS` con una columna `summary_embedding` BLOB.
-- El método `search()` (híbrido) permite combinar un filtro por categorías (SQL) con una búsqueda semántica en los resúmenes.
-- `EmbeddingFilter` se utiliza de igual modo: se crea con la query, se recorren los documentos que pasan el filtro de categorías, se calcula la similitud y se mantienen los mejores.
-
-De esta forma, el agente puede encontrar documentos relevantes tanto por su categoría explícita como por el contenido semántico de su resumen, sin necesidad de que el usuario conozca las palabras exactas que aparecen en el texto.
-
-### 10. Limitaciones y posibles mejoras
-
-A pesar de su utilidad, `EmbeddingsService` tiene varias limitaciones que deben tenerse en cuenta:
-
-- **Modelo de baja dimensión (384)**: es suficiente para similitud semántica básica, pero para conceptos muy sutiles o dominios especializados, un modelo de mayor dimensión (como `all-mpnet-base-v2` con 768 dimensiones o los de OpenAI con 1536) ofrecería mejor precisión. El coste sería mayor memoria y tiempo de cálculo.
-
-- **Escaneo completo sin índices**: para bases de datos grandes (decenas de miles de turnos o documentos), cada búsqueda puede volverse lenta. La solución natural sería migrar a una base de datos con soporte nativo de índículos vectoriales (pgvector, Milvus, etc.). El código ya tiene comentarios al respecto.
-
-- **Sin caché de embeddings de consultas**: si el usuario repite la misma búsqueda varias veces, se recalcula el embedding de la query cada vez. Una caché trivial podría ahorrar este coste.
-
-- **Búsqueda síncrona y bloqueante**: las búsquedas se ejecutan en el mismo hilo del `eventDispatcher`. Si la tabla es muy grande, el agente se detiene hasta que termina. Para búsquedas muy pesadas, se podría considerar asincronía.
-
-- **Serialización sin compresión**: aunque cada vector ocupa poco, para millones de turnos el espacio en disco podría ser significativo. Una compresión ligera (por ejemplo, cuantización a 8 bits) reduciría el almacenamiento a costa de precisión.
-
-- **Modelo cargado en memoria permanentemente**: los embeddings están siempre en RAM, consumiendo entre 100 y 300 MB según la implementación de LangChain4j. No se puede descargar el modelo para liberar recursos si no se usa.
-
-A pesar de estas limitaciones, `EmbeddingsService` cumple sobradamente su propósito en el contexto de Noema: proporcionar búsqueda semántica en un agente local, con un modelo gratuito, sin dependencias externas, y con un rendimiento aceptable para volúmenes de datos moderados (miles de turnos, cientos de documentos). Es una pieza clave para que el agente "recuerde" y "encuentre" información relevante.
+* **Escaneo lineal en base de datos:** La búsqueda semántica recorre secuencialmente los registros de la tabla `episodicmemory`. Para bases de datos personales (decenas de miles de turnos), la latencia es de pocos milisegundos; en volúmenes superiores a cientos de miles de registros, sería necesario migrar a un motor con soporte nativo de índices vectoriales (como PostgreSQL con `pgvector`).
+* **Sin cuantización de almacenamiento:** Los vectores se guardan como floats de 32 bits sin compresión escalar adicional (como cuantización a 8 bits).
+* **Modelo residente continuo:** El modelo ONNX permanece cargado en RAM durante toda la vida del proceso para garantizar disponibilidad inmediata en cada turno.
