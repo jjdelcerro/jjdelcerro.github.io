@@ -6,8 +6,8 @@ La memoria episódica es el registro inmutable de todo lo que ha ocurrido en la 
 
 Su responsabilidad principal es doble:
 
-- **Persistir los turnos** de forma duradera, garantizando que el historial completo esté disponible para futuras consultas y compactaciones.
-- **Proporcionar acceso eficiente** a esos turnos para operaciones como la recuperación por rango (necesaria para la compactación) y la búsqueda semántica (necesaria para la herramienta `search_full_history`).
+- **Persistir los turnos** de forma duradera, garantizando que el historial completo esté disponible para futuras consultas y consolidaciones.
+- **Proporcionar acceso eficiente** a esos turnos para operaciones como la recuperación por rango (necesaria para la consolidación) y la búsqueda semántica (necesaria para la herramienta `search_full_history`).
 
 La memoria episódica se apoya en una base de datos H2 embebida (`memory.mv.db`) y, para la búsqueda semántica, en el servicio de embeddings (`EmbeddingsService`).
 
@@ -30,7 +30,7 @@ La interfaz `Turn` define los siguientes campos principales:
 
 El método `getContentForEmbedding()` devuelve una concatenación de los campos relevantes (`textUser`, `textModel`, `toolCall`, `toolResult`). Es el texto que se utiliza para calcular el embedding.
 
-El método `toCSVLine()` genera una representación CSV del turno, utilizada durante la compactación para alimentar al LLM (ver `MemoryCompactionService`).
+El método `toCSVLine()` genera una representación CSV del turno, utilizada durante la consolidación para alimentar al LLM (ver `MemoryConsolidationService`).
 
 ## 3. La tabla `episodicmemory`
 
@@ -66,7 +66,7 @@ if (originalText.length() > MAX_DB_TEXT_SIZE) {
 }
 ```
 
-El `contenttype` cambia a `"tool_execution_summarized"` para indicar que el contenido original no está completo. El contenido original solo está disponible durante el turno activo en la memoria reciente; una vez compactado, solo se conservan los metadatos.
+El `contenttype` cambia a `"tool_execution_summarized"` para indicar que el contenido original no está completo. El contenido original solo está disponible durante el turno activo en la memoria reciente; una vez consolidado, solo se conservan los metadatos.
 
 ## 4. El repositorio: `EpisodicMemoryImpl`
 
@@ -84,7 +84,7 @@ Persiste un turno en la base de datos. Pasos:
 
 ### `List<Turn> getTurnsByIds(int first, int last)`
 
-Recupera todos los turnos cuyo `id` está en el rango `[first, last]`, ordenados ascendentemente. Se utiliza exclusivamente durante la compactación (ver `MemoryCompactionService`).
+Recupera todos los turnos cuyo `id` está en el rango `[first, last]`, ordenados ascendentemente. Se utiliza exclusivamente durante la consolidación (ver `MemoryConsolidationService`).
 
 ### `Turn getTurnById(int id)`
 
@@ -101,13 +101,13 @@ Búsqueda semántica en el historial. Pasos:
 5. Añade el turno al filtro si supera `minSimilarity`.
 6. Devuelve la lista ordenada de mayor a menor similitud.
 
-### `CompactedMemory getLatestCompactedMemory(String subchannel)`
+### `ConsolidateMemory getLatestConsolidateMemory(String subchannel)`
 
-Recupera la memoria compactada más reciente para un `subchannel` dado. Se utiliza para obtener el `CompactedMemory` activo que se inyecta en el contexto del LLM (ver `Session`).
+Recupera la memoria consolidada más reciente para un `subchannel` dado. Se utiliza para obtener el `ConsolidateMemory` activo que se inyecta en el contexto del LLM.
 
 ### Gestión de IDs con `Counter`
 
-Tanto los turnos como las memorias compactadas utilizan un `Counter` independiente que se inicializa consultando `SELECT MAX(id)` de la tabla correspondiente. Esto garantiza que los IDs sean secuenciales y únicos incluso si la base de datos ha sido manipulada externamente.
+Tanto los turnos como la memoria consolidada utilizan un `Counter` independiente que se inicializa consultando `SELECT MAX(id)` de la tabla correspondiente. Esto garantiza que los IDs sean secuenciales y únicos incluso si la base de datos ha sido manipulada externamente.
 
 ## 5. Búsqueda semántica con embeddings
 
@@ -136,7 +136,7 @@ code,timestamp,contenttype,text_user,text_model_thinking,text_model,tool_call,to
 No es utilizado por la lógica del agente, pero es útil para:
 
 - Inspeccionar el historial de forma legible sin consultar la base de datos.
-- Depurar problemas de compactación.
+- Depurar problemas de consolidación.
 - Alimentar herramientas externas de análisis.
 
 El archivo se abre en modo "append"; si no existe, se crea con la cabecera.
@@ -144,7 +144,7 @@ El archivo se abre en modo "append"; si no existe, se crea con la cabecera.
 ## 7. Limitaciones conocidas
 
 - **Escaneo completo sin índices vectoriales**: la búsqueda semántica puede volverse lenta con historiales muy largos (> 50.000 turnos).
-- **Truncado irreversible de resultados largos**: el contenido original de `tool_result` se pierde tras la compactación (solo se conservan los metadatos). Esto es deliberado para ahorrar espacio, pero implica que ciertos detalles solo están disponibles durante el turno activo.
+- **Truncado irreversible de resultados largos**: el contenido original de `tool_result` se pierde tras la consolidación (solo se conservan los metadatos). Esto es deliberado para ahorrar espacio, pero implica que ciertos detalles solo están disponibles durante el turno activo.
 - **H2 no es distribuida**: la base de datos está diseñada para un solo proceso. No es adecuada para entornos con múltiples instancias del agente.
 - **Ausencia de compresión en embeddings**: cada vector de 384 dimensiones ocupa ~1.5 KB en disco. Para millones de turnos, el espacio podría ser significativo.
 - **El contador de IDs no es resistente a fallos**: si la JVM falla entre la asignación del ID y la persistencia del turno, se pierde un ID (aunque no hay problema de consistencia, solo un hueco en la secuencia).

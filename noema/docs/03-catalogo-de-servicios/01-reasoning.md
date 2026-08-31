@@ -2,19 +2,19 @@
 
 ## 1. Propósito y responsabilidad
 
-El `ReasoningService` es el núcleo de control del agente Noema. Si el sistema sensorial (`SensorsService`) es su percepción del entorno, y la memoria (episódica, compactada, reciente y proyectada) es su capacidad de recordar y organizar el conocimiento, el `ReasoningService` es el centro que integra ambas, toma decisiones, ejecuta acciones y mantiene la continuidad de la conversación.
+El `ReasoningService` es el núcleo de control del agente Noema. Si el sistema sensorial (`SensorsService`) es su percepción del entorno, y la memoria (episódica, consolidada, reciente y proyectada) es su capacidad de recordar y organizar el conocimiento, el `ReasoningService` es el centro que integra ambas, toma decisiones, ejecuta acciones y mantiene la continuidad de la conversación.
 
-Su responsabilidad principal es orquestar un **bucle perpetuo de consciencia**: un hilo dedicado que nunca se detiene (salvo cuando el agente se apaga) y que constantemente espera estímulos —mensajes del usuario, notificaciones de Telegram, correos entrantes, alarmas programadas o el simple paso del tiempo— para procesarlos. Cada estímulo desencadena una o varias rondas de razonamiento, durante las cuales el servicio construye el contexto (combinando el prompt de sistema, la memoria compactada, la memoria reciente y las transformaciones de la memoria proyectada), consulta al modelo de lenguaje, ejecuta las herramientas que este solicite y registra cada paso en la memoria episódica.
+Su responsabilidad principal es orquestar un **bucle perpetuo de consciencia**: un hilo dedicado que nunca se detiene (salvo cuando el agente se apaga) y que constantemente espera estímulos —mensajes del usuario, notificaciones de Telegram, correos entrantes, alarmas programadas o el simple paso del tiempo— para procesarlos. Cada estímulo desencadena una o varias rondas de razonamiento, durante las cuales el servicio construye el contexto (combinando el prompt de sistema, la memoria consolidada, la memoria reciente y las transformaciones de la memoria proyectada), consulta al modelo de lenguaje, ejecuta las herramientas que este solicite y registra cada paso en la memoria episódica.
 
 Para cumplir esta función, el `ReasoningService` integra y coordina varios subsistemas:
 
 - **El modelo de lenguaje (`ChatModel`)**: el proveedor de razonamiento, configurable en caliente (proveedor, URL, clave, modelo) mediante acciones que el propio agente puede ejecutar.
 - **La memoria reciente (`RecentMemory`)**: la memoria de trabajo que contiene los mensajes de la sesión activa.
-- **La memoria compactada (`CompactedMemory`)**: la narrativa destilada del pasado, inyectada en el contexto para proporcionar memoria a largo plazo.
+- **La memoria consolidada (`ConsolidateMemory`)**: la narrativa destilada del pasado, inyectada en el contexto para proporcionar memoria a largo plazo.
 - **La memoria proyectada (`ProjectedMemory`)**: la vista efímera que realmente ve el LLM en cada turno, después de aplicar transformaciones (poda, notificaciones, fijación).
 - **El catálogo de herramientas (`AgentTool`)**: todas las capacidades que el agente puede invocar (lectura de archivos, ejecución de comandos, búsquedas web, etc.), registradas y filtradas por activación.
-- **La persistencia (`EpisodicMemory`)**: el repositorio inmutable donde se almacenan los turnos y las memorias compactadas.
-- **La compactación (`MemoryCompactionService`)**: el servicio encargado de generar nuevas memorias compactadas cuando la memoria reciente alcanza un umbral.
+- **La persistencia (`EpisodicMemory`)**: el repositorio inmutable donde se almacenan los turnos y las memorias consolidadas.
+- **La consolidación (`MemoryConsolidationService`)**: el servicio encargado de generar nuevas memorias consolidadas cuando la memoria reciente alcanza un umbral.
 
 A diferencia de otros componentes, el `ReasoningService` no expone una API pública extensa. Su interfaz se limita a permitir añadir herramientas, consultar su estado, activarlas o desactivarlas, y recuperar métricas sobre el tamaño del contexto. La mayor parte de su funcionalidad es interna y está encapsulada en el bucle `eventDispatcher` y en la colaboración con los subsistemas de memoria.
 
@@ -28,11 +28,11 @@ El ciclo de vida del `ReasoningService` está gobernado por los métodos `start(
 
 1. **Instalación de recursos**: el servicio despliega en el sandbox del agente los archivos necesarios para su funcionamiento: el prompt de sistema base (`reasoning-system.md`), los módulos de identidad (`core`), los índices de referencia del entorno (`environ`) y la lista de habilidades (`skills`). Estos recursos se almacenan en `var/config/prompts/` y `var/identity/`, y son la materia prima con la que se construirá la personalidad del agente.
 
-2. **Registro de acciones**: el servicio añade al sistema de acciones del agente (`AgentActions`) los comportamientos que permiten modificar la configuración del modelo en caliente, forzar compactaciones o recargar herramientas:
+2. **Registro de acciones**: el servicio añade al sistema de acciones del agente (`AgentActions`) los comportamientos que permiten modificar la configuración del modelo en caliente, forzar consolidaciones o recargar herramientas:
    - `CHANGE_REASONING_PROVIDER`: se dispara cuando el usuario cambia la URL o la API key del proveedor de razonamiento.
    - `CHANGE_REASONING_MODEL`: se dispara cuando el usuario cambia el identificador del modelo de razonamiento.
-   - `COMPACT_REASONING_SESSION`: compacta aproximadamente el 50% más antiguo del historial de la sesión (acción de depuración).
-   - `COMPACT_REASONING_FULL_SESSION`: compacta todo el historial consolidado (acción de depuración).
+   - `CONSOLIDATE_REASONING_SESSION`: consolida aproximadamente el 50% más antiguo del historial de la sesión (acción de depuración).
+   - `CONSOLIDATE_REASONING_FULL_SESSION`: consolida todo el historial consolidado (acción de depuración).
    - `REFRESH_REASONING_TOOLS`: recarga el estado de activación de las herramientas desde la configuración, permitiendo habilitar o deshabilitar capacidades sin reiniciar el agente.
 
 3. **Sincronización de herramientas**: se invoca a `refresh_available_tools()` para que el estado de activación de cada herramienta (definido en la configuración del usuario bajo `reasoning/active_tools`) se refleje en el mapa interno `availableTools`. Las herramientas que no aparecen en la configuración conservan su estado por defecto (definido por `isAvailableByDefault()`).
@@ -76,7 +76,7 @@ Tras inyectar el evento en la memoria reciente, se persiste un `Turn` de tipo `t
 
 Una vez que el estímulo está en la memoria reciente, comienza el bucle interno. Su objetivo es alcanzar un estado en el que el modelo haya generado una respuesta de texto (no una llamada a herramienta) y se pueda considerar que el turno actual ha terminado. Cada iteración del bucle interno sigue estos pasos:
 
-1. **Construcción del contexto**: se invoca a `projectedMemory.getMessages(recentMemory, activeCompactedMemory, getBaseSystemPrompt())`. Este método devuelve la lista de mensajes final que se enviará al LLM, aplicando las operaciones del pipeline de la memoria proyectada (poda, fijación, notificaciones). El contexto incluye el prompt de sistema, la memoria compactada más reciente (si existe), y todos los mensajes acumulados en la memoria reciente.
+1. **Construcción del contexto**: se invoca a `projectedMemory.getMessages(recentMemory, activeConsolidateMemory, getBaseSystemPrompt())`. Este método devuelve la lista de mensajes final que se enviará al LLM, aplicando las operaciones del pipeline de la memoria proyectada (poda, fijación, notificaciones). El contexto incluye el prompt de sistema, la memoria consolidada más reciente (si existe), y todos los mensajes acumulados en la memoria reciente.
 
 2. **Consulta al modelo**: con el contexto construido y la lista de herramientas activas (generada a partir de `availableTools`), se llama a `model.generate(messages, toolSpecifications, abort)`. El modelo devuelve una respuesta que puede ser de dos tipos: texto plano, o una o más solicitudes de ejecución de herramientas.
 
@@ -86,15 +86,15 @@ Una vez que el estímulo está en la memoria reciente, comienza el bucle interno
 
 5. **Reintentos por herramientas no formalizadas**: hay un caso especial contemplado cuando el modelo devuelve `FinishReason.TOOL_EXECUTION` pero no hay solicitudes de herramientas en la respuesta. Esto puede ocurrir con algunos modelos que anuncian que van a usar una herramienta pero no la formalizan correctamente. En ese caso, el bucle inyecta un mensaje de usuario con el texto "(reintenta la llamada a la herramienta sin ninguna explicación)" y continúa, incrementando un contador de reintentos. Si se superan tres reintentos, se aborta el turno con una excepción.
 
-Es importante destacar que, aunque el `eventDispatcher` opera sobre las memorias reciente, compactada y proyectada del `subchannel` correspondiente, la memoria episódica es compartida por todos los canales. Esto significa que el conocimiento adquirido en una conversación está disponible para todas las demás, y que el `subchannel` actúa únicamente como una etiqueta organizativa que permite al agente filtrar y contextualizar los turnos, pero no como un mecanismo de aislamiento.
+Es importante destacar que, aunque el `eventDispatcher` opera sobre las memorias reciente, consolidada y proyectada del `subchannel` correspondiente, la memoria episódica es compartida por todos los canales. Esto significa que el conocimiento adquirido en una conversación está disponible para todas las demás, y que el `subchannel` actúa únicamente como una etiqueta organizativa que permite al agente filtrar y contextualizar los turnos, pero no como un mecanismo de aislamiento.
 
 **Persistencia al final del turno**
 
 Tras salir del bucle interno, el `eventDispatcher` actualiza el estado persistente de la memoria proyectada (`projectedMemory.save()`) y de la memoria reciente (`recentMemory.save()`). Esto asegura que, en caso de reinicio, tanto el historial de mensajes como el estado de las operaciones (skills activos, recordatorios, etc.) se conserven.
 
-**Compactación al final del turno**
+**Consolidación al final del turno**
 
-Una vez que el bucle interno ha terminado, el `eventDispatcher` evalúa si la memoria reciente necesita compactación mediante `recentMemory.needCompaction()`. Este método compara el número de turnos únicos acumulados con un umbral configurable (por defecto 40). Si se ha superado el umbral, se invoca a `performCompaction()`, que inicia el proceso de consolidación de la memoria a largo plazo (descrito en la sección 6).
+Una vez que el bucle interno ha terminado, el `eventDispatcher` evalúa si la memoria reciente necesita consolidar mediante `recentMemory.needConsolidate()`. Este método compara el número de turnos únicos acumulados con un umbral configurable (por defecto 40). Si se ha superado el umbral, se invoca a `performConsolidation()`, que inicia el proceso de consolidación de la memoria a largo plazo (descrito en la sección 6).
 
 **Manejo de errores y callback final**
 
@@ -108,11 +108,11 @@ El flujo de construcción se inicia en el bucle interno del `eventDispatcher`, j
 
 1. **El prompt de sistema**: generado por `getBaseSystemPrompt()`. Este prompt incluye la identidad del agente (construida a partir de los módulos `core` activos), los índices de referencia del entorno (archivos `.ref.md` en `environ`), y las directrices operativas definidas en `reasoning-system.md`. El prompt se construye dinámicamente en cada consulta para reflejar cambios en la configuración (activación/desactivación de módulos de identidad). El resultado se cachea en `lastestSystemPrompt` para evitar reconstrucciones innecesarias en sucesivas iteraciones del mismo turno.
 
-2. **La memoria compactada activa**: obtenida mediante `episodicMemory.getLatestCompactedMemory(subchannel)`. Si existe, su contenido textual se inyecta como un bloque de sistema en el contexto, precedido por un encabezado que indica el momento de la última compactación. El prompt del sistema incluye directrices específicas sobre cómo interpretar este bloque (la "Directiva anti-alucinación" y la "Interpretación de la información recuperada"), que obligan al modelo a utilizar `lookup_turn` para resolver las citas `{cite:ID}`.
+2. **La memoria consolidada activa**: obtenida mediante `episodicMemory.getLatestConsolidateMemory(subchannel)`. Si existe, su contenido textual se inyecta como un bloque de sistema en el contexto, precedido por un encabezado que indica el momento de la última consolidación. El prompt del sistema incluye directrices específicas sobre cómo interpretar este bloque (la "Directiva anti-alucinación" y la "Interpretación de la información recuperada"), que obligan al modelo a utilizar `lookup_turn` para resolver las citas `{cite:ID}`.
 
-3. **La memoria reciente**: los mensajes de la sesión activa (`recentMemory.getMessages()`). Esta lista contiene el historial inmediato desde la última compactación, incluyendo los mensajes del usuario, las respuestas del modelo y los resultados de herramientas.
+3. **La memoria reciente**: los mensajes de la sesión activa (`recentMemory.getMessages()`). Esta lista contiene el historial inmediato desde la última consolidación, incluyendo los mensajes del usuario, las respuestas del modelo y los resultados de herramientas.
 
-Con estos tres elementos, el `ReasoningService` invoca `projectedMemory.getMessages(recentMemory, compactedMemory, systemPrompt)`. Este método orquesta el pipeline de operaciones de la memoria proyectada (ver `050-memoria-proyectada.md`) para producir la lista final de mensajes que se enviará al LLM. El pipeline aplica transformaciones como:
+Con estos tres elementos, el `ReasoningService` invoca `projectedMemory.getMessages(recentMemory, consolidateMemory, systemPrompt)`. Este método orquesta el pipeline de operaciones de la memoria proyectada (ver `050-memoria-proyectada.md`) para producir la lista final de mensajes que se enviará al LLM. El pipeline aplica transformaciones como:
 
 - Fijación de mensajes de skills activos (`PinnedTurnsOperation`).
 - Podado de resultados de herramientas largos (`TrimmingOperation`).
@@ -143,7 +143,7 @@ El prompt resultante se escribe en `var/tmp/reasoning-system-prompt.md` para fac
 
 El prompt define un protocolo estricto para que el modelo acceda a su propio historial, distinguiendo dos situaciones:
 
-- **Cita explícita (`{cite:ID}`)**: cuando el modelo encuentra una referencia a un turno específico en la memoria compactada, debe usar `lookup_turn` con ese ID para recuperar el contenido exacto y su contexto inmediato. Esta directriz evita que el modelo intente recordar de memoria o invente detalles cuando existe una fuente verificable.
+- **Cita explícita (`{cite:ID}`)**: cuando el modelo encuentra una referencia a un turno específico en la memoria consolidada, debe usar `lookup_turn` con ese ID para recuperar el contenido exacto y su contexto inmediato. Esta directriz evita que el modelo intente recordar de memoria o invente detalles cuando existe una fuente verificable.
 
 - **Intuición sin cita**: cuando el modelo tiene la sensación de haber hablado antes de un tema, pero no hay una cita explícita, debe usar `search_full_history` para buscar por similitud semántica en toda la memoria episódica. Esta directriz le permite encontrar información que intuye que conoce, sin necesidad de una referencia exacta.
 
@@ -151,7 +151,7 @@ El protocolo garantiza que el modelo no utilice `search_full_history` cuando ya 
 
 ### 5.3. Directiva anti-alucinación
 
-La directiva anti-alucinación es una instrucción explícita en el prompt que obliga al modelo a verificar cualquier información que tenga una cita asociada. Esta directiva es la que convierte la trazabilidad (las citas `{cite:ID}` en la memoria compactada) en un mecanismo activo de control, no en una anotación pasiva.
+La directiva anti-alucinación es una instrucción explícita en el prompt que obliga al modelo a verificar cualquier información que tenga una cita asociada. Esta directiva es la que convierte la trazabilidad (las citas `{cite:ID}` en la memoria consolidada) en un mecanismo activo de control, no en una anotación pasiva.
 
 Su finalidad es doble:
 
@@ -159,7 +159,7 @@ Su finalidad es doble:
 
 - **Mantener la coherencia**: al obligar al modelo a consultar la fuente original, se asegura que la información presentada sea la misma que se discutió en su momento, sin distorsiones ni reinterpretaciones.
 
-La directiva se complementa con la validación de citas que realiza `MemoryCompactionService` (que convierte las citas inválidas en `{badcite:ID}`), creando un sistema de doble verificación: el servicio garantiza que las citas sean válidas, y el prompt garantiza que el modelo las utilice.
+La directiva se complementa con la validación de citas que realiza `MemoryConsolidationService` (que convierte las citas inválidas en `{badcite:ID}`), creando un sistema de doble verificación: el servicio garantiza que las citas sean válidas, y el prompt garantiza que el modelo las utilice.
 
 ### 5.4. Interpretación de la información recuperada
 
@@ -173,15 +173,15 @@ El prompt instruye al modelo sobre cómo interpretar la información que recuper
 
 La finalidad de esta directriz es evitar que el modelo presente información obsoleta como vigente, y que el usuario reciba respuestas que reflejen correctamente la evolución del proyecto o de las decisiones tomadas a lo largo del tiempo.
 
-### 5.5. Relación con la memoria compactada
+### 5.5. Relación con la memoria consolidada
 
-El prompt del sistema y la memoria compactada están diseñados para funcionar en tándem:
+El prompt del sistema y la memoria consolidada están diseñados para funcionar en tándem:
 
-- La **memoria compactada** proporciona el contenido narrativo (Resumen + El Viaje) con citas `{cite:ID}` incrustadas en el texto.
+- La **memoria consolidada** proporciona el contenido narrativo (Resumen + El Viaje) con citas `{cite:ID}` incrustadas en el texto.
 
 - El **prompt del sistema** proporciona las reglas para interpretar esas citas: cuándo usar `lookup_turn`, cómo contextualizar la información recuperada, y la obligación de verificar antes de responder.
 
-Este acoplamiento es lo que garantiza que la trazabilidad no sea solo un mecanismo técnico (una cita que apunta a un turno), sino una **práctica operativa** que el modelo sigue en cada interacción. Sin las directrices del prompt, el modelo podría ignorar las citas o tratarlas como meras anotaciones sin valor verificador. Sin la memoria compactada, el prompt no tendría citas a las que aplicar sus reglas.
+Este acoplamiento es lo que garantiza que la trazabilidad no sea solo un mecanismo técnico (una cita que apunta a un turno), sino una **práctica operativa** que el modelo sigue en cada interacción. Sin las directrices del prompt, el modelo podría ignorar las citas o tratarlas como meras anotaciones sin valor verificador. Sin la memoria consolidada, el prompt no tendría citas a las que aplicar sus reglas.
 
 El resultado es que el modelo opera con una memoria a largo plazo que es densa en contenido, ligera en espacio, y completamente trazable hasta sus fuentes originales, todo ello guiado por las instrucciones del prompt.
 
@@ -192,7 +192,7 @@ Las herramientas (`AgentTool`) son el mecanismo mediante el cual el agente trasc
 
 **Registro y catálogo de herramientas**
 
-Durante el arranque, el `ReasoningService` invoca a `getTools()` sobre cada servicio registrado (por ejemplo, `MemoryCompactionService` proporciona `lookup_turn`, `search_full_history` y `annotate_observation`). Cada herramienta se instancia y se añade al mapa `availableTools` mediante `addTool()`. El mapa asocia el nombre técnico de la herramienta con un objeto `AvailableAgentTool`, que contiene la herramienta y un flag `active`. La activación inicial se define por `isAvailableByDefault()`, pero posteriormente se sincroniza con la configuración del usuario.
+Durante el arranque, el `ReasoningService` invoca a `getTools()` sobre cada servicio registrado (por ejemplo, `MemoryConsolidationService` proporciona `lookup_turn`, `search_full_history` y `annotate_observation`). Cada herramienta se instancia y se añade al mapa `availableTools` mediante `addTool()`. El mapa asocia el nombre técnico de la herramienta con un objeto `AvailableAgentTool`, que contiene la herramienta y un flag `active`. La activación inicial se define por `isAvailableByDefault()`, pero posteriormente se sincroniza con la configuración del usuario.
 
 **Sincronización con la configuración**
 
@@ -217,15 +217,15 @@ Cuando el modelo responde con solicitudes de ejecución (`ToolExecutionRequest`)
 
 3. **Ejecución**: si la validación supera, se invoca `tool.execute(jsonArguments)`. La ejecución es síncrona y bloquea el hilo del `eventDispatcher`. Esto es intencionado: el agente no debe procesar nuevos estímulos mientras realiza una acción que puede ser costosa o modificar el estado del sistema.
 
-4. **Registro del resultado**: el texto devuelto por la herramienta se convierte en un `ToolExecutionResultMessage` que se añade a la memoria reciente. Se persiste un `Turn` cuyo `contenttype` depende del tipo de herramienta: `tool_execution` para herramientas operativas, `lookup_turn` para herramientas de memoria (`TYPE_MEMORY`), y `annotation` para `annotate_observation`. Esta distinción influye en la posterior compactación narrativa, ya que los turnos de tipo `lookup_turn` se tratan como "recuerdos" durante la generación de la memoria compactada.
+4. **Registro del resultado**: el texto devuelto por la herramienta se convierte en un `ToolExecutionResultMessage` que se añade a la memoria reciente. Se persiste un `Turn` cuyo `contenttype` depende del tipo de herramienta: `tool_execution` para herramientas operativas, `lookup_turn` para herramientas de memoria (`TYPE_MEMORY`), y `annotation` para `annotate_observation`. Esta distinción influye en la posterior consolidación narrativa, ya que los turnos de tipo `lookup_turn` se tratan como "recuerdos" durante la generación de la memoria consolidada.
 
 **Herramientas de memoria: un caso particular**
 
-Las herramientas de tipo `TYPE_MEMORY` (como `lookup_turn` y `search_full_history`) no modifican el estado externo, sino que recuperan información de la propia base de datos de la conversación. El `ReasoningService` las trata de forma especial solo en un aspecto: cuando se persiste su turno, se asigna `contenttype = lookup_turn`. Esto permite a `MemoryCompactionService` interpretar correctamente estos turnos durante la compactación, tratándolos como "flashbacks" y no como eventos nuevos.
+Las herramientas de tipo `TYPE_MEMORY` (como `lookup_turn` y `search_full_history`) no modifican el estado externo, sino que recuperan información de la propia base de datos de la conversación. El `ReasoningService` las trata de forma especial solo en un aspecto: cuando se persiste su turno, se asigna `contenttype = lookup_turn`. Esto permite a `MemoryConsolidationService` interpretar correctamente estos turnos durante la consolidación, tratándolos como "flashbacks" y no como eventos nuevos.
 
 **Fijación de mensajes**
 
-Algunas herramientas declaran `shouldPin() == true` (ej: `activate_skill`). Cuando se ejecutan, su par de mensajes (llamada + resultado) se fija en `PinnedTurnsOperation` y se reinyecta en el contexto tras cada compactación. Esto garantiza que la activación del skill permanezca visible para el modelo. El método `getPinnedNotificationMessage()` de la herramienta proporciona el mensaje de recordatorio que se emite periódicamente mientras el skill está activo.
+Algunas herramientas declaran `shouldPin() == true` (ej: `activate_skill`). Cuando se ejecutan, su par de mensajes (llamada + resultado) se fija en `PinnedTurnsOperation` y se reinyecta en el contexto tras cada consolidación. Esto garantiza que la activación del skill permanezca visible para el modelo. El método `getPinnedNotificationMessage()` de la herramienta proporciona el mensaje de recordatorio que se emite periódicamente mientras el skill está activo.
 
 **Ciclo de vida de las herramientas**
 
@@ -235,48 +235,48 @@ Las herramientas no tienen estado propio que persista entre invocaciones (salvo 
 
 El `ReasoningService` no mantiene un registro de qué herramientas se han ejecutado en cada turno más allá de los mensajes almacenados en la memoria reciente. La trazabilidad se delega en la memoria: los `ToolExecutionResultMessage` en la memoria reciente contienen los resultados compleltos, y los turnos persistidos en `EpisodicMemory` registran la ejecución. Si una herramienta se ejecuta y su resultado se poda mediante `TrimmingOperation`, el mensaje permanece integro en la memoria reciente y en la proyectada conserva la cabecera (incluyendo el `RESOURCE_ID`), permitiendo que `PendingAnnotationOperation` detecte recursos sin anotar incluso después de la poda.
 
-## 7. Compactación de memoria
+## 7. Consolidación de memoria
 
-La compactación es el mecanismo mediante el cual el agente transforma información de la memoria de trabajo en conocimiento consolidado, preservando la esencia de la conversación mientras reduce el espacio que ocupa en la ventana de contexto. Responde a tres necesidades simultáneas: gestionar la ventana de contexto para evitar que se sature, consolidar el conocimiento extrayendo las ideas clave y el proceso de descubrimiento que las generó, y mantener la atención del LLM enfocada evitando que se disperse por turnos con información irrelevante. La compactación no se limita a descartar datos; es un proceso de destilación que genera una narrativa coherente con referencias `{cite:ID}` a los turnos originales, permitiendo al agente recuperar el detalle exacto cuando lo necesita. El detalle del proceso de generación (prompt, validación de citas, modos de funcionamiento) se describe en el documento de [`MemoryCompactionService`](02-memory-compaction.md).
+La consolidación es el mecanismo mediante el cual el agente transforma información de la memoria de trabajo en conocimiento consolidado, preservando la esencia de la conversación mientras reduce el espacio que ocupa en la ventana de contexto. Responde a tres necesidades simultáneas: gestionar la ventana de contexto para evitar que se sature, consolidar el conocimiento extrayendo las ideas clave y el proceso de descubrimiento que las generó, y mantener la atención del LLM enfocada evitando que se disperse por turnos con información irrelevante. La consolidación no se limita a descartar datos; es un proceso de destilación que genera una narrativa coherente con referencias `{cite:ID}` a los turnos originales, permitiendo al agente recuperar el detalle exacto cuando lo necesita. El detalle del proceso de generación (prompt, validación de citas, modos de funcionamiento) se describe en el documento de [`MemoryConsolidationService`](02-memory-consolidation.md).
 
 
-**Cuándo se dispara la compactación**
+**Cuándo se dispara la consolidación**
 
-La compactación se evalúa al final de cada turno, después de que el modelo haya entregado una respuesta textual y se haya cerrado la interacción. El `eventDispatcher` invoca `recentMemory.needCompaction()`, que devuelve `true` si el número de turnos únicos acumulados en la memoria reciente supera un umbral configurable. Este umbral se almacena en la configuración bajo `reasoning/compaction_turns`, con un valor por defecto de 40 turnos. La elección de un umbral basado en número de turnos (y no en tokens estimados) es una simplificación deliberada, suficiente para la mayoría de los casos de uso.
+La consolidación se evalúa al final de cada turno, después de que el modelo haya entregado una respuesta textual y se haya cerrado la interacción. El `eventDispatcher` invoca `recentMemory.needConsolidate()`, que devuelve `true` si el número de turnos únicos acumulados en la memoria reciente supera un umbral configurable. Este umbral se almacena en la configuración bajo `reasoning/consolidation_turn`, con un valor por defecto de 40 turnos. La elección de un umbral basado en número de turnos (y no en tokens estimados) es una simplificación deliberada, suficiente para la mayoría de los casos de uso.
 
-**El proceso de compactación**
+**El proceso de consolidación**
 
-Cuando se cumple la condición, el `eventDispatcher` invoca al método privado `performCompaction()`, que ejecuta la siguiente secuencia:
+Cuando se cumple la condición, el `eventDispatcher` invoca al método privado `performConsolidation()`, que ejecuta la siguiente secuencia:
 
-1. **Obtención de marcas**: se recuperan dos marcas de la memoria reciente mediante `getOldestMark()` (el mensaje consolidado más antiguo) y `getCompactMark()` (aproximadamente la mitad de la sesión, ajustada para no romper un turno por la mitad). Si alguna de estas marcas es `null`, el proceso aborta.
+1. **Obtención de marcas**: se recuperan dos marcas de la memoria reciente mediante `getOldestMark()` (el mensaje consolidado más antiguo) y `getConsolidateMark()` (aproximadamente la mitad de la sesión, ajustada para no romper un turno por la mitad). Si alguna de estas marcas es `null`, el proceso aborta.
 
-2. **Recuperación de turnos**: con los identificadores de turno de ambas marcas, se consulta a `EpisodicMemory.getTurnsByIds(subchannel, first, last)` para obtener todos los turnos comprendidos en ese rango, filtrando por el `subchannel` correspondiente. La lista incluye turnos de usuario, ejecuciones de herramientas y respuestas del modelo. Es importante destacar que estos turnos se recuperan de la memoria episódica global, que contiene el historial completo de todos los canales; el filtro por `subchannel` permite aislar solo los turnos de la conversación que se está compactando, pero todos ellos residen en la misma fuente de verdad compartida.
+2. **Recuperación de turnos**: con los identificadores de turno de ambas marcas, se consulta a `EpisodicMemory.getTurnsByIds(subchannel, first, last)` para obtener todos los turnos comprendidos en ese rango, filtrando por el `subchannel` correspondiente. La lista incluye turnos de usuario, ejecuciones de herramientas y respuestas del modelo. Es importante destacar que estos turnos se recuperan de la memoria episódica global, que contiene el historial completo de todos los canales; el filtro por `subchannel` permite aislar solo los turnos de la conversación que se está consolidando, pero todos ellos residen en la misma fuente de verdad compartida.
 
-3. **Generación de la nueva memoria compactada**: se invoca a `MemoryCompactionService.compact(subchannel, activeCompactedMemory, compactTurns)`. Este servicio utiliza un LLM (configurable independientemente) para generar un nuevo `CompactedMemory` que integra la información del `CompactedMemory` anterior (si existe) y los nuevos turnos. El resultado contiene dos secciones: "Resumen" (ejecutivo y factual) y "El Viaje" (narrativa cronológica con citas `{cite:ID}`). El `CompactedMemory` generado se etiqueta con el `subchannel` correspondiente, pero el conocimiento que contiene pasa a formar parte de la memoria episódica global y está disponible para cualquier canal que lo necesite. El servicio se encarga de validar las citas para evitar alucinaciones.
+3. **Generación de la nueva memoria consolidada**: se invoca a `MemoryConsolidationService.consolide(subchannel, activeConsolidateMemory, consolidateTurns)`. Este servicio utiliza un LLM (configurable independientemente) para generar un nuevo `ConsolidateMemory` que integra la información del `ConsolidateMemory` anterior (si existe) y los nuevos turnos. El resultado contiene dos secciones: "Resumen" (ejecutivo y factual) y "El Viaje" (narrativa cronológica con citas `{cite:ID}`). El `ConsolidateMemory` generado se etiqueta con el `subchannel` correspondiente, pero el conocimiento que contiene pasa a formar parte de la memoria episódica global y está disponible para cualquier canal que lo necesite. El servicio se encarga de validar las citas para evitar alucinaciones.
 
-4. **Persistencia**: el nuevo `CompactedMemory` se persiste en `EpisodicMemory` mediante `add(compactedMemory)`. Esto guarda los metadatos en la tabla H2 y escribe el contenido textual en un archivo `.md` dentro de `var/lib/compactedmemory/`.
+4. **Persistencia**: el nuevo `ConsolidateMemory` se persiste en `EpisodicMemory` mediante `add(ConsolidateMemory)`. Esto guarda los metadatos en la tabla H2 y escribe el contenido textual en un archivo `.md` dentro de `var/lib/consolidatememory/`.
 
-5. **Limpieza de la memoria reciente**: se invoca `recentMemory.remove(mark1, mark2)` para eliminar los mensajes compactados. La operación es atómica desde la perspectiva de la sesión: una vez ejecutada, los mensajes compactados desaparecen y no volverán a formar parte del contexto.
+5. **Limpieza de la memoria reciente**: se invoca `recentMemory.remove(mark1, mark2)` para eliminar los mensajes consolidados. La operación es atómica desde la perspectiva de la sesión: una vez ejecutada, los mensajes consolidados desaparecen y no volverán a formar parte del contexto.
 
-6. **Actualización del puntero activo**: `activeCompactedMemory` se actualiza al nuevo `CompactedMemory` para que futuras proyecciones lo incluyan en lugar del anterior.
+6. **Actualización del puntero activo**: `activeConsolidateMemory` se actualiza al nuevo `ConsolidateMemory` para que futuras proyecciones lo incluyan en lugar del anterior.
 
 **Integración con la memoria proyectada**
 
-Una vez generado un nuevo `CompactedMemory` para un `subchannel`, este se convierte en la memoria compactada activa para ese canal. La próxima vez que se construya el contexto para ese canal (en la siguiente proyección), `ProjectedMemory` incluirá el nuevo checkpoint como un bloque de sistema. Para otros canales, su memoria compactada activa permanece inalterada, pero el conocimiento que contiene el nuevo `CompactedMemory` está disponible en la memoria episódica global si el agente necesita recuperarlo mediante búsqueda semántica o consulta directa.
+Una vez generado un nuevo `ConsolidateMemory` para un `subchannel`, este se convierte en la memoria consolidada activa para ese canal. La próxima vez que se construya el contexto para ese canal (en la siguiente proyección), `ProjectedMemory` incluirá el nuevo checkpoint como un bloque de sistema. Para otros canales, su memoria consolidada activa permanece inalterada, pero el conocimiento que contiene el nuevo `ConsolidateMemory` está disponible en la memoria episódica global si el agente necesita recuperarlo mediante búsqueda semántica o consulta directa.
 
-Es importante destacar que, aunque la compactación se ejecuta sobre un `subchannel` concreto y genera un `CompactedMemory` etiquetado con ese canal, el conocimiento destilado reside en la memoria episódica global. Esto significa que el resumen generado para una conversación puede ser relevante para otra: si el usuario B pregunta sobre algo que se discutió en el canal A, el agente puede recuperar esa información mediante búsqueda en la memoria episódica global. El `subchannel` no aísla el conocimiento; solo organiza los turnos para que el agente pueda contextualizar su origen.
+Es importante destacar que, aunque la consolidación se ejecuta sobre un `subchannel` concreto y genera un `ConsolidateMemory` etiquetado con ese canal, el conocimiento destilado reside en la memoria episódica global. Esto significa que el resumen generado para una conversación puede ser relevante para otra: si el usuario B pregunta sobre algo que se discutió en el canal A, el agente puede recuperar esa información mediante búsqueda en la memoria episódica global. El `subchannel` no aísla el conocimiento; solo organiza los turnos para que el agente pueda contextualizar su origen.
 
-**Compactación bloqueante**
+**Consolidación bloqueante**
 
-La compactación ocurre dentro del mismo hilo del `eventDispatcher`, bloqueando el procesamiento de nuevos eventos mientras se realiza. Esto es una decisión de diseño deliberada: compactar es parte del procesamiento del turno que acaba de terminar, y no deben llegar nuevos estímulos hasta que la memoria esté consolidada. Si la compactación es costosa (varias llamadas al LLM), el agente puede pausarse durante varios segundos, pero esto ocurre solo ocasionalmente.
+La consolidación ocurre dentro del mismo hilo del `eventDispatcher`, bloqueando el procesamiento de nuevos eventos mientras se realiza. Esto es una decisión de diseño deliberada: consolidar es parte del procesamiento del turno que acaba de terminar, y no deben llegar nuevos estímulos hasta que la memoria esté consolidada. Si la v es costosa (varias llamadas al LLM), el agente puede pausarse durante varios segundos, pero esto ocurre solo ocasionalmente.
 
 **Acciones de depuración**
 
-Además de la compactación automática, el servicio expone dos acciones que permiten forzar la compactación manualmente:
+Además de la consolidación automática, el servicio expone dos acciones que permiten forzar la consolidación manualmente:
 
-- `COMPACT_REASONING_SESSION`: compacta aproximadamente el 50% más antiguo del historial de la sesión, utilizando el punto de corte estándar (`getCompactMark()`). Útil para liberar contexto sin compactar toda la historia.
+- `CONSOLIDATE_REASONING_SESSION`: consolida aproximadamente el 50% más antiguo del historial de la sesión, utilizando el punto de corte estándar (`getConsolidateMark()`). Útil para liberar contexto sin consolidar toda la historia.
 
-- `COMPACT_REASONING_FULL_SESSION`: compacta todos los turnos consolidados desde el más antiguo hasta el más reciente (`getOldestMark()` y `getNewestMark()`). Genera un único `CompactedMemory` que abarca toda la historia, útil para depuración o para liberar memoria de trabajo por completo.
+- `CONSOLIDATE_REASONING_FULL_SESSION`: consolidada todos los turnos consolidados desde el más antiguo hasta el más reciente (`getOldestMark()` y `getNewestMark()`). Genera un único `ConsolidateMemory` que abarca toda la historia, útil para depuración o para liberar memoria de trabajo por completo.
 
 Ambas acciones están disponibles en el menú de depuración de la interfaz de configuración.
 
@@ -284,7 +284,7 @@ Ambas acciones están disponibles en el menú de depuración de la interfaz de c
 ## 8. Soporte multi-canal (`subchannel`)
 
 
-El `ReasoningService` está diseñado para gestionar múltiples conversaciones en paralelo, cada una con su propio contexto activo (memoria reciente, compactada y proyectada). Este soporte multi-canal se materializa a través del concepto de `subchannel`, un identificador que permite organizar y filtrar los turnos de cada conversación, pero que **no aísla el conocimiento**. La memoria episódica es global para todos los canales; el `subchannel` es una etiqueta que contextualiza el origen de cada turno, no un contenedor que separe el conocimiento adquirido. Esto significa que el agente puede responder a preguntas de un usuario B sobre información que ha aprendido en una conversación con el usuario A, porque todo el conocimiento reside en la misma fuente de verdad compartida.
+El `ReasoningService` está diseñado para gestionar múltiples conversaciones en paralelo, cada una con su propio contexto activo (memoria reciente, consolidada y proyectada). Este soporte multi-canal se materializa a través del concepto de `subchannel`, un identificador que permite organizar y filtrar los turnos de cada conversación, pero que **no aísla el conocimiento**. La memoria episódica es global para todos los canales; el `subchannel` es una etiqueta que contextualiza el origen de cada turno, no un contenedor que separe el conocimiento adquirido. Esto significa que el agente puede responder a preguntas de un usuario B sobre información que ha aprendido en una conversación con el usuario A, porque todo el conocimiento reside en la misma fuente de verdad compartida.
 
 **Identificación del canal activo**
 
@@ -296,7 +296,7 @@ El `ReasoningService` mantiene tres mapas internos que asocian cada `subchannel`
 
 - **Memorias recientes** (`Map<String, RecentMemory> recentMemories`): cada canal tiene su propia `RecentMemory`, que contiene los mensajes de la sesión activa y el mapa de trazabilidad `turnOfMessage`. El archivo de persistencia de cada canal es independiente (`recent_memory-{subchannel}.json`).
 
-- **Memorias compactadas activas** (`Map<String, CompactedMemory> activeCompactedMemories`): cada canal mantiene un puntero al último `CompactedMemory` generado, que se utiliza para inyectar la memoria a largo plazo en el contexto de las proyecciones de ese canal.
+- **Memorias consolidadas activas** (`Map<String, ConsolidateMemory> activeConsolidateMemories`): cada canal mantiene un puntero al último `ConsolidateMemory` generado, que se utiliza para inyectar la memoria a largo plazo en el contexto de las proyecciones de ese canal.
 
 - **Memorias proyectadas** (`Map<String, ProjectedMemory> projectedMemories`): cada canal tiene su propia `ProjectedMemory`, que mantiene el estado persistente de las operaciones del pipeline (`PinnedTurnsOperation`, `TemporalPerceptionOperation`, etc.) de forma independiente. El archivo de persistencia es `projected_memory-{subchannel}.json`.
 
@@ -305,18 +305,18 @@ El `ReasoningService` mantiene tres mapas internos que asocian cada `subchannel`
 Cuando el servicio recibe un evento de un `subchannel` que aún no tiene memorias asociadas, las crea bajo demanda:
 
 - `getRecentMemory(subchannel)`: crea una nueva `RecentMemory` si no existe.
-- `getActiveCompactedMemory(subchannel)`: obtiene el último `CompactedMemory` de `EpisodicMemory` para ese canal (o `null` si no hay ninguno) y lo almacena en el mapa.
+- `getActiveConsolidateMemory(subchannel)`: obtiene el último `ConsolidateMemory` de `EpisodicMemory` para ese canal (o `null` si no hay ninguno) y lo almacena en el mapa.
 - `getProjectedMemory(subchannel)`: crea una nueva `ProjectedMemory` si no existe, restaurando su estado desde el archivo de persistencia.
 
-Todas estas memorias son independientes entre canales; las operaciones de compactación, poda y proyección se realizan sobre la instancia correspondiente al canal del evento que se está procesando. Esto permite al agente mantener conversaciones simultaneas, sin perder el enfoque en cada una de ellas, mientras el conocimiento de todas las conversaciones queda registrado en la memoria episodica.
+Todas estas memorias son independientes entre canales; las operaciones de consolidación, poda y proyección se realizan sobre la instancia correspondiente al canal del evento que se está procesando. Esto permite al agente mantener conversaciones simultaneas, sin perder el enfoque en cada una de ellas, mientras el conocimiento de todas las conversaciones queda registrado en la memoria episodica.
 
 **Enrutamiento de eventos**
 
-Cuando el `eventDispatcher` recibe un evento, extrae su `subchannel` y lo utiliza para obtener las memorias correspondientes. Todo el procesamiento del turno (inyección del evento, construcción del contexto, ejecución de herramientas, compactación) se realiza sobre las memorias de ese canal. Los eventos de usuario (`SensorEventUser`) también llevan un `subchannel`, que normalmente se asigna desde la interfaz de usuario que origina el mensaje.
+Cuando el `eventDispatcher` recibe un evento, extrae su `subchannel` y lo utiliza para obtener las memorias correspondientes. Todo el procesamiento del turno (inyección del evento, construcción del contexto, ejecución de herramientas, consolidación) se realiza sobre las memorias de ese canal. Los eventos de usuario (`SensorEventUser`) también llevan un `subchannel`, que normalmente se asigna desde la interfaz de usuario que origina el mensaje.
 
 **Persistencia independiente**
 
-Cada canal persiste su estado de forma independiente. Los archivos de memoria reciente y proyectada llevan el nombre del `subchannel` en su nombre de archivo (`recent_memory-{subchannel}.json`, `projected_memory-{subchannel}.json`). La base de datos H2 también incluye el `subchannel` en las tablas `episodicmemory` y `compactedmemory`, lo que permite diferenciar con quien estaba conversando cuando adquirio ese conocimiento.
+Cada canal persiste su estado de forma independiente. Los archivos de memoria reciente y proyectada llevan el nombre del `subchannel` en su nombre de archivo (`recent_memory-{subchannel}.json`, `projected_memory-{subchannel}.json`). La base de datos H2 también incluye el `subchannel` en las tablas `episodicmemory` y `consolidatememory`, lo que permite diferenciar con quien estaba conversando cuando adquirio ese conocimiento.
 
 ## 9. Métricas y depuración
 
@@ -330,7 +330,7 @@ El servicio expone tres métodos de estimación que permiten calcular el consumo
 
 - **`estimateToolsTokenCount(subchannel)`**: estima el número de tokens que ocuparán las especificaciones de herramientas activas (`ToolSpecification`) cuando se serialicen en la llamada al modelo. Para cada herramienta activa y permitida por `AgentAccessControl`, se serializa su especificación a texto y se estima el número de tokens. Se añade un overhead fijo por herramienta (15 tokens) para cubrir la estructura de la llamada.
 
-- **`estimateMessagesTokenCount(subchannel)`**: estima el número de tokens que ocuparán los mensajes de la memoria reciente proyectada (incluyendo las transformaciones del pipeline). Este método obtiene la proyección actual mediante `projectedMemory.getMessages(recentMemory, activeCompactedMemory, systemPrompt)` y estima el tamaño de la lista de mensajes resultante.
+- **`estimateMessagesTokenCount(subchannel)`**: estima el número de tokens que ocuparán los mensajes de la memoria reciente proyectada (incluyendo las transformaciones del pipeline). Este método obtiene la proyección actual mediante `projectedMemory.getMessages(recentMemory, activeConsolidateMemory, systemPrompt)` y estima el tamaño de la lista de mensajes resultante.
 
 Estas tres estimaciones se suman para proporcionar una visión aproximada del total de tokens que consumirá la próxima consulta al modelo. La UI del agente (Swing, Lanterna, Web) muestra esta información en tiempo real, permitiendo al usuario monitorizar el uso del contexto y anticipar posibles saturaciones.
 
@@ -338,15 +338,15 @@ Estas tres estimaciones se suman para proporcionar una visión aproximada del to
 
 Durante la construcción del contexto, `ProjectedMemory` escribe un volcado de la proyección final en un archivo JSON dentro de `var/tmp/`. El nombre del archivo sigue el patrón `context-{subchannel}-{timestamp}.json`, donde `timestamp` es la marca de tiempo en formato ISO. Este volcado contiene la lista completa de mensajes que se enviarán al LLM, serializados en el formato de LangChain4j (con adaptadores Gson para `ChatMessage` y `Content`).
 
-Este mecanismo es fundamental para depurar problemas de contexto: permite inspeccionar exactamente qué está viendo el modelo en cada turno, incluyendo el prompt de sistema, la memoria compactada, los mensajes recientes y las transformaciones aplicadas por el pipeline (poda, notificaciones, fijación). Los archivos se acumulan en `var/tmp/` y pueden ser eliminados manualmente; no hay una política de rotación automática.
+Este mecanismo es fundamental para depurar problemas de contexto: permite inspeccionar exactamente qué está viendo el modelo en cada turno, incluyendo el prompt de sistema, la memoria consolidada, los mensajes recientes y las transformaciones aplicadas por el pipeline (poda, notificaciones, fijación). Los archivos se acumulan en `var/tmp/` y pueden ser eliminados manualmente; no hay una política de rotación automática.
 
-**Acciones forzadas de compactación**
+**Acciones forzadas de consolidación**
 
-Además de la compactación automática (disparada por `needCompaction()`), el servicio expone dos acciones de depuración que permiten forzar la compactación manualmente:
+Además de la consolidación automática (disparada por `needConsolidate()`), el servicio expone dos acciones de depuración que permiten forzar la consolidación manualmente:
 
-- **`COMPACT_REASONING_SESSION`**: compacta aproximadamente el 50% más antiguo del historial de la sesión, utilizando el punto de corte estándar (`RecentMemory.getCompactMark()`). Esta acción es útil para liberar contexto sin compactar toda la historia, permitiendo al usuario o al desarrollador evaluar el impacto de la compactación en el comportamiento del modelo.
+- **`CONSOLIDATE_REASONING_SESSION`**: consolida aproximadamente el 50% más antiguo del historial de la sesión, utilizando el punto de corte estándar (`RecentMemory.getConsolidateMark()`). Esta acción es útil para liberar contexto sin consolidar toda la historia, permitiendo al usuario o al desarrollador evaluar el impacto de la consolidación en el comportamiento del modelo.
 
-- **`COMPACT_REASONING_FULL_SESSION`**: compacta todos los turnos consolidados desde el más antiguo hasta el más reciente (`getOldestMark()` y `getNewestMark()`). Genera un único `CompactedMemory` que abarca toda la historia, forzando una compactación total que puede ser útil para depurar la memoria a largo plazo o para reiniciar el estado de la memoria reciente desde cero.
+- **`CONSOLIDATE_REASONING_FULL_SESSION`**: consolida todos los turnos consolidados desde el más antiguo hasta el más reciente (`getOldestMark()` y `getNewestMark()`). Genera un único `ConsolidateMemory` que abarca toda la historia, forzando una consolidación total que puede ser útil para depurar la memoria a largo plazo o para reiniciar el estado de la memoria reciente desde cero.
 
 Ambas acciones están disponibles en el menú de depuración de la interfaz de configuración y se ejecutan a través de `AgentActions.call()`.
 
@@ -358,17 +358,17 @@ La UI del agente muestra en su barra de estado información en tiempo real sobre
 - **Turnos acumulados**: el número de turnos únicos en la memoria reciente (`recentMemory.getTurnsCount()`).
 - **Tokens estimados**: el total de tokens estimados para la próxima consulta (suma de las tres estimaciones anteriores) y el límite de contexto del modelo (`model.getContextSize()`).
 
-Esta información se actualiza al final de cada turno (en `updateMetadata()`) y se utiliza para que el usuario pueda anticipar cuándo se disparará la compactación y cómo está evolucionando el consumo de contexto.
+Esta información se actualiza al final de cada turno (en `updateMetadata()`) y se utiliza para que el usuario pueda anticipar cuándo se disparará la consolidación y cómo está evolucionando el consumo de contexto.
 
 **Depuración avanzada con el panel de depuración**
 
 El `ReasoningService` también se integra con el panel de depuración interactivo (accesible mediante la acción `DEBUG_DIALOG`). Este panel, basado en MVEL (un motor de expresiones), permite inspeccionar y modificar el estado interno del servicio en tiempo real. El contexto de evaluación incluye:
 
-- `self`: la instancia del `ReasoningService` actual.
+- `this`: la instancia del `ReasoningService` actual.
 - `agent`: la instancia del agente.
 - `agentManager`: el `AgentManager` global.
 
-Desde el panel, el desarrollador puede, por ejemplo, consultar el contenido de la memoria reciente (`self.getRecentMemory("default").getMessages()`), forzar una compactación (`self.performCompaction()`), o inspeccionar el estado de las herramientas (`self.getAvailableTools()`). Esto proporciona una capacidad de depuración sin precedentes para entender el comportamiento interno del agente en tiempo real.
+Desde el panel, el desarrollador puede, por ejemplo, consultar el contenido de la memoria reciente (`this.getRecentMemory("default").getMessages()`), forzar una consolidación (`this.performConsolidation()`), o inspeccionar el estado de las herramientas (`this.getAvailableTools()`). Esto proporciona una capacidad de depuración sin precedentes para entender el comportamiento interno del agente en tiempo real.
 
 
 ## 10. Limitaciones conocidas
@@ -379,9 +379,9 @@ El `ReasoningService` es el resultado de un proceso iterativo de diseño, donde 
 
 El `eventDispatcher` se ejecuta en un único hilo de plataforma, procesando los eventos de forma secuencial y bloqueante. Esta arquitectura elimina complejidades de concurrencia (no hay condiciones de carrera, no hay necesidad de sincronización), pero implica que la ejecución de herramientas lentas (búsquedas web, comandos shell largos) bloquea todo el agente. Durante ese tiempo, no se atienden nuevos eventos. En la práctica, esto rara vez es un problema porque el agente no puede hacer dos cosas a la vez, pero podría serlo si se implementaran herramientas de larga duración que requirieran procesamiento en paralelo. El código incluye un comentario sobre la posibilidad de lanzar `shell_execute` en un hilo aparte, pero actualmente no está implementado.
 
-**Compactación basada en número de turnos**
+**Consolidación basada en número de turnos**
 
-El umbral de compactación se mide en número de turnos (40 por defecto), no en tokens estimados. Medir tokens requeriría estimar el tamaño de cada mensaje antes de compactar, lo que añade complejidad y llamadas adicionales al modelo. El número de turnos es una aproximacion razonablemente bueno para la longitud de la conversación, pero tiene limitaciones: conversaciones con herramientas no paginadas que devuelven grandes volúmenes de texto pueden saturar la ventana de contexto mucho antes de alcanzar los 40 turnos. Por el contrario, conversaciones muy largas pero con mensajes muy cortos podrían acumular muchos más turnos antes de necesitar compactación. El código tiene comentarios sobre la posibilidad de combinar ambos criterios, pero no está implementado.
+El umbral de consolidación se mide en número de turnos (40 por defecto), no en tokens estimados. Medir tokens requeriría estimar el tamaño de cada mensaje antes de consolidar, lo que añade complejidad y llamadas adicionales al modelo. El número de turnos es una aproximacion razonablemente bueno para la longitud de la conversación, pero tiene limitaciones: conversaciones con herramientas no paginadas que devuelven grandes volúmenes de texto pueden saturar la ventana de contexto mucho antes de alcanzar los 40 turnos. Por el contrario, conversaciones muy largas pero con mensajes muy cortos podrían acumular muchos más turnos antes de necesitar consolidación. El código tiene comentarios sobre la posibilidad de combinar ambos criterios, pero no está implementado.
 
 **La simulación de `pool_event` y el TODO pendiente**
 
@@ -405,7 +405,7 @@ La confirmación a través de `AgentConsole.confirm()` es bloqueante. Mientras e
 
 **Ausencia de monitorización de tokens en tiempo real**
 
-El servicio estima el tamaño del contexto (`estimateMessagesTokenCount()`, `estimateToolsTokenCount()`), pero no utiliza esta información para decisiones en tiempo real (por ejemplo, para compactar antes de que el contexto exceda un límite). La estimación de tokens es una operación que implica llamar al modelo de lenguaje (LangChain4j proporciona métodos para ello, pero internamente pueden requerir tokenizadores específicos). Hacerlo en cada iteración añadiría overhead, y el límite de contexto de los modelos actuales es lo suficientemente grande (128K o 1M tokens) como para que el umbral de 40 turnos sea un límite más restrictivo en la práctica. Sin embargo, con modelos de ventana pequeña (8K tokens) o herramientas que devuelven grandes cantidades de texto, esta estrategia puede fallar.
+El servicio estima el tamaño del contexto (`estimateMessagesTokenCount()`, `estimateToolsTokenCount()`), pero no utiliza esta información para decisiones en tiempo real (por ejemplo, para consolidar antes de que el contexto exceda un límite). La estimación de tokens es una operación que implica llamar al modelo de lenguaje (LangChain4j proporciona métodos para ello, pero internamente pueden requerir tokenizadores específicos). Hacerlo en cada iteración añadiría overhead, y el límite de contexto de los modelos actuales es lo suficientemente grande (128K o 1M tokens) como para que el umbral de 40 turnos sea un límite más restrictivo en la práctica. Sin embargo, con modelos de ventana pequeña (8K tokens) o herramientas que devuelven grandes cantidades de texto, esta estrategia puede fallar.
 
 
 **No hay timeout para la generación del modelo**

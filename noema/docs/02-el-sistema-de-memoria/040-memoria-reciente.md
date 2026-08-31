@@ -5,7 +5,7 @@
 
 - La memoria reciente es la memoria de trabajo del agente.
 - Contiene los mensajes de la sesión activa: los intercambios recientes, las herramientas ejecutadas y sus resultados.
-- Su tamaño está limitado para preservar la atención del modelo. Cuando se supera el umbral, los turnos más antiguos se compactan y pasan a la memoria compactada.
+- Su tamaño está limitado para preservar la atención del modelo. Cuando se supera el umbral, los turnos más antiguos se consolidan y pasan a la memoria consolidada.
 - Soporte multi-canal: cada `subchannel` tiene su propia instancia de `RecentMemory`, permitiendo conversaciones paralelas e independientes.
 
 ## 2. Estructura interna
@@ -46,17 +46,17 @@ La memoria reciente se serializa a disco tras cada modificación en el archivo `
 La memoria reciente no se envía directamente al LLM. Es la memoria proyectada (`ProjectedMemory`) quien construye la vista final.
 La memoria reciente proporciona los mensajes sin transformaciones; la memoria proyectada aplica las transformaciones (poda, inyección de notificaciones, etc.) justo antes de cada inferencia.
 
-## 5. Compactación: marcas y eliminación
+## 5. Consolidación: marcas y eliminación
 
-La memoria reciente expone tres métodos para gestionar la compactación:
+La memoria reciente expone tres métodos para gestionar la consolidación:
 
 ### `getOldestMark()`
 
-Devuelve una `RecentMemoryMark` correspondiente al mensaje consolidado más antiguo de la sesión. Es el punto de inicio del bloque a compactar. Si no hay mensajes consolidados, devuelve `null`.
+Devuelve una `RecentMemoryMark` correspondiente al mensaje consolidado más antiguo de la sesión. Es el punto de inicio del bloque a consolidar. Si no hay mensajes consolidados, devuelve `null`.
 
-### `getCompactMark()`
+### `getConsolidateMark()`
 
-Determina el punto de corte para la compactación incremental:
+Determina el punto de corte para la consolidación incremental:
 
 1. Toma la mitad de la lista de mensajes (`size() / 2`).
 2. Ajusta hacia atrás hasta encontrar un mensaje consolidado.
@@ -67,7 +67,7 @@ Este mecanismo garantiza que no se corte en mitad de un bloque de herramientas p
 
 ### `getNewestMark()`
 
-Devuelve una marca correspondiente al mensaje consolidado más reciente de la sesión. Se utiliza para la compactación total (`COMPACT_REASONING_FULL_SESSION`).
+Devuelve una marca correspondiente al mensaje consolidado más reciente de la sesión. Se utiliza para la consolidación total (`CONSOLIDATE_REASONING_FULL_SESSION`).
 
 ### `remove(mark1, mark2)`
 
@@ -78,25 +78,24 @@ Elimina de la sesión todos los mensajes comprendidos entre `mark1` y `mark2` (i
 3. Crea un nuevo mapa donde los mensajes anteriores al corte conservan su índice original; los posteriores se insertan con su índice reducido en `offset`.
 4. Elimina físicamente los mensajes de la lista y sustituye el mapa antiguo por el nuevo.
 
-La operación es atómica desde la perspectiva de la sesión: una vez ejecutada, los mensajes compactados desaparecen y no volverán a formar parte del contexto.
+La operación es atómica desde la perspectiva de la sesión: una vez ejecutada, los mensajes consolidados desaparecen y no volverán a formar parte del contexto.
 
-## 6. Umbral de compactación
+## 6. Umbral de consolidación
 
-El método `needCompaction()` determina si la memoria reciente ha alcanzado el límite:
+El método `needConsolidation()` determina si la memoria reciente ha alcanzado el límite:
 
 1. Recoge todos los valores únicos de `turnId` en el mapa `turnOfMessage`.
 2. Si el número de turnos únicos supera un umbral configurable, devuelve `true`.
 
-El umbral se lee de la configuración bajo la clave `reasoning/compaction_turns`. Por defecto, 40 turnos. La compactación se dispara al final del turno, después de que el modelo haya entregado una respuesta.
+El umbral se lee de la configuración bajo la clave `reasoning/consolidation_turns`. Por defecto, 40 turnos. La consolidación se dispara al final del turno, después de que el modelo haya entregado una respuesta.
 
 ## 7. Limitaciones conocidas
 
 - **Umbral basado solo en número de turnos**: no se tiene en cuenta el tamaño en tokens de los mensajes. Si un turno incluye una herramienta que devuelve grandes volúmenes de texto sin paginar, el contexto puede saturarse antes del umbral.
 
-- **`getCompactMark()` es costoso**: recorre la lista de mensajes y puede ser costoso en sesiones muy largas (aunque la lista está limitada a ~40 turnos).
+- **`getConsolidateMark()` es costoso**: recorre la lista de mensajes y puede ser costoso en sesiones muy largas (aunque la lista está limitada a ~40 turnos).
 
 - **Persistencia en disco por modificación**: la memoria reciente se guarda en disco en cada `add()` y `consolideTurn()`. Esto puede generar muchas escrituras en sesiones con alto ritmo de interacción.
 
-- **No hay compactación manual**: la compactación solo se dispara automáticamente por `needCompaction()`. No hay forma de forzar una compactación parcial desde fuera (más allá de las acciones de depuración).
+- **No hay consolidación manual**: la consolidación solo se dispara automáticamente por `needConsolidation()`. No hay forma de forzar una consolidación parcial desde fuera (más allá de las acciones de depuración).
 
-- **La memoria reciente no es compartida**: cada `subchannel` tiene su propia instancia. No hay un mecanismo para compartir mensajes entre canales.

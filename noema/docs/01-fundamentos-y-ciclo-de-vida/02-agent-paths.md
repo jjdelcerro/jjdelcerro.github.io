@@ -4,7 +4,7 @@
 
 Noema adopta una postura transparente respecto a la persistencia: el sistema de
 archivos local es el depositario principal del estado del agente. La
-configuración, la memoria episódica, las memorias compactadas, las sesiones de
+configuración, la memoria episódica, la memoria consolidada, las sesiones de
 trabajo por canal, los logs, las cachés y los volcados de depuración se
 almacenan como archivos planos o bases de datos relacionales embebidas (H2)
 dentro de un directorio acotado.
@@ -51,12 +51,12 @@ El espacio de trabajo se organiza bajo dos raíces principales: el directorio de
 │       │   ├── settings.json  # Configuración jerárquica activa
 │       │   └── *.properties   # Dominios externos (modelos, URLs, claves)
 │       ├── lib/               # Estado persistente del agente
-│       │   ├── memory.mv.db   # BD H2: EpisodicMemory y metadatos de compactación
+│       │   ├── memory.mv.db   # BD H2: EpisodicMemory y metadatos de consolidación
 │       │   ├── service.mv.db  # BD H2: Servicios auxiliares (Scheduler, etc.)
 │       │   ├── sensors.json   # Memento del estado sensorial y estadísticas
 │       │   ├── recent_memory-<subchannel>.json     # Memoria de trabajo activa
 │       │   ├── projected_memory_<subchannel>.json  # Estado de la memoria proyectada
-│       │   ├── compactedmemory/                    # Crónicas narrativas (.md)
+│       │   ├── consolidatememory/                  # Crónicas narrativas (.md)
 │       │   └── turns.csv      # Log secuencial de turnos para depuración
 │       ├── cache/             # Datos derivados regenerables
 │       │   └── file_extract_text/  # Textos extraídos de binarios (PDF/DOCX)
@@ -149,7 +149,7 @@ Cada componente del agente utiliza `AgentPaths` para ubicar sus datos:
 
 | Subsistema / Clase | Método utilizado | Función / Archivos |
 | :--- | :--- | :--- |
-| **`EpisodicMemoryImpl`** | `getDataFolder()` | Almacena `memory.mv.db`, `turns.csv` y la carpeta `compactedmemory/`. |
+| **`EpisodicMemoryImpl`** | `getDataFolder()` | Almacena `memory.mv.db`, `turns.csv` y la carpeta `consolidatememory/`. |
 | **`RecentMemoryImpl`** | `getDataFolder()` | Persiste `recent_memory-<subchannel>.json` por cada canal activo. |
 | **`ProjectedMemoryImpl`** | `getDataFolder()` / `getTempFolder()` | Persiste `projected_memory_<subchannel>.json` y vuelca volcados de depuración `context-*.json`. |
 | **`SensorsServiceImpl`** | `getDataFolder()` | Persiste el estado de colas y estadísticas en `sensors.json`. |

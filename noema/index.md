@@ -16,7 +16,7 @@ Los modelos de lenguaje actuales son entidades estáticas: sus pesos neuronales 
 Noema aborda este problema desde una perspectiva estructural, no estadística. En lugar de intentar agrandar la ventana de contexto o recurrir a un RAG fragmentario, el sistema organiza la información en **cuatro estratos de memoria** que gestionan el conocimiento a lo largo del tiempo:
 
 1. **Memoria episódica**: el registro inmutable de todo lo que ha ocurrido.
-2. **Memoria compactada**: una narrativa destilada ("El Viaje") que preserva la intencionalidad y la trazabilidad, generada periódicamente por un LLM.
+2. **Memoria consolidada**: una narrativa destilada ("El Viaje") que preserva la intencionalidad y la trazabilidad, generada periódicamente por un LLM.
 3. **Memoria reciente**: la memoria de trabajo que se envía al modelo en cada turno.
 4. **Memoria proyectada**: la vista dinámica que realmente ve el LLM, donde se ocultan datos brutos ya procesados y se inyectan notificaciones efímeras.
 
@@ -40,10 +40,10 @@ Este bloque cubre los pilares sobre los que se asienta el agente: cómo se arran
 
 El corazón de Noema. Este bloque describe cómo se organiza la memoria para evitar la degradación del contexto y garantizar la continuidad a largo plazo. Cada capa tiene una función específica y se integra con las demás para formar un sistema de memoria híbrido y determinista.
 
-* **[Visión general del modelo de memoria](./docs/02-el-sistema-de-memoria/010-vision-general-de-modelo-de-memoria.md)**: El problema del contexto finito y la estrategia de Noema: memoria episódica, compactada, reciente y proyectada.
+* **[Visión general del modelo de memoria](./docs/02-el-sistema-de-memoria/010-vision-general-de-modelo-de-memoria.md)**: El problema del contexto finito y la estrategia de Noema: memoria episódica, consolidada, reciente y proyectada.
 * **[Memoria episódica (`EpisodicMemory`)](./docs/02-el-sistema-de-memoria/020-memoria-episodica.md)**: Inmutabilidad de `Turn`, tabla H2, política de truncado de resultados pesados y búsqueda semántica con embeddings.
-* **[Memoria compactada (`CompactedMemory`)](./docs/02-el-sistema-de-memoria/030-memoria-compactada.md)**: El `CheckPoint`, persistencia híbrida (BD + `.md`), estructura dual (Resumen + El Viaje) y trazabilidad con `{cite:ID}`.
-* **[Memoria reciente (`RecentMemory`)](./docs/02-el-sistema-de-memoria/040-memoria-reciente.md)**: Ventana activa de sesión, backfill de `turnId`, gestión de límites atómicos y condición de compactación.
+* **[Memoria consolidada (`ConsolidateMemory`)](./docs/02-el-sistema-de-memoria/030-memoria-consolidada.md)**: El `CheckPoint`, persistencia híbrida (BD + `.md`), estructura dual (Resumen + El Viaje) y trazabilidad con `{cite:ID}`.
+* **[Memoria reciente (`RecentMemory`)](./docs/02-el-sistema-de-memoria/040-memoria-reciente.md)**: Ventana activa de sesión, backfill de `turnId`, gestión de límites atómicos y condición de consolidacion.
 * **[Memoria proyectada (`ProjectedMemory`)](./docs/02-el-sistema-de-memoria/050-memoria-proyectada.md)**: El pipeline de operaciones efímeras que construye la vista final para el LLM.
 
 
@@ -52,7 +52,7 @@ El corazón de Noema. Este bloque describe cómo se organiza la memoria para evi
 Los servicios son los módulos funcionales que el agente activa durante su ejecución. Cada uno tiene un ciclo de vida, una configuración propia y un conjunto de herramientas asociadas. Este bloque cubre los servicios fundamentales del sistema.
 
 * **[`ReasoningService`](./docs/03-catalogo-de-servicios/01-reasoning.md)**: El orquestador principal: bucle de consciencia `eventDispatcher`, gestión del contexto, ejecución de herramientas y coordinación de la memoria.
-* **[`MemoryCompactionService`](./docs/03-catalogo-de-servicios/02-memory-compaction.md)**: La compactación narrativa: generación de `CompactedMemory` a partir de turnos, validación de citas y uso de LLM específico.
+* **[`MemoryConsolidationService`](./docs/03-catalogo-de-servicios/02-memory-consolidation.md)**: La consolidación narrativa: generación de `ConsolidateMemory` a partir de turnos, validación de citas y uso de LLM específico.
 * **[`SensorsService`](./docs/03-catalogo-de-servicios/03-sensors.md)**: El sistema nervioso autónomo: gestión de eventos asíncronos, naturalezas sensoriales, arbitraje cronológico y persistencia.
 * **[`EmbeddingsService`](./docs/03-catalogo-de-servicios/05-embeddings.md)**: Vectorización local con ONNX, similitud coseno, búsqueda top-K y serialización BLOB.
 * **[`SchedulerService`](./docs/03-catalogo-de-servicios/04-scheduler.md)**: Planificación temporal persistente con Natty, cola de alarmas y emisión de eventos.

@@ -44,7 +44,7 @@ Para evitar el escaneo dinámico de classpath en tiempo de ejecución, Noema cen
 2. **Factorías de servicios del agente (`AgentServiceFactory`):**
    * `EmbeddingsServiceFactory`: motor local de embeddings multilingües ONNX.
    * `SensorsServiceFactory`: bus sensorial asíncrono y sistema nervioso autónomo.
-   * `MemoryCompactionServiceFactory`: consolidación narrativa de la memoria episódica.
+   * `MemoryConsolidationServiceFactory`: consolidación narrativa de la memoria episódica.
    * `McpServiceFactory`: cliente para servidores locales Model Context Protocol.
    * `SchedulerServiceFactory`: planificación temporal y alarmas persistentes.
    * `EmailServiceFactory`: cliente IMAP/SMTP con filtrado por remitente.
@@ -68,7 +68,7 @@ Este método ejecuta la siguiente secuencia de preparación:
 1. **Configuración de logs:** Lee la ruta de almacenamiento desde `AgentPaths.getLogFolder()` y reconfigura Log4j2 en caliente para dirigir las salidas a `var/log/noema-agente.log` dentro del workspace activo.
 2. **Consola web de H2:** Genera dinámicamente el archivo `.h2.server.properties` en `var/config/` y levanta el servidor web de administración de H2 en el puerto configurado (`debug/h2_webport`, por defecto `8082`), permitiendo inspeccionar las tablas en tiempo real desde un navegador.
 3. **Proveedores de conexión JDBC:** Inicializa dos instancias de `ConnectionSupplier` que gestionan las conexiones hacia las bases de datos locales:
-   * **Base de memoria (`memory`):** Almacena los turnos inmutables de la memoria episódica y los metadatos de las memorias compactadas.
+   * **Base de memoria (`memory`):** Almacena los turnos inmutables de la memoria episódica y los metadatos de las memorias consolidadas.
    * **Base de servicios (`service`):** Almacena el estado de los servicios auxiliares (como la tabla `SCHEDULER` de alarmas).
    * Ambas conexiones se configuran con el parámetro `;AUTO_SERVER=TRUE` para permitir el acceso simultáneo de la aplicación y la consola web de H2.
 4. **Instanciación del agente:** Invoca a `AgentManager.createAgent(...)` inyectando las conexiones de base de datos, la configuración cargada y la consola activa.

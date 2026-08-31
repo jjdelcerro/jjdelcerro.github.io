@@ -2,7 +2,7 @@
 
 ## 1. Propósito y responsabilidad
 
-La operación `PendingAnnotationOperation` es responsable de detectar cuándo el modelo ha leído recursos paginados (archivos, salidas de comandos, contenidos web) pero no ha consolidado el conocimiento extraído de ellos mediante la herramienta `annotate_observation`. Su objetivo es guiar al modelo para que preserve información valiosa antes de que los resultados de esas lecturas desaparezcan del contexto por compactación o poda.
+La operación `PendingAnnotationOperation` es responsable de detectar cuándo el modelo ha leído recursos paginados (archivos, salidas de comandos, contenidos web) pero no ha consolidado el conocimiento extraído de ellos mediante la herramienta `annotate_observation`. Su objetivo es guiar al modelo para que preserve información valiosa antes de que los resultados de esas lecturas desaparezcan del contexto por consolidación o poda.
 
 Esta operación se ejecuta con prioridad 20, después de `TrimmingOperation` (que ya ha podado los resultados largos) y antes de `TemporalPerceptionOperation` (que añade la percepción del tiempo). Al ejecutarse después del podado, la operación trabaja sobre mensajes que ya han sido recortados, pero conservan la cabecera con los metadatos necesarios (como `RESOURCE_ID` y el rango de líneas leído).
 
@@ -29,7 +29,7 @@ La detección se realiza en el método `process()` de la operación. El proceso 
     - Para cada mensaje de tipo `ToolExecutionResultMessage`, comprueba si la herramienta es `annotate_observation` (a través de `memory.getTool(toolName)`).
     - Si lo es, extrae el `resource_id` del mensaje (usando el método específico de `AnnotateObservationTool.getResourceIdFromResultMessage()`) y actualiza el mapa.
 
-2.  **Identificar zona de riesgo**: la operación define la zona de riesgo como los últimos `messagesToKeep` mensajes de la proyección (por defecto 20). Esto representa los mensajes que están a punto de salir del contexto en las próximas compactaciones.
+2.  **Identificar zona de riesgo**: la operación define la zona de riesgo como los últimos `messagesToKeep` mensajes de la proyección (por defecto 20). Esto representa los mensajes que están a punto de salir del contexto en las próximas consolidaciones.
 
 3.  **Recorrer la zona de riesgo**: para cada mensaje en la zona de riesgo (desde el inicio de la zona hasta aproximadamente la mitad de la misma, `riskStartIdx` a `riskEndIdx`), la operación:
 
@@ -66,4 +66,4 @@ Esto tiene dos implicaciones:
 - **Simplicidad**: no hay que gestionar un estado que pueda desincronizarse.
 - **Eficacia**: la operación siempre evalúa el estado actual del historial, sin depender de datos almacenados que puedan quedar obsoletos.
 
-Sin embargo, tiene una limitación: si el modelo anota un recurso pero la anotación se produce fuera de la ventana de la proyección (por ejemplo, en un turno anterior que ya ha sido compactado), la operación puede no detectarla y emitir un aviso innecesario. Esto se mitiga porque las anotaciones se conservan en la memoria reciente (a menos que hayan sido compactadas), y la operación recorre toda la proyección para encontrar anotaciones, no solo la zona de riesgo.
+Sin embargo, tiene una limitación: si el modelo anota un recurso pero la anotación se produce fuera de la ventana de la proyección (por ejemplo, en un turno anterior que ya ha sido consolidado), la operación puede no detectarla y emitir un aviso innecesario. Esto se mitiga porque las anotaciones se conservan en la memoria reciente (a menos que hayan sido consolidadas), y la operación recorre toda la proyección para encontrar anotaciones, no solo la zona de riesgo.

@@ -3,7 +3,7 @@
 
 ## 1. Propósito y responsabilidad
 
-La memoria proyectada es la vista efímera que realmente ve el LLM en cada turno. No es una capa de almacenamiento persistente; es una construcción dinámica que se genera justo antes de cada inferencia del modelo, a partir de las capas inferiores de la memoria (episódica, compactada y reciente). Una vez que el LLM ha respondido, la memoria proyectada se descarta; la próxima inferencia se construirá de nuevo desde cero, aunque el estado de algunas operaciones se conserva entre proyecciones.
+La memoria proyectada es la vista efímera que realmente ve el LLM en cada turno. No es una capa de almacenamiento persistente; es una construcción dinámica que se genera justo antes de cada inferencia del modelo, a partir de las capas inferiores de la memoria (episódica, consolidada y reciente). Una vez que el LLM ha respondido, la memoria proyectada se descarta; la próxima inferencia se construirá de nuevo desde cero, aunque el estado de algunas operaciones se conserva entre proyecciones.
 
 Su responsabilidad principal es **transformar y optimizar el contexto** que recibe el modelo, garantizando que:
 
@@ -17,7 +17,7 @@ La memoria proyectada no es una capa aislada; es el punto de control final antes
 
 La interfaz `ProjectedMemory` define los siguientes métodos públicos:
 
-- **`List<ChatMessage> getMessages(RecentMemory recentMemory, CompactedMemory compactedMemory, String systemPrompt)`**: construye la proyección ejecutando el pipeline de operaciones. Devuelve la lista de mensajes lista para enviar al LLM. Recibe como parámetros la memoria reciente, la memoria compactada más reciente y el prompt de sistema proporcionado por `ReasoningService`. Este método es el punto de entrada principal del componente.
+- **`List<ChatMessage> getMessages(RecentMemory recentMemory, ConsolidateMemory consolidateMemory, String systemPrompt)`**: construye la proyección ejecutando el pipeline de operaciones. Devuelve la lista de mensajes lista para enviar al LLM. Recibe como parámetros la memoria reciente, la memoria consolidada más reciente y el prompt de sistema proporcionado por `ReasoningService`. Este método es el punto de entrada principal del componente.
 
 - **`AgentTool getTool(String name)`**: recupera una herramienta por su nombre desde el catálogo del agente. Utilizada por las operaciones que necesitan consultar el catálogo de herramientas, como `PendingAnnotationOperation` para saber si una herramienta es paginada, o `PinnedTurnsOperation` para obtener la herramienta asociada a un mensaje fijado.
 
@@ -37,7 +37,7 @@ El método `getMessages()` sigue un flujo fijo y detallado:
 
 1. **Ensamblaje de la base**:
    - Se añade el prompt de sistema como primer mensaje de la lista (`SystemMessage`).
-   - Se añade la memoria compactada como un bloque de texto delimitado, precedido por un encabezado que indica el momento de la última compactación.
+   - Se añade la memoria consolidada como un bloque de texto delimitado, precedido por un encabezado que indica el momento de la última consolidación.
    - Se añaden todos los mensajes de la memoria reciente (`RecentMemory.getMessages()`) en el orden en que ocurrieron.
 
 2. **Ejecución del pipeline**:
@@ -138,7 +138,7 @@ Las operaciones registradas actualmente son:
 
 - **[`PinnedTurnsOperation`](051-operation-pinned.md) (prioridad 5)**:
   - Fija mensajes de herramientas que lo solicitan (`shouldPin() == true`), como la activación de skills.
-  - Reinyecta estos mensajes en la proyección después de cada compactación.
+  - Reinyecta estos mensajes en la proyección después de cada consolidación.
   - Emite recordatorios periódicos cada N turnos mientras el skill está activo.
 
 - **[`TrimmingOperation`](052-operation-trimming.md) (prioridad 10)**:

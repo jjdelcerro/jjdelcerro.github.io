@@ -4,7 +4,7 @@
 
 La configuración de Noema no es una lista plana de pares clave-valor. Es un **árbol jerárquico** que refleja la estructura modular del agente. Esta decisión responde a la necesidad de agrupar lógicamente los parámetros que pertenecen a un mismo subsistema, permitiendo que el usuario y los componentes del agente naveguen por la configuración de forma predecible.
 
-La jerarquía del proyecto se materializa en el archivo `settings.json`, ubicado en el sandbox del agente (`.noema-agent/var/config/settings.json`). Este archivo es el punto de entrada para cualquier ajuste operativo del sistema: desde las credenciales y modelos de los proveedores LLM hasta las políticas de seguridad en disco, pasando por los umbrales de compactación de memoria o la definición de servidores MCP locales.
+La jerarquía del proyecto se materializa en el archivo `settings.json`, ubicado en el sandbox del agente (`.noema-agent/var/config/settings.json`). Este archivo es el punto de entrada para cualquier ajuste operativo del sistema: desde las credenciales y modelos de los proveedores LLM hasta las políticas de seguridad en disco, pasando por los umbrales de consolidación de memoria o la definición de servidores MCP locales.
 
 El sistema de configuración está diseñado para ser **recargable en caliente**. El usuario puede modificar `settings.json` directamente o utilizar las interfaces de usuario (generadas dinámicamente a partir de `settingsui.json`) y aplicar los cambios sin reiniciar el proceso del agente, apoyándose en el sistema de acciones del núcleo (`AgentActions`).
 
@@ -22,8 +22,8 @@ El archivo `settings.json` organiza sus ramas en objetos, valores primitivos y l
       "model_id": "{ \"model\": \"zai-org/GLM-4.7-FP8\", \"context\": 202000}",
       "api_key": null
     },
-    "compaction_turns": 40,
-    "compaction_tokens": 60000,
+    "consolidation_turn": 40,
+    "consolidation_tokens": 60000,
     "active_tools": {
       "web_search": false,
       "file_write": false,
@@ -136,14 +136,14 @@ La reconstrucción del árbol desde JSON se apoya en `AgentSettingsItemDeseriali
 * **Consultas tipadas con valor por defecto:**
   ```java
   String url = settings.getPropertyAsString("reasoning/provider/url", "http://localhost:11434");
-  int turns = settings.getPropertyAsInt("reasoning/compaction_turns", 40);
+  int turns = settings.getPropertyAsInt("reasoning/consolidation_turn", 40);
   boolean allowWrite = settings.getPropertyAsBoolean("access_control/allow_disk_write", false);
   List<Path> paths = settings.getPropertyAsPaths("access_control/allowed_external_paths");
   AgentSettingsCheckedList tools = settings.getPropertyAsCheckedList("reasoning/active_tools");
   ```
 * **Mutación de propiedades:**
   ```java
-  settings.setProperty("reasoning/compaction_turns", "50");
+  settings.setProperty("reasoning/consolidation_turn", "50");
   settings.setChecked("reasoning/active_tools", "file_write", true);
   settings.save();
   ```
@@ -289,10 +289,10 @@ Cuando un parámetro de configuración se modifica, la interfaz no solo actualiz
 ### Acciones del sistema registradas
 
 * `CHANGE_REASONING_PROVIDER` / `CHANGE_REASONING_MODEL`: Recrea el `ChatModel` de `ReasoningServiceImpl`.
-* `CHANGE_MEMORY_PROVIDER` / `CHANGE_MEMORY_MODEL`: Recrea el `ChatModel` de `MemoryCompactionServiceImpl`.
+* `CHANGE_MEMORY_PROVIDER` / `CHANGE_MEMORY_MODEL`: Recrea el `ChatModel` de `MemoryConsolidationServiceImpl`.
 * `RELOAD_ACCESS_CONTROL`: Vuelve a cargar las listas blancas, negras y flags de seguridad en `AgentAccessControlImpl`.
 * `REFRESH_REASONING_TOOLS`: Sincroniza el mapa interno de herramientas activas en `ReasoningServiceImpl` con la lista `reasoning/active_tools`.
-* `COMPACT_REASONING_SESSION` / `COMPACT_REASONING_FULL_SESSION`: Dispara compactaciones manuales del historial activo.
+* `CONSOLIDATE_REASONING_SESSION` / `CONSOLIDATE_REASONING_FULL_SESSION`: Dispara consolidaciones manuales del historial activo.
 * `OPEN_MODELS_EDITOR`, `OPEN_PROVIDERS_URL_EDITOR`, `OPEN_PROVIDERS_APIKEY_EDITOR`: Abre diálogos con resaltado de sintaxis para editar archivos `.properties` locales.
 * `OPEN_H2WEBCONSOLE`: Abre el navegador del sistema apuntando a la consola web de H2.
 * `DEBUG_DIALOG`: Abre el panel interactivo MVEL para inspección del estado de los servicios.

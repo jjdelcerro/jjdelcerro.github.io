@@ -80,7 +80,7 @@ Las herramientas que no heredan de `AbstractPaginatedAgentTool` pueden implement
 
 `TrimmingOperation` se ejecuta como parte del pipeline de la memoria proyectada, en el método `ProjectedMemoryImpl.getMessages()`. El flujo es el siguiente:
 
-1.  Se ensambla la lista base de mensajes (prompt del sistema + memoria compactada + mensajes de la memoria reciente).
+1.  Se ensambla la lista base de mensajes (prompt del sistema + memoria consolidada + mensajes de la memoria reciente).
 2.  Se itera sobre las operaciones registradas en orden de prioridad.
 3.  Cuando se alcanza `TrimmingOperation` (prioridad 10), se invoca su método `process()`.
 4.  La operación recibe la lista de mensajes proyectados y la lista de notificaciones efímeras (que en este caso no modifica).

@@ -3,7 +3,7 @@
 
 ## 1. Propósito y responsabilidad
 
-La operación `PinnedTurnsOperation` garantiza que ciertos mensajes permanezcan en el contexto del LLM incluso después de que la memoria reciente haya sido compactada. Su propósito principal es sostener la presencia de skills activos en el campo de consciencia del modelo, asegurando que las directivas de un skill (activadas mediante `activate_skill`) no se pierdan cuando los turnos que las contienen son eliminados de la memoria reciente.
+La operación `PinnedTurnsOperation` garantiza que ciertos mensajes permanezcan en el contexto del LLM incluso después de que la memoria reciente haya sido consolidada. Su propósito principal es sostener la presencia de skills activos en el campo de consciencia del modelo, asegurando que las directivas de un skill (activadas mediante `activate_skill`) no se pierdan cuando los turnos que las contienen son eliminados de la memoria reciente.
 
 La operación se ejecuta con prioridad 5, la más alta del pipeline de la memoria proyectada. Esto asegura que los mensajes fijados se reinyecten antes de que otras operaciones (como `TrimmingOperation` o `PendingAnnotationOperation`) modifiquen la lista de mensajes, evitando que estos procesos interfieran con la fijación.
 
@@ -15,7 +15,7 @@ La operación también se encarga de emitir recordatorios periódicos al modelo 
 
 1. **Captura**: detecta nuevas ejecuciones de herramientas que solicitan ser fijadas (`shouldPin() == true`). Cuando encuentra una, almacena el par de mensajes (llamada + resultado) en su estado persistente.
 
-2. **Reinyección**: cuando la memoria reciente ha sido compactada y los mensajes fijados han desaparecido de la lista de mensajes activos, la operación los reinyecta en la proyección justo después de los mensajes del sistema (prompt y memoria compactada), garantizando que el modelo siga viendo la activación del skill.
+2. **Reinyección**: cuando la memoria reciente ha sido consolidada y los mensajes fijados han desaparecido de la lista de mensajes activos, la operación los reinyecta en la proyección justo después de los mensajes del sistema (prompt y memoria consolidada), garantizando que el modelo siga viendo la activación del skill.
 
 3. **Recordatorios**: cada `N` turnos (por defecto 5), la operación inyecta una notificación efímera recordando al modelo que el skill sigue activo y que debe considerar su desactivación cuando concluya la tarea.
 
@@ -41,7 +41,7 @@ La herramienta que solicita ser fijada (`shouldPin() == true`) es responsable de
 
 ## 4. Reinyección de mensajes fijados
 
-La reinyección ocurre también durante `process()`, después de la captura de nuevos mensajes. El objetivo es garantizar que los mensajes fijados estén siempre presentes en la proyección, incluso si han sido eliminados de la memoria reciente por una compactación.
+La reinyección ocurre también durante `process()`, después de la captura de nuevos mensajes. El objetivo es garantizar que los mensajes fijados estén siempre presentes en la proyección, incluso si han sido eliminados de la memoria reciente por una consolidación.
 
 El proceso de reinyección sigue estos pasos:
 
@@ -50,12 +50,12 @@ El proceso de reinyección sigue estos pasos:
    a. Comprueba si el `resultMessage` (identificado por su `id`) está presente en la lista de mensajes de la proyección actual.
    b. Si no está presente, significa que el mensaje ha sido eliminado de la memoria reciente y debe reinyectarse.
 3. Para reinyectar, la operación localiza el punto de inserción:
-   - Busca el último índice de la proyección que contiene un `SystemMessage` (el prompt de sistema y la memoria compactada).
+   - Busca el último índice de la proyección que contiene un `SystemMessage` (el prompt de sistema y la memoria consolidada).
    - La inserción se realiza justo después de este índice, antes de los mensajes de la memoria reciente.
 4. Se añade el `requestMessage` y el `resultMessage` en el orden correcto (primero la llamada, luego el resultado).
 5. Se incrementa el índice de inserción para que los mensajes fijados se añadan en el mismo orden en que fueron capturados originalmente.
 
-Este mecanismo asegura que, incluso después de una compactación, el modelo siga viendo la secuencia completa de activación del skill y su resultado, manteniendo la coherencia del historial.
+Este mecanismo asegura que, incluso después de una consolidación, el modelo siga viendo la secuencia completa de activación del skill y su resultado, manteniendo la coherencia del historial.
 
 ## 5. Recordatorios periódicos
 
@@ -116,7 +116,7 @@ Además, la operación implementa los métodos estándar de `ProjectedMemoryOper
 
 - **Los mensajes fijados no se eliminan automáticamente**: si un skill se desactiva sin invocar `deactivate_skill`, o si la invocación falla, los mensajes fijados permanecen en el estado persistente indefinidamente. La única forma de eliminarlos es mediante `removePinnedTurn()`.
 
-- **Reinyección sin compactación**: si la memoria reciente aún contiene los mensajes fijados (porque no se ha compactado), la operación los reinyecta duplicándolos. La operación verifica que el `resultMessage` no esté ya presente en la proyección para evitar duplicados. Sin embargo, si el mensaje ha sido modificado (por ejemplo, por `TrimmingOperation`), la verificación puede fallar y provocar una duplicación.
+- **Reinyección sin consolidación**: si la memoria reciente aún contiene los mensajes fijados (porque no se ha consolidado), la operación los reinyecta duplicándolos. La operación verifica que el `resultMessage` no esté ya presente en la proyección para evitar duplicados. Sin embargo, si el mensaje ha sido modificado (por ejemplo, por `TrimmingOperation`), la verificación puede fallar y provocar una duplicación.
 
 - **Los recordatorios son globales por `subchannel`**: no hay un mecanismo para que cada skill tenga su propio intervalo de recordatorios. Todos los skills comparten el mismo `NOTIFICATION_TURN_INTERVAL` (5 turnos). Esto puede ser excesivo para skills de larga duración o insuficiente para skills de corta duración.
 
