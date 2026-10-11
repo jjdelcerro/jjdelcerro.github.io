@@ -1,5 +1,5 @@
 ---
-layout: Noema
+layout: noema
 title: "El servicio de razonamiento"
 ---
 

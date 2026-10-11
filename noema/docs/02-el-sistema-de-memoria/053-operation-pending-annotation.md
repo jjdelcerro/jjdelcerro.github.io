@@ -1,5 +1,5 @@
 ---
-layout: Noema
+layout: noema
 title: "Memoria proyectada, operación de aviso de recursos sin anotar"
 ---
 

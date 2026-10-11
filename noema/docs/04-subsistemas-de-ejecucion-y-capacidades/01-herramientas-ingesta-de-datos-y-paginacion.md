@@ -1,5 +1,5 @@
 ---
-layout: Noema
+layout: noema
 title: "Herramientas de ingesta de datos y paginación"
 ---
 

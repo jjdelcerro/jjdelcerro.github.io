@@ -1,5 +1,5 @@
 ---
-layout: Noema
+layout: noema
 title: "Arranque y ciclo de vida"
 ---
 

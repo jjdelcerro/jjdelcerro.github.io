@@ -1,5 +1,5 @@
 ---
-layout: Noema
+layout: noema
 title: "Arquitectura para agentes de IA de largo recorrido"
 ---
 

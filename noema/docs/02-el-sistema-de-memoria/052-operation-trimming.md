@@ -1,5 +1,5 @@
 ---
-layout: Noema
+layout: noema
 title: "Memoria proyectada, operación de podado de resultados de herramientas"
 ---
 

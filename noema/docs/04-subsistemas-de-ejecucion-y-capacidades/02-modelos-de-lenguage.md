@@ -1,5 +1,5 @@
 ---
-layout: Noema
+layout: noema
 title: "Integracion con modelos de lenguage"
 ---
 
