@@ -1,9 +1,9 @@
 ---
 layout: noema
-title: "Interfaz grafica"
+title: "El contrato `AgentConsole` y la comunicación Core-UI"
 ---
 
-# Interfaz grafica
+# El contrato `AgentConsole` y la comunicación Core-UI
 
 >
 > En construcción
