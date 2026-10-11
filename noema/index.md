@@ -6,7 +6,7 @@ title: "Noema"
 # Documentación Técnica de Noema
 
 >
-> **Estado:** proyecto de investigación activo. La documentación se actualiza a medida que se estabiliza cada subsistema; algunas páginas describen diseños implementados, otras describen trabajo en curso. El código fuente y los tests están disponibles en el [repositorio de Noema](https://github.com/jjdelcerro/io.github.jjdelcerro.noema) y reflejan el estado real del sistema.
+> **Estado:** proyecto de investigación activo. La documentación la voy actualizando a medida que se estabiliza cada subsistema y tengo hueco para hacerlo. En general se describe diseños implementados aunque puede haber alguna que describa trabajo en curso. El código fuente y los tests están disponibles en el [repositorio de Noema](https://github.com/jjdelcerro/io.github.jjdelcerro.noema) y reflejan el estado real del sistema.
 >
 > Algunos enlaces apuntan a paginas en construccion, estan marcados con '🚧'.
 >
