@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "Gestion de rutas"
+---
+
 # Gestión de rutas (`AgentPaths`)
 
 ## 1. El sistema de archivos como estado

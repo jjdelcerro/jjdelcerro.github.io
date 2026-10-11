@@ -1,3 +1,7 @@
+---
+layout: Noema
+title: "El servicio de gestion de eventos, sensores"
+---
 
 # Especificación técnica de la implementación de SensorsService
 

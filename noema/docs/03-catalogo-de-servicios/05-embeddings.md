@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "El servicio de gestión de embeddings"
+---
+
 # Servicio de embeddings (`EmbeddingsService`)
 
 ## 1. Representación vectorial y búsqueda por significado

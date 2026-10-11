@@ -1,11 +1,15 @@
+---
+layout: Noema
+title: "Memoria proyectada, operación de anclado de mensajes"
+---
 
-# `PinnedTurnsOperation`: fijación de mensajes
+# `PinnedTurnsOperation`: anclado de mensajes
 
 ## 1. Propósito y responsabilidad
 
 La operación `PinnedTurnsOperation` garantiza que ciertos mensajes permanezcan en el contexto del LLM incluso después de que la memoria reciente haya sido consolidada. Su propósito principal es sostener la presencia de skills activos en el campo de consciencia del modelo, asegurando que las directivas de un skill (activadas mediante `activate_skill`) no se pierdan cuando los turnos que las contienen son eliminados de la memoria reciente.
 
-La operación se ejecuta con prioridad 5, la más alta del pipeline de la memoria proyectada. Esto asegura que los mensajes fijados se reinyecten antes de que otras operaciones (como `TrimmingOperation` o `PendingAnnotationOperation`) modifiquen la lista de mensajes, evitando que estos procesos interfieran con la fijación.
+La operación se ejecuta con prioridad 5, la más alta del pipeline de la memoria proyectada. Esto asegura que los mensajes fijados se reinyecten antes de que otras operaciones (como `TrimmingOperation` o `PendingAnnotationOperation`) modifiquen la lista de mensajes, evitando que estos procesos interfieran con el anclado.
 
 La operación también se encarga de emitir recordatorios periódicos al modelo mientras un skill está activo, recordándole que debe seguir las directivas del skill y que puede desactivarlo cuando haya completado la tarea.
 

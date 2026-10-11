@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "Memoria proyectada, operación de aviso de recursos sin anotar"
+---
+
 # `PendingAnnotationOperation`: aviso de recursos sin anotar
 
 ## 1. Propósito y responsabilidad

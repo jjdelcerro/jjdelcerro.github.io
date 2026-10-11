@@ -1,3 +1,7 @@
+---
+layout: Noema
+title: "Memoria proyectada"
+---
 
 # Memoria Proyectada (`ProjectedMemory`)
 

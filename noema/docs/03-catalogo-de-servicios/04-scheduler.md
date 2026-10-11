@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "El servicio de planificación, gestión de avisos"
+---
+
 ## Servicio de Planificación (`SchedulerService`)
 
 ### 1. Introducción: la necesidad de planificación temporal

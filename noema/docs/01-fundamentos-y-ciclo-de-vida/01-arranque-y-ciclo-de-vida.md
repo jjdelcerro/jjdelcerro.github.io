@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "Arranque y ciclo de vida"
+---
+
 # Inicialización e inyección de dependencias
 
 ## 1. Filosofía de ensamblaje: inyección manual y ausencia de frameworks

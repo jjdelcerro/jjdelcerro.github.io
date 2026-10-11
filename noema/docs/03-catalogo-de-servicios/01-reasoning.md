@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "El servicio de razonamiento"
+---
+
 # `ReasoningService`: el orquestador del agente
 
 ## 1. Propósito y responsabilidad

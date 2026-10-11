@@ -1,4 +1,9 @@
-# Memoria Episódica (`EpisodicMemory`)
+---
+layout: Noema
+title: "Memoria episodica"
+---
+
+# Memoria episódica (`EpisodicMemory`)
 
 ## 1. Propósito y responsabilidad
 

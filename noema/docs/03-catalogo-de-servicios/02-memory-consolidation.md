@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "El servicio de consolidación de memoria"
+---
+
 # `MemoryConsolidationService`: consolidación narrativa
 
 

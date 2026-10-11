@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "Configuracion del agente"
+---
+
 # Configuración jerárquica (`AgentSettings`)
 
 ## 1. La configuración como árbol

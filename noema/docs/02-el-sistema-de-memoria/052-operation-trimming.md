@@ -1,3 +1,7 @@
+---
+layout: Noema
+title: "Memoria proyectada, operación de podado de resultados de herramientas"
+---
 
 # `TrimmingOperation`: podado de resultados de herramientas
 

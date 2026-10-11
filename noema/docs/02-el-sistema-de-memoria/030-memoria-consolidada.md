@@ -1,3 +1,7 @@
+---
+layout: Noema
+title: "Memoria consolidada"
+---
 
 # Memoria consolidada (`ConsolidateMemory`)
 

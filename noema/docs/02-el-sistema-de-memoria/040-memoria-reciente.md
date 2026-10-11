@@ -1,3 +1,7 @@
+---
+layout: Noema
+title: "Memoria reciente"
+---
 
 # Memoria Reciente (`RecentMemory`)
 

@@ -1,3 +1,8 @@
+---
+layout: Noema
+title: "Visión general del modelo de memoria"
+---
+
 # Visión general del modelo de memoria
 
 ## 1. El problema: el contexto finito y la atención frágil

@@ -1,3 +1,7 @@
+---
+layout: Noema
+title: "Memoria proyectada, operación de percepcion temporal"
+---
 
 # `TemporalPerceptionOperation`: percepción temporal pasiva
 
