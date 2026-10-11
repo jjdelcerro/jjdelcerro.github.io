@@ -8,6 +8,8 @@ title: "Noema"
 >
 > **Estado:** proyecto de investigación activo. La documentación se actualiza a medida que se estabiliza cada subsistema; algunas páginas describen diseños implementados, otras describen trabajo en curso. El código fuente y los tests están disponibles en el [repositorio de Noema](https://github.com/jjdelcerro/io.github.jjdelcerro.noema) y reflejan el estado real del sistema.
 >
+> Algunos enlaces apuntan a paginas en construccion, estan marcados con '🚧'.
+>
 
 ## ¿Qué es Noema?
 
@@ -70,24 +72,24 @@ Los servicios son los módulos funcionales que el agente activa durante su ejecu
 * **[`SensorsService`](./docs/03-catalogo-de-servicios/03-sensors.md)**: El sistema nervioso autónomo. Se encarga de la gestión de eventos asíncronos, naturalezas sensoriales, arbitraje cronológico y persistencia de estos.
 * **[`EmbeddingsService`](./docs/03-catalogo-de-servicios/05-embeddings.md)**: Vectorización local con ONNX, similitud coseno, búsqueda top-K y serialización en la base de datos.
 * **[`SchedulerService`](./docs/03-catalogo-de-servicios/04-scheduler.md)**: Planificación temporal persistente con Natty, cola de alarmas y emisión de eventos.
-* **[Motor de scripting (`ScriptExecuteTool`)](./docs/03-catalogo-de-servicios/scripting/scripting.md)**: Entorno Groovy embebido, sandbox seguro, iteradores streaming y módulos del `ScriptContext`.
-* **[Habilidades procedimentales (`Skill`)](./docs/03-catalogo-de-servicios/08-skills.md)**: Catálogo en habilidades siguiendo las convenciones del sistema de habilidades de Antropic, ciclo de vida (activación, recordatorios, desactivación) y scripts auxiliares.
-* **[Subagentes (`Subagent`)](./docs/03-catalogo-de-servicios/07-subagentes.md)**: Definiciones XML, workspaces aislados, ejecución en dos fases y lanzamiento asíncrono.
-* **[Cliente MCP](./docs/03-catalogo-de-servicios/09-cliente-mcp.md)**: Integracion de servicios MCP en el ecosistema de noema.
+* **[Motor de scripting (`ScriptExecuteTool`)](./docs/03-catalogo-de-servicios/scripting/scripting.md)**: 🚧 Entorno Groovy embebido, sandbox seguro, iteradores streaming y módulos del `ScriptContext`.
+* **[Habilidades procedimentales (`Skill`)](./docs/03-catalogo-de-servicios/08-skills.md)**: 🚧 Catálogo en habilidades siguiendo las convenciones del sistema de habilidades de Antropic, ciclo de vida (activación, recordatorios, desactivación) y scripts auxiliares.
+* **[Subagentes (`Subagent`)](./docs/03-catalogo-de-servicios/07-subagentes.md)**: 🚧 Definiciones XML, workspaces aislados, ejecución en dos fases y lanzamiento asíncrono.
+* **[Cliente MCP](./docs/03-catalogo-de-servicios/09-cliente-mcp.md)**: 🚧 Integracion de servicios MCP en el ecosistema de noema.
 * **Servicios de integración (Telegram, Email)**: Puentes con el mundo exterior. escucha de mensajes y correos.
 
 ## Subsistemas de ejecución y capacidades
 
 Este bloque agrupa los mecanismos que extienden lo que el modelo puede hacer dentro del bucle de razonamiento: desde las herramientas básicas hasta los subagentes y el motor de scripting.
 
-* **[Comunicacion con modelos de lenguage](./docs/04-subsistemas-de-ejecucion-y-capacidades/02-modelos-de-lenguage.md)**: se encarga de abstraer la comunicacion con los distintos modelos de lenguage.
-* **[Herramientas de ingesta de datos y paginación](./docs/04-subsistemas-de-ejecucion-y-capacidades/01-herramientas-ingesta-de-datos-y-paginacion.md)**: Contrato `AgentTool`, modos de seguridad, ciclo de vida de una herramienta, `AbstractPaginatedAgentTool`, URIs simbólicas y protocolo `HINT`.
+* **[Comunicacion con modelos de lenguage](./docs/04-subsistemas-de-ejecucion-y-capacidades/02-modelos-de-lenguage.md)**: 🚧 se encarga de abstraer la comunicacion con los distintos modelos de lenguage.
+* **[Herramientas de ingesta de datos y paginación](./docs/04-subsistemas-de-ejecucion-y-capacidades/01-herramientas-ingesta-de-datos-y-paginacion.md)**: 🚧 Contrato `AgentTool`, modos de seguridad, ciclo de vida de una herramienta, `AbstractPaginatedAgentTool`, URIs simbólicas y protocolo `HINT`.
 
 ## Capa de presentación, interfaces de usuario
 
 Cómo interactúa el usuario con Noema a través del contrato `AgentConsole`. Este bloque cubre tanto las interfaces locales (Swing, TUI, CLI) como el servidor web embebido con eventos SSE.
 
-* **[El contrato `AgentConsole` y la comunicación Core-UI](./docs/05-capa-de-presentacion-e-interfaces/00-contrato-agentconsole-y-comunicacion.md)**: Inversión de dependencias, flujo UI → Núcleo (`putUsersMessage` + callback), flujo Núcleo → UI (`print*`), confirmaciones síncronas y generación dinámica de UI de configuración.
-* **[Interfaz Swing (GUI)](./docs/05-capa-de-presentacion-e-interfaces/01-swing.md)**: Ventana principal, burbujas de chat con Markdown, paneles de configuración y diálogos modales.
-* **[Interfaz Lanterna (TUI)](./docs/05-capa-de-presentacion-e-interfaces/02-tui.md)**: Entorno de terminal con múltiples ventanas, historial coloreado y soporte de ratón.
-* **[Servidor Web y SSE (`NoemaWebServer`)](./docs/05-capa-de-presentacion-e-interfaces/03-web.md)**: Javalin embebido, API REST (`/api/chat`, `/api/config`) y canal de eventos en tiempo real (`/api/console`).
+* **[El contrato `AgentConsole` y la comunicación Core-UI](./docs/05-capa-de-presentacion-e-interfaces/00-contrato-agentconsole-y-comunicacion.md)**: 🚧 Inversión de dependencias, flujo UI → Núcleo (`putUsersMessage` + callback), flujo Núcleo → UI (`print*`), confirmaciones síncronas y generación dinámica de UI de configuración.
+* **[Interfaz Swing (GUI)](./docs/05-capa-de-presentacion-e-interfaces/01-swing.md)**: 🚧Ventana principal, burbujas de chat con Markdown, paneles de configuración y diálogos modales.
+* **[Interfaz Lanterna (TUI)](./docs/05-capa-de-presentacion-e-interfaces/02-tui.md)**: 🚧Entorno de terminal con múltiples ventanas, historial coloreado y soporte de ratón.
+* **[Servidor Web y SSE (`NoemaWebServer`)](./docs/05-capa-de-presentacion-e-interfaces/03-web.md)**: 🚧 Javalin embebido, API REST (`/api/chat`, `/api/config`) y canal de eventos en tiempo real (`/api/console`).
